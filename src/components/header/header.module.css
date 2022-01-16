@@ -1,0 +1,33 @@
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: rgb(101, 158, 153);
+  background: linear-gradient(
+    90deg,
+    rgba(101, 158, 153, 1) 0%,
+    rgba(242, 242, 242, 1) 30%,
+    rgba(242, 242, 242, 1) 70%,
+    rgba(101, 158, 153, 1) 100%
+  );
+  border-bottom: 6px solid black;
+}
+
+.header img {
+  width: 100%;
+  max-width: 120px;
+  padding-top: 5px;
+}
+
+.header a {
+  font-family: var(--ordibehesht);
+  font-size: 1.8rem;
+  text-decoration: none;
+  color: var(--purple);
+  transition: 0.2s ease-in-out;
+}
+
+.header a:hover {
+  transform: scale(1.1);
+}

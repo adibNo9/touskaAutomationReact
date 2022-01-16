@@ -1,13 +1,94 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: "Oridibehesht";
+  src: url("/public/fonts/Ordibehesht.woff");
+  color: var(--purple);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@font-face {
+  font-family: "iranFont";
+  src: url("/public/fonts/FontsFree-Net-ir_sans.ttf");
+}
+
+body {
+  margin: 0;
+}
+
+:root {
+  --purple: #883676;
+  --white: #f2f2f2;
+  --green: #659e99;
+  --lightGreen: #609a96;
+  --darkGreen: #213d3a;
+  --ordibehesht: "Oridibehesht";
+  --iranFont: "iranFont";
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Oridibehesht";
+  color: #883676;
+  font-weight: 900;
+}
+
+p,
+th,
+td,
+tr,
+a,
+label {
+  font-family: "iranFont";
+}
+
+h1 {
+  font-size: 3.5rem !important;
+}
+
+h2 {
+  font-size: 3rem !important;
+}
+
+h3 {
+  font-size: 2.5rem !important;
+}
+
+h4 {
+  font-size: 2rem !important;
+}
+
+h5 {
+  font-size: 1.8rem !important;
+}
+
+h6 {
+  font-size: 1.3rem !important;
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2.5rem !important;
+  }
+
+  h2 {
+    font-size: 2rem !important;
+  }
+
+  h3 {
+    font-size: 1.5rem !important;
+  }
+
+  h4 {
+    font-size: 1.3rem !important;
+  }
+
+  h5 {
+    font-size: 1.1rem !important;
+  }
+
+  h6 {
+    font-size: 0.9rem !important;
+  }
 }

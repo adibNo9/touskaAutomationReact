@@ -1,0 +1,102 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--darkGreen);
+  padding: 3rem;
+  width: 100%;
+  max-width: 500px;
+  margin: 2rem auto;
+  border: 10px solid var(--purple);
+}
+
+.title {
+  text-align: center;
+  background-color: var(--purple);
+  max-width: 480px;
+  margin: 1rem auto;
+  border: 8px solid var(--darkGreen);
+  position: relative;
+}
+
+.title h1 {
+  color: var(--white);
+  text-shadow: 3px 3px 3px grey;
+  padding: 0.4rem;
+  margin: auto;
+}
+
+.formGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  width: 100%;
+  direction: rtl;
+  position: relative;
+}
+
+.form input,
+.form label {
+  font-family: var(--ordibehesht);
+  font-size: 1.5rem;
+}
+
+.form input {
+  border: 5px solid var(--purple);
+  padding: 10px;
+  margin-bottom: 1rem;
+  width: 90%;
+  text-align: center;
+}
+
+.form label {
+  color: var(--white);
+  padding-bottom: 8px;
+}
+
+.form button {
+  font-family: var(--ordibehesht);
+  width: 60%;
+  background-color: var(--purple);
+  border: none;
+  font-size: 1.5rem;
+  color: var(--white);
+  padding: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.form button:hover {
+  text-shadow: 3px 3px 1px rgb(190, 190, 190);
+  background-color: var(--white);
+  color: var(--purple);
+  width: 80%;
+}
+
+.form button:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+  width: 60%;
+  text-shadow: none;
+  color: white;
+}
+
+.showsIconPass {
+  position: absolute;
+  font-size: 2rem;
+  color: rgb(14, 146, 47);
+  bottom: 28px;
+  right: 1.2rem;
+  cursor: pointer;
+}
+
+.checkPass {
+  position: absolute;
+  bottom: 28px;
+  left: 1.2rem;
+  font-size: 2rem;
+  color: rgb(0, 80, 0);
+}
