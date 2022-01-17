@@ -13,6 +13,8 @@ import { BsCheckAll } from "react-icons/bs";
 import { ConnectToDB } from "../../lib/connect-to-db";
 import axios from "axios";
 import Notification from "../ui/notification";
+import Modal from "../ui/Modal";
+import MyButton from "../ui/MyButton";
 
 interface notificationDetails {
   status: string;
@@ -30,6 +32,8 @@ const Register: React.FC = () => {
   const [emailVal, setEmailVal] = useState<string>("");
   const [passVal, setPassVal] = useState<string>("");
   const [confPassVal, setConfPassVal] = useState<string>("");
+
+  const [successRegister, setSuccessRegister] = useState<boolean>(false);
 
   const emailChangeHandelr = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
@@ -57,54 +61,14 @@ const Register: React.FC = () => {
   if (
     emailVal?.trim().includes("@") &&
     emailVal?.trim().includes(".") &&
+    passVal.trim().length > 8 &&
     correctPass
   ) {
     formValidate = true;
   }
 
-  const connectDB = ConnectToDB("register/user/email");
-
-  //   async function createUser(
-  //     email: string,
-  //     password: string,
-  //     password_confirmation: string
-  //   ) {
-  //     const response = await fetch(connectDB, {
-  //       method: "POST",
-  //       body: JSON.stringify({ email, password, password_confirmation }),
-  //       headers: {
-  //         "Content-type": "application/json",
-  //         "Access-Control-Allow-Origin": "*",
-  //       },
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (!response.ok) {
-  //       // throw new Error(data.message || "Something went wrong!");
-  //       setdataError(data.msg);
-  //     }
-
-  //     return data;
-  //   }
-
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-
-    console.log("email:", emailVal);
-    console.log("pass:", passVal);
-    console.log("conf:", confPassVal);
-
-    // try {
-    //   const result = await createUser(emailVal, passVal, confPassVal);
-    //   console.log(result);
-
-    //   setNotification(result.status);
-    //   setdataError(result.user);
-    // } catch (error) {
-    //   console.log("error", error);
-    //   return;
-    // }
 
     setNotification("pending");
 
@@ -123,10 +87,13 @@ const Register: React.FC = () => {
     })
       .then((res) => {
         console.log(res);
-        if (res.data.status === "success created") {
+        if (res.data.status === "success") {
           setNotification(res.data.status);
+          setSuccessRegister(true);
 
-          setNotification(res.data.status);
+          setTimeout(() => {
+            setNotification("");
+          }, 2000);
         }
       })
       .catch((err) => {
@@ -149,7 +116,7 @@ const Register: React.FC = () => {
     };
   }
 
-  if (notification === "success created") {
+  if (notification === "success") {
     notifDetails = {
       status: "success",
       title: "موفق!",
@@ -167,6 +134,18 @@ const Register: React.FC = () => {
 
   return (
     <Fragment>
+      {successRegister && (
+        <Modal>
+          <h2>منتظر تایید مدیر سایت باشید!</h2>
+          <button
+            className={classes.button}
+            onClick={() => setSuccessRegister(false)}
+          >
+            بازگشت
+          </button>
+        </Modal>
+      )}
+
       <div className={classes.title}>
         <h1> ثبت نام </h1>
       </div>

@@ -12,6 +12,7 @@
     rgba(101, 158, 153, 1) 100%
   );
   border-bottom: 6px solid black;
+  height: 120px;
 }
 
 .header img {
