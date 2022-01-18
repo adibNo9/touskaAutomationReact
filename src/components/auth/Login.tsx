@@ -13,7 +13,7 @@ import { AiFillEyeInvisible } from "react-icons/ai";
 import { ConnectToDB } from "../../lib/connect-to-db";
 import axios from "axios";
 import Notification from "../ui/notification";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { AutoContext } from "../../store/auto-context";
 
 interface notificationDetails {
@@ -23,7 +23,7 @@ interface notificationDetails {
 }
 
 const Login: React.FC = () => {
-  const navigate = useNavigate();
+  const history = useHistory();
   const autoCtx = useContext(AutoContext);
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
@@ -48,7 +48,7 @@ const Login: React.FC = () => {
   if (
     emailVal?.trim().includes("@") &&
     emailVal?.trim().includes(".") &&
-    passVal.trim().length > 8
+    passVal.trim().length > 6
   ) {
     formValidate = true;
   }
@@ -79,7 +79,8 @@ const Login: React.FC = () => {
 
           setTimeout(() => {
             setNotification("");
-            navigate("/home");
+            history.replace("/dashboard");
+            window.location.reload();
           }, 2000);
         }
       })
@@ -159,7 +160,7 @@ const Login: React.FC = () => {
         </Form.Group>
 
         <Button disabled={!formValidate} variant="primary" type="submit">
-          تایید و ارسال
+          ورود
         </Button>
       </Form>
       {notification && (

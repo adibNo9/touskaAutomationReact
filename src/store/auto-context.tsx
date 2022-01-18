@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 type autoObj = {
-  tokenValue: string;
+  tokenValue: string | null;
   getToken: (token: string) => void;
   removeToken: (token: string) => void;
 };
@@ -13,7 +13,9 @@ export const AutoContext = React.createContext<autoObj>({
 });
 
 const AutoContextProvider: React.FC = (props) => {
-  const [token, setToken] = useState<string>("");
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token")
+  );
 
   const getTokenHandler = (newToken: string) => {
     setToken(newToken);

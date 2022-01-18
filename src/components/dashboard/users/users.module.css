@@ -1,0 +1,78 @@
+.usersPage {
+  min-height: 100vh;
+}
+
+.usersPage h1 {
+  text-align: center;
+  background: #883676;
+  background: linear-gradient(
+    125deg,
+    #883676 0%,
+    rgba(96, 154, 150, 1) 50%,
+    #883676 100%
+  );
+  width: 40%;
+  margin: auto;
+  margin-bottom: 1rem;
+  color: var(--darkGreen);
+}
+
+.users table {
+  width: 80%;
+  margin: auto;
+  margin-top: 1rem;
+  border: 5px solid var(--purple);
+  background-color: var(--darkGreen);
+}
+
+.users td,
+.users th {
+  color: var(--white) !important;
+  text-align: center;
+}
+
+.users td svg {
+  font-size: 2rem;
+}
+
+.active {
+  color: rgb(36, 212, 115);
+}
+.notActive {
+  color: red;
+}
+
+.users td img {
+  max-width: 150px;
+  background: white;
+}
+
+.users th {
+  border-bottom: 5px solid var(--purple);
+}
+
+.links {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 5px solid var(--darkGreen);
+  border-top: 5px solid var(--darkGreen);
+  padding: 0.5rem 0;
+}
+
+.links button {
+  background-color: var(--purple);
+  color: var(--white);
+  border: 2px solid var(--purple);
+  font-size: 1.5rem;
+  font-family: var(--ordibehesht);
+  padding: 4px 2rem;
+  transition: 0.3s ease-in-out;
+  width: 30%;
+}
+
+.links button:hover {
+  background-color: var(--darkGreen);
+}

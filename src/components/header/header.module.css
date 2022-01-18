@@ -13,6 +13,10 @@
   );
   border-bottom: 6px solid black;
   height: 120px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 99999;
 }
 
 .header img {
@@ -31,4 +35,8 @@
 
 .header a:hover {
   transform: scale(1.1);
+}
+
+.layout {
+  margin-top: 120px;
 }

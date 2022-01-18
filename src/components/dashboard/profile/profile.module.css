@@ -1,0 +1,119 @@
+.profile {
+  min-height: 100vh;
+}
+
+.profile h1 {
+  text-align: center;
+  background: #883676;
+  background: linear-gradient(
+    125deg,
+    #883676 0%,
+    rgba(96, 154, 150, 1) 50%,
+    #883676 100%
+  );
+  width: 40%;
+  margin: auto;
+  margin-bottom: 1rem;
+  color: var(--darkGreen);
+}
+
+.form {
+  max-width: 400px;
+  margin: auto;
+  background-color: var(--darkGreen);
+  padding: 1rem;
+  border: 6px solid var(--purple);
+}
+
+.form label {
+  color: var(--white);
+  font-weight: 900;
+}
+
+.form input {
+  border-radius: 0;
+  border: 2px solid var(--purple);
+  margin-bottom: 1rem;
+}
+
+.form .actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.actions button {
+  background-color: var(--purple);
+  color: var(--white);
+  border: none;
+  width: 60%;
+  font-size: 1.5rem;
+  font-family: var(--ordibehesht);
+  padding-top: 3px;
+  transition: 0.2s linear;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  width: 100%;
+}
+
+.actions button:disabled {
+  background-color: grey;
+  opacity: 0.8;
+  width: 60%;
+  cursor: not-allowed;
+}
+
+.content {
+  width: 80%;
+  margin: auto;
+  background-color: var(--darkGreen);
+  padding: 2rem;
+  border: 6px solid var(--purple);
+}
+
+.content h4 {
+  text-align: right;
+  color: var(--white);
+  margin-bottom: 2rem;
+}
+
+.links {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 5px solid var(--darkGreen);
+  border-top: 5px solid var(--darkGreen);
+  padding: 0.5rem 0;
+}
+
+.links button {
+  background-color: var(--purple);
+  color: var(--white);
+  border: 2px solid var(--purple);
+  font-size: 1.5rem;
+  font-family: var(--ordibehesht);
+  padding: 4px 2rem;
+  transition: 0.3s ease-in-out;
+  width: 30%;
+}
+
+.links button:hover {
+  background-color: var(--darkGreen);
+}
+
+.formGroup {
+  position: relative;
+}
+
+.correctPass {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  font-size: 1.8rem;
+  color: green;
+}

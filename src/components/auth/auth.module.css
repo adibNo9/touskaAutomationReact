@@ -48,7 +48,7 @@
   border: 5px solid var(--purple);
   padding: 10px;
   margin-bottom: 1rem;
-  width: 90%;
+  width: 100%;
   text-align: center;
 }
 
@@ -89,7 +89,7 @@
   font-size: 2rem;
   color: rgb(14, 146, 47);
   bottom: 28px;
-  right: 1.2rem;
+  right: 1rem;
   cursor: pointer;
 }
 

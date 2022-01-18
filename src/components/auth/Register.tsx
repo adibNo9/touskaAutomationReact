@@ -1,9 +1,4 @@
-import React, {
-  ChangeEvent,
-  FormEventHandler,
-  Fragment,
-  useState,
-} from "react";
+import React, { ChangeEvent, Fragment, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import classes from "./auth.module.css";
 
@@ -14,7 +9,6 @@ import { ConnectToDB } from "../../lib/connect-to-db";
 import axios from "axios";
 import Notification from "../ui/notification";
 import Modal from "../ui/Modal";
-import MyButton from "../ui/MyButton";
 
 interface notificationDetails {
   status: string;
@@ -61,7 +55,7 @@ const Register: React.FC = () => {
   if (
     emailVal?.trim().includes("@") &&
     emailVal?.trim().includes(".") &&
-    passVal.trim().length > 8 &&
+    passVal.trim().length > 6 &&
     correctPass
   ) {
     formValidate = true;
