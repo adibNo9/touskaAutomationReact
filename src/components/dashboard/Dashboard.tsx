@@ -11,6 +11,7 @@ import { Route } from "react-router-dom";
 import Profile from "./profile/Profile";
 import { getData } from "../../lib/get-data";
 import Users from "./users/Users";
+import EditTimeSheet from "./titleandsubtitle/EditTimeSheet";
 
 export interface userType {
   status: string;
@@ -93,11 +94,13 @@ const Dashboard: React.FC = () => {
           <h6> {userName ? userName : userEmail} </h6>
         </div>
 
-        <Link to="profile">پروفایل</Link>
+        <Link to="/dashboard/profile">پروفایل</Link>
 
-        {userData.user.role_id === 1 && <Link to="users">کاربران</Link>}
+        {userData.user.role_id === 1 && (
+          <Link to="/dashboard/users">کاربران</Link>
+        )}
 
-        <Link to="/login">درخواست‌ها</Link>
+        <Link to="/dashboard/edit-timesheet">آپدیت تایم شیت</Link>
 
         <Link to="/login">تسک‌ها</Link>
 
@@ -113,6 +116,9 @@ const Dashboard: React.FC = () => {
         </Route>
         <Route path="/dashboard/users">
           <Users />
+        </Route>
+        <Route path="/dashboard/edit-timesheet">
+          <EditTimeSheet />
         </Route>
       </div>
     </section>

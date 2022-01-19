@@ -1,6 +1,11 @@
 import Header from "./components/header/Header";
 
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import {
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 
@@ -21,6 +26,9 @@ function App() {
         <Header />
         <Layout>
           <Switch>
+            <Route path="/" exact>
+              <Redirect to="/dashboard" />
+            </Route>
             <Route path="/register">
               {!token ? <Register /> : <Dashboard />}
             </Route>

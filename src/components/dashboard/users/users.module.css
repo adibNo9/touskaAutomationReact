@@ -62,7 +62,8 @@
   padding: 0.5rem 0;
 }
 
-.links button {
+.links button,
+.btnChanges {
   background-color: var(--purple);
   color: var(--white);
   border: 2px solid var(--purple);
@@ -73,6 +74,152 @@
   width: 30%;
 }
 
-.links button:hover {
+.links button:hover,
+.btnChanges:hover {
   background-color: var(--darkGreen);
+}
+
+.options {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 5px 15%;
+}
+
+.options form {
+  flex-basis: 40%;
+}
+
+.btnsOptions {
+  flex-basis: 60%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.btnsOptions button {
+  border: 5px solid var(--purple);
+  background-color: var(--darkGreen);
+  font-family: var(--ordibehesht);
+  font-size: 1.5rem;
+  color: white;
+  width: 40%;
+}
+
+.formGroup {
+  position: relative;
+}
+
+.formGroup input {
+  border-radius: 0;
+  border: 5px solid var(--purple);
+  background-color: var(--green);
+  color: var(--darkGreen);
+  font-weight: 700;
+}
+
+.formGroup input:focus {
+  border: 5px solid var(--purple);
+  background-color: var(--green);
+  color: var(--darkGreen);
+}
+
+.formGroup input::placeholder {
+  color: black;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-size: 1.5rem;
+  color: var(--purple);
+  cursor: pointer;
+}
+
+.users tr {
+  position: relative;
+}
+
+.users td {
+  height: 100px;
+}
+
+.editUser {
+  position: absolute;
+  right: -3.1rem;
+  top: 0;
+  font-size: 3rem !important;
+  background-color: var(--green) !important;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+  color: var(--purple) !important;
+}
+
+.editUser:hover {
+  height: 100%;
+}
+
+.closeModal {
+  font-size: 2rem;
+  position: absolute;
+  right: 220px;
+  top: 140px;
+  color: rgb(192, 18, 18);
+  background-color: var(--white);
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.closeModal:hover {
+  color: var(--white);
+  background-color: rgb(192, 18, 18);
+}
+
+.modal {
+  background-color: rgba(255, 255, 255, 0.671);
+  width: 60%;
+  max-width: 600px;
+  padding: 1rem;
+}
+
+.btnChanges {
+  width: 80%;
+  margin: 1rem 10%;
+}
+
+.actions button {
+  background-color: var(--white);
+  font-family: var(--ordibehesht);
+  font-size: 2rem;
+  border: 4px solid var(--darkGreen);
+  width: 100%;
+  transition: 0.2s ease-in-out;
+  margin-top: 1rem;
+}
+
+.actions button:hover {
+  border-color: var(--purple);
+}
+
+.changeActivate {
+  font-size: 3rem;
+  position: absolute;
+  left: -3.1rem;
+  top: 0;
+  color: var(--white) !important;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.changeActivate:hover {
+  height: 100%;
+}
+
+.deActive {
+  background-color: red !important;
+}
+
+.activeUser {
+  background-color: green !important;
 }

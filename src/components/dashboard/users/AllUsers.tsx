@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { getData } from "../../../lib/get-data";
 import { userType } from "../Dashboard";
 
 import classes from "./users.module.css";
 
-import { AiFillCheckSquare } from "react-icons/ai";
-import { AiFillCloseSquare } from "react-icons/ai";
+import { RiSearch2Line } from "react-icons/ri";
 import User from "./User";
-import { Table } from "react-bootstrap";
+import { Form, Table } from "react-bootstrap";
 
 export interface typeUsersList {
   id: number;
@@ -22,14 +21,56 @@ export interface typeUsersList {
 
 const AllUsers: React.FC = () => {
   const [listUsers, setListUsers] = useState<typeUsersList[]>([]);
+  const [searchVal, setSearchVal] = useState<string>("");
+
+  const [getValue, setGetValue] = useState<typeUsersList[]>([]);
 
   useEffect(() => {
     const getListUsers = async () => {
       const value = await getData("listuser");
       setListUsers(value.users);
+      setGetValue(value.users);
     };
     getListUsers();
   }, []);
+
+  const searchChangeHandelr = (event: ChangeEvent<HTMLInputElement>) => {
+    setListUsers(getValue);
+    const username = event.currentTarget.value;
+    setSearchVal(username);
+    if (searchVal === "") {
+      setListUsers(getValue);
+    }
+  };
+
+  const submitHandler = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (searchVal !== "") {
+      const val = listUsers.filter((user) =>
+        (user.name || user.email).includes(searchVal)
+      );
+      setListUsers(val);
+      if (val.length === 0) {
+        setListUsers(getValue);
+        const emailval = listUsers.filter((user) =>
+          user.email.includes(searchVal)
+        );
+        setListUsers(emailval);
+      }
+    } else {
+      setListUsers(getValue);
+    }
+  };
+
+  const activeUsersHandler = () => {
+    const value = getValue.filter((user) => user.is_active === 1);
+    setListUsers(value);
+  };
+
+  const deactiveUsersHandler = () => {
+    const value = getValue.filter((user) => user.is_active !== 1);
+    setListUsers(value);
+  };
 
   let users = [];
 
@@ -37,9 +78,28 @@ const AllUsers: React.FC = () => {
     users[i] = <User key={i + 1} number={i + 1} listUser={listUsers[i]} />;
   }
 
-  console.log("listUsers", listUsers);
   return (
     <section className={classes.users}>
+      <div className={classes.options}>
+        <Form onSubmit={submitHandler}>
+          <Form.Group className={classes.formGroup} controlId="formBasicEmail">
+            <Form.Control
+              type="text"
+              placeholder="نام یا ایمیل مورد نظر را وارد کنید"
+              value={searchVal}
+              onChange={searchChangeHandelr}
+            />
+            <RiSearch2Line
+              onClick={submitHandler}
+              className={classes.searchIcon}
+            />
+          </Form.Group>
+        </Form>
+        <div className={classes.btnsOptions}>
+          <button onClick={activeUsersHandler}>کاربران فعال</button>
+          <button onClick={deactiveUsersHandler}>کاربران غیر فعال</button>
+        </div>
+      </div>
       <Table striped bordered hover>
         <thead>
           <tr>

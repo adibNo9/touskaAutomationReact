@@ -21,7 +21,7 @@ const Users = () => {
     <section className={classes.usersPage}>
       <h1>کاربران</h1>
       <div className={classes.links}>
-        <button onClick={showUsersHandler}>همه کاربران</button>
+        <button onClick={showUsersHandler}>مشاهده کاربران</button>
         <button onClick={showAddUserHandler}>اضافه کردن کاربر جدید</button>
       </div>
       {showUsers && <AllUsers />}

@@ -1,0 +1,232 @@
+.edit {
+  min-height: 100vh;
+}
+
+.edit h1 {
+  text-align: center;
+  background: #883676;
+  background: linear-gradient(
+    125deg,
+    #883676 0%,
+    rgba(96, 154, 150, 1) 50%,
+    #883676 100%
+  );
+  width: 40%;
+  margin: auto;
+  margin-bottom: 1rem;
+  color: var(--darkGreen);
+}
+
+.form {
+  max-width: 400px;
+  margin: auto;
+  background-color: var(--darkGreen);
+  padding: 1rem;
+  border: 6px solid var(--purple);
+  position: relative;
+}
+
+.form label {
+  color: var(--white);
+  font-weight: 900;
+}
+
+.form input {
+  border-radius: 0;
+  border: 2px solid var(--purple);
+  margin-bottom: 1rem;
+}
+
+.form .actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.actions button {
+  background-color: var(--purple);
+  color: var(--white);
+  border: none;
+  width: 60%;
+  font-size: 1.5rem;
+  font-family: var(--ordibehesht);
+  padding-top: 3px;
+  transition: 0.2s linear;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  width: 100%;
+}
+
+.actions button:disabled {
+  background-color: grey;
+  opacity: 0.8;
+  width: 60%;
+  cursor: not-allowed;
+}
+
+.content {
+  width: 80%;
+  margin: auto;
+  background-color: var(--darkGreen);
+  padding: 2rem;
+  border: 6px solid var(--purple);
+}
+
+.content h4 {
+  text-align: right;
+  color: var(--white);
+  margin-bottom: 2rem;
+}
+
+.links {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 5px solid var(--darkGreen);
+  border-top: 5px solid var(--darkGreen);
+  padding: 0.5rem 0;
+}
+
+.links button {
+  background-color: var(--purple);
+  color: var(--white);
+  border: 2px solid var(--purple);
+  font-size: 1.5rem;
+  font-family: var(--ordibehesht);
+  padding: 4px 2rem;
+  transition: 0.3s ease-in-out;
+  width: 30%;
+}
+
+.links button:hover {
+  background-color: var(--darkGreen);
+}
+
+.formGroup {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.correctPass {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  font-size: 1.8rem;
+  color: green;
+}
+
+.allTitles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+  border: 10px solid var(--purple);
+  padding: 1rem;
+  direction: ltr;
+}
+
+.singleTitle {
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2rem 1rem 1rem 1rem;
+  border: 4px solid var(--purple);
+  margin: 1rem;
+  position: relative;
+}
+
+.singleTitle h6 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--darkGreen);
+  color: var(--white);
+  padding: 5px;
+  font-size: 1.5rem;
+}
+
+.singleTitle h6 span {
+  font-size: 1.1rem;
+  padding-right: 2px;
+}
+
+.singleTitle h2 {
+  color: var(--darkGreen);
+}
+
+.singleTitle button {
+  background-color: var(--purple);
+  font-family: var(--ordibehesht);
+  color: var(--white);
+  font-size: 1.3rem;
+  width: 80%;
+  border: 3px solid var(--darkGreen);
+  transition: 0.3s ease-in-out;
+}
+
+.singleTitle button:hover {
+  background-color: var(--darkGreen);
+  border-color: var(--purple);
+}
+
+.selectedTitles {
+  position: absolute;
+  right: -306px;
+  width: 300px;
+  background-color: white;
+  top: -6px;
+  border: 5px solid var(--darkGreen);
+  direction: ltr;
+  padding: 5px;
+}
+
+.selectedSingleTitle h6 {
+  color: black;
+  margin: 0;
+}
+
+.selectedSingleTitle {
+  background-color: var(--green);
+  padding: 5px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.selectedSingleTitle svg {
+  color: rgb(236, 26, 26);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modal {
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 1rem;
+  width: 80%;
+  max-width: 600px;
+}
+
+.closeModal {
+  position: absolute;
+  right: 220px;
+  top: 150px;
+  font-size: 2rem;
+  color: red;
+  background-color: white;
+  cursor: pointer;
+  transition: 0.2s linear;
+}
+
+.closeModal:hover {
+  color: white;
+  background-color: red;
+}
