@@ -67,6 +67,52 @@ h6 {
   font-size: 1.3rem !important;
 }
 
+.Calendar__day {
+  color: var(--white) !important;
+  font-size: 1.1rem !important;
+  font-family: var(--ordibehesht) !important;
+}
+
+.Calendar__day:hover {
+  background-color: var(--lightGreen) !important;
+}
+
+.Calendar__day.-selected {
+  background-color: var(--purple) !important;
+  color: var(--green) !important;
+}
+
+.Calendar__weekDays {
+  font-size: 1.4rem !important;
+  font-family: var(--iranFont) !important;
+  padding: 0 1.6em !important;
+}
+
+.Calendar__weekDays abbr {
+  text-decoration: none !important;
+}
+
+.Calendar__monthYear {
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 1.6rem !important;
+}
+
+.Calendar__monthYear button {
+  font-family: var(--ordibehesht) !important;
+  font-size: 2rem !important;
+  color: var(--purple);
+}
+
+.Calendar__section.-hiddenNext {
+  opacity: 0 !important;
+}
+
+.Calendar__monthArrow {
+  background-image: url("/public/images/next.png") !important;
+  width: 3.7em !important;
+  height: 3.7em !important;
+}
+
 @media (max-width: 600px) {
   h1 {
     font-size: 2.5rem !important;

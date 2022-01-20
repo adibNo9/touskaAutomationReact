@@ -97,7 +97,7 @@ const SingleTitle: React.FC<{
     const fData = new FormData();
     fData.append("id", `${value.id}`);
     fData.append("sub_ids_add", JSON.stringify(typeValue));
-    fData.append("sub_ids_remove", JSON.stringify(removeSubsOld));
+    fData.append("sub_ids_remove", JSON.stringify(removedVal));
 
     const headers: AxiosRequestHeaders = {
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -111,7 +111,7 @@ const SingleTitle: React.FC<{
     })
       .then((res) => {
         console.log(res);
-        if (res.data.status === "success created") {
+        if (res.data.status === "success") {
           setNotification(res.data.status);
 
           setTimeout(() => {
@@ -140,7 +140,7 @@ const SingleTitle: React.FC<{
     };
   }
 
-  if (notification === "success created") {
+  if (notification === "success") {
     notifDetails = {
       status: "success",
       title: "موفق!",

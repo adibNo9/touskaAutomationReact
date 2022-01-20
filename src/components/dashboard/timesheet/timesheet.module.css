@@ -1,0 +1,136 @@
+.timesheet {
+  min-height: 100vh;
+}
+
+.timesheet h1 {
+  text-align: center;
+  background: #883676;
+  background: linear-gradient(
+    125deg,
+    #883676 0%,
+    rgba(96, 154, 150, 1) 50%,
+    #883676 100%
+  );
+  width: 40%;
+  margin: auto;
+  margin-bottom: 1rem;
+  color: var(--darkGreen);
+}
+
+.timesheet .calendar {
+  width: 90%;
+  max-width: 700px;
+  margin: auto;
+  background-color: var(--darkGreen);
+}
+
+.selectedDay {
+  color: red;
+}
+
+.modal {
+  min-height: 100vh;
+  background: rgb(33, 61, 58, 0.9);
+  background: linear-gradient(
+    90deg,
+    rgba(33, 61, 58, 0.9) 0%,
+    rgba(96, 154, 150, 0.9) 50%,
+    rgba(33, 61, 58, 0.9) 100%
+  );
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.closeModal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2rem;
+  background-color: var(--white);
+  color: red;
+  padding: 5px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.closeModal:hover {
+  color: var(--white);
+  background-color: red;
+}
+
+.dateOnModal {
+  background-color: var(--white);
+  padding: 0.5rem 3rem;
+}
+
+.form {
+  width: 80%;
+  max-width: 900px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 10px;
+}
+
+.form input,
+.form select {
+  border-radius: 0;
+  border: 5px solid var(--purple) !important;
+  font-family: var(--ordibehesht);
+  font-size: 1.1rem;
+  width: 250px;
+  margin: 0.5rem 1rem;
+  margin-top: 0;
+}
+
+.form textarea {
+  border-radius: 0;
+  border: 5px solid var(--purple) !important;
+  font-family: var(--ordibehesht);
+  font-size: 1.1rem;
+  width: 600px;
+  margin: 0.5rem 1rem;
+  margin-top: 0;
+}
+
+.form label {
+  font-family: var(--ordibehesht);
+  color: var(--purple);
+  font-size: 1.4rem;
+}
+
+.form label span {
+  color: var(--darkGreen);
+  font-size: 1.2rem;
+}
+
+.actions {
+  width: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.actions button {
+  width: 60%;
+  font-family: var(--ordibehesht);
+  border: 2px solid var(--darkGreen);
+  color: var(--white);
+  background-color: var(--darkGreen);
+  font-size: 1.6rem;
+  transition: 0.3s ease-in-out;
+}
+
+.actions button:hover {
+  background-color: var(--purple);
+  color: var(--white);
+  width: 100%;
+}

@@ -12,6 +12,7 @@ import Profile from "./profile/Profile";
 import { getData } from "../../lib/get-data";
 import Users from "./users/Users";
 import EditTimeSheet from "./titleandsubtitle/EditTimeSheet";
+import TimeSheet from "./timesheet/TimeSheet";
 
 export interface userType {
   status: string;
@@ -102,9 +103,9 @@ const Dashboard: React.FC = () => {
 
         <Link to="/dashboard/edit-timesheet">آپدیت تایم شیت</Link>
 
-        <Link to="/login">تسک‌ها</Link>
+        <Link to="/dashboard/timesheet">تایم شیت</Link>
 
-        <Link to="/login">تایم شیت</Link>
+        <Link to="/login">تسک‌ها</Link>
 
         <Button variant="danger" onClick={logoutHandler}>
           خروج
@@ -119,6 +120,9 @@ const Dashboard: React.FC = () => {
         </Route>
         <Route path="/dashboard/edit-timesheet">
           <EditTimeSheet />
+        </Route>
+        <Route path="/dashboard/timesheet">
+          <TimeSheet />
         </Route>
       </div>
     </section>
