@@ -1,0 +1,78 @@
+.tasks {
+  min-height: 100vh;
+}
+
+.tasks h1 {
+  text-align: center;
+  background: #883676;
+  background: linear-gradient(
+    125deg,
+    #883676 0%,
+    rgba(96, 154, 150, 1) 50%,
+    #883676 100%
+  );
+  width: 40%;
+  margin: auto;
+  margin-bottom: 1rem;
+  color: var(--darkGreen);
+}
+
+.tasks form {
+  max-width: 700px;
+  margin: auto;
+  margin-top: 2rem;
+  background: var(--darkGreen);
+  padding: 1rem;
+}
+
+.tasks form label {
+  color: var(--white);
+  margin-top: 1rem;
+  font-family: var(--ordibehesht);
+  font-size: 1.4rem;
+}
+
+.tasks form input,
+.tasks form select {
+  border-radius: 0;
+  border: 4px solid var(--purple);
+}
+
+.calendar {
+  background-color: var(--darkGreen);
+}
+
+.inputCalendar {
+  font-size: 2rem;
+}
+
+.actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.actions button {
+  background-color: var(--purple);
+  color: var(--white);
+  border: none;
+  width: 60%;
+  font-size: 1.5rem;
+  font-family: var(--ordibehesht);
+  padding-top: 3px;
+  transition: 0.2s linear;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  width: 100%;
+}
+
+.actions button:disabled {
+  background-color: grey;
+  opacity: 0.8;
+  width: 60%;
+  cursor: not-allowed;
+}

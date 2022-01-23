@@ -50,14 +50,12 @@ const TimeSheet: React.FC = () => {
       value[i] = +value[i];
     }
 
-    return value.join("").replace("-", "");
+    const posValue = value.map((val) => Math.abs(val));
+
+    return posValue.join("");
   };
 
-  console.log(
-    setDate(todayObj.day),
-    setDate(todayObj.month),
-    setDate(todayObj.year)
-  );
+  console.log("month:", setDate(todayObj.month));
 
   const todayDay = setDate(todayObj.day);
   const todayMonth = setDate(todayObj.month);
@@ -68,6 +66,8 @@ const TimeSheet: React.FC = () => {
     month: +todayMonth,
     day: +todayDay,
   };
+
+  console.log("maxDate:", maxDate);
 
   let selectedDate = `${day?.year}/${day?.month}/${day?.day}`;
 

@@ -1,0 +1,109 @@
+.reports {
+  min-height: 100vh;
+}
+
+.reports h1 {
+  text-align: center;
+  background: #883676;
+  background: linear-gradient(
+    125deg,
+    #883676 0%,
+    rgba(96, 154, 150, 1) 50%,
+    #883676 100%
+  );
+  width: 40%;
+  margin: auto;
+  margin-bottom: 1rem;
+  color: var(--darkGreen);
+}
+
+.links {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 5px solid var(--darkGreen);
+  border-top: 5px solid var(--darkGreen);
+  padding: 0.5rem 0;
+}
+
+.links button,
+.btnChanges {
+  background-color: var(--purple);
+  color: var(--white);
+  border: 2px solid var(--purple);
+  font-size: 1.5rem;
+  font-family: var(--ordibehesht);
+  padding: 4px 2rem;
+  transition: 0.3s ease-in-out;
+  width: 30%;
+}
+
+.links button:hover,
+.btnChanges:hover {
+  background-color: var(--darkGreen);
+}
+
+.calendar {
+  background-color: var(--purple);
+}
+
+.inputCalendar {
+  font-family: var(--ordibehesht);
+  background-color: var(--darkGreen);
+  color: var(--white) !important;
+  font-size: 1.2rem;
+  border: 4px solid var(--purple);
+}
+
+.datePicker {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content Table {
+  background-color: var(--darkGreen);
+  margin-top: 1rem;
+  border: 5px solid var(--purple);
+}
+
+.content Table td,
+.content Table th {
+  color: var(--white) !important;
+  text-align: center;
+}
+
+.charts {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  direction: ltr;
+}
+
+.formSearch {
+  max-width: 300px;
+  position: relative;
+}
+
+.formSearch button {
+  border: none;
+  background: transparent;
+  position: absolute;
+  bottom: 12px;
+  left: 5px;
+}
+
+.formSearch input {
+  border: 5px solid var(--darkGreen);
+  color: var(--darkGreen);
+  font-size: 1.5rem;
+  font-family: var(--ordibehesht);
+}
+
+.formSearch svg {
+  font-size: 2rem;
+  color: var(--purple);
+}

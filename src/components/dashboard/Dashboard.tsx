@@ -13,6 +13,8 @@ import { getData } from "../../lib/get-data";
 import Users from "./users/Users";
 import EditTimeSheet from "./titleandsubtitle/EditTimeSheet";
 import TimeSheet from "./timesheet/TimeSheet";
+import Reports from "./users-reports/Reports";
+import SeoTask from "./all-tasks/SeoTask";
 
 export interface userType {
   status: string;
@@ -105,7 +107,9 @@ const Dashboard: React.FC = () => {
 
         <Link to="/dashboard/timesheet">تایم شیت</Link>
 
-        <Link to="/login">تسک‌ها</Link>
+        <Link to="/dashboard/reports">گزارشات</Link>
+
+        <Link to="/dashboard/task-seo">تسک سئو</Link>
 
         <Button variant="danger" onClick={logoutHandler}>
           خروج
@@ -123,6 +127,12 @@ const Dashboard: React.FC = () => {
         </Route>
         <Route path="/dashboard/timesheet">
           <TimeSheet />
+        </Route>
+        <Route path="/dashboard/reports">
+          <Reports />
+        </Route>
+        <Route path="/dashboard/task-seo">
+          <SeoTask />
         </Route>
       </div>
     </section>

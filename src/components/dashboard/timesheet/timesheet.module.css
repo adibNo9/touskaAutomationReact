@@ -68,7 +68,7 @@
 }
 
 .form {
-  width: 80%;
+  width: 100%;
   max-width: 900px;
   display: flex;
   justify-content: center;
@@ -79,13 +79,22 @@
   padding: 10px;
 }
 
+.formGroup {
+  flex-basis: 28%;
+  margin: 1rem;
+}
+
+.formGroupMessage {
+  flex-basis: 80%;
+  margin: 1rem;
+}
+
 .form input,
 .form select {
   border-radius: 0;
   border: 5px solid var(--purple) !important;
   font-family: var(--ordibehesht);
   font-size: 1.1rem;
-  width: 250px;
   margin: 0.5rem 1rem;
   margin-top: 0;
 }
@@ -95,7 +104,6 @@
   border: 5px solid var(--purple) !important;
   font-family: var(--ordibehesht);
   font-size: 1.1rem;
-  width: 600px;
   margin: 0.5rem 1rem;
   margin-top: 0;
 }
@@ -112,7 +120,7 @@
 }
 
 .actions {
-  width: 800px;
+  width: 90%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -133,4 +141,20 @@
   background-color: var(--purple);
   color: var(--white);
   width: 100%;
+}
+
+.results {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+}
+
+.chart {
+  width: 60%;
+  min-width: 600px;
+  height: 60%;
+  direction: ltr;
 }

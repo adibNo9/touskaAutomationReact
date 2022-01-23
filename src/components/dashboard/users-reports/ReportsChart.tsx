@@ -2,9 +2,12 @@
 // yarn add @nivo/core @nivo/pie
 import { ResponsivePie } from "@nivo/pie";
 
-import { typeCharts } from "./TimeSheetForm";
+interface typeCharts {
+  name: string;
+  spend_time: number;
+}
 
-const TimeSheetChart: React.FC<{ chartValue: typeCharts[] }> = (props) => {
+const ReportsChart: React.FC<{ chartValue: typeCharts[] }> = (props) => {
   let data = [
     {
       id: "",
@@ -17,16 +20,18 @@ const TimeSheetChart: React.FC<{ chartValue: typeCharts[] }> = (props) => {
 
   console.log("chartValue", chartValue);
 
+  let allTime: number = 0;
   for (let i = 0; i < chartValue.length; i++) {
+    allTime = +chartValue[i].spend_time++;
     data[i] = {
-      id: `${i + 1} ${chartValue[i].title}`,
-      label: `${i + 1} ${chartValue[i].category}`,
+      id: `${i + 1} ${chartValue[i].name}`,
+      label: `${i + 1} ${chartValue[i].name}`,
       value: +chartValue[i].spend_time,
       color: `hsl(${(Math.random() * 1000).toFixed(0)}, 70%, 50%)`,
     };
   }
 
-  console.log("data", data);
+  console.log("allTime", allTime);
   return (
     <ResponsivePie
       data={data}
@@ -148,4 +153,4 @@ const TimeSheetChart: React.FC<{ chartValue: typeCharts[] }> = (props) => {
   );
 };
 
-export default TimeSheetChart;
+export default ReportsChart;

@@ -204,7 +204,7 @@ const TimeSheetForm: React.FC<{
   }
 
   return (
-    <Fragment>
+    <div className={classes.results}>
       <Form onSubmit={submitHandler} className={classes.form}>
         <Form.Group className={classes.formGroup} controlId="formBasicEmail">
           <Form.Label>عنوان‌ها</Form.Label>
@@ -253,7 +253,10 @@ const TimeSheetForm: React.FC<{
             max="10"
           />
         </Form.Group>
-        <Form.Group className={classes.formGroup} controlId="formBasicEmail">
+        <Form.Group
+          className={classes.formGroupMessage}
+          controlId="formBasicEmail"
+        >
           <Form.Label>توضیحات</Form.Label>
           <Form.Control
             type="text"
@@ -274,8 +277,10 @@ const TimeSheetForm: React.FC<{
           />
         )}
       </Form>
-      <TimeSheetChart chartValue={chartValue} />
-    </Fragment>
+      <div className={classes.chart}>
+        <TimeSheetChart chartValue={chartValue} />
+      </div>
+    </div>
   );
 };
 
