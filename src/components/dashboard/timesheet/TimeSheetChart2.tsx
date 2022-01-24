@@ -1,13 +1,17 @@
 import { Chart } from "react-google-charts";
-import { typeSums } from "./Reports";
 
-const ReportsChart: React.FC<{ chartValue: typeSums[] }> = (props) => {
-  let data: (string | number)[][] = [["Task", "Hours per Day"]];
+import { typeCharts } from "./TimeSheetForm";
+
+const TimeSheetChart2: React.FC<{ chartValue: typeCharts[] }> = (props) => {
+  let data = [["Task", "Hours per Day"]];
   const { chartValue } = props;
 
   console.log("chartValue", chartValue);
 
-  const datas = chartValue.map((item) => [`${item.name}`, item.spend_time]);
+  const datas = chartValue.map((item) => [
+    `${item.title}(${item.category})`,
+    item.spend_time,
+  ]);
 
   const dataFinal = data.concat(datas);
 
@@ -28,4 +32,4 @@ const ReportsChart: React.FC<{ chartValue: typeSums[] }> = (props) => {
   );
 };
 
-export default ReportsChart;
+export default TimeSheetChart2;

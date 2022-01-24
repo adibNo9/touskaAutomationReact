@@ -40,6 +40,11 @@
   text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.514);
 }
 
+.activeLink {
+  color: var(--purple) !important;
+  text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.514);
+}
+
 .sidebar button {
   width: 80%;
   position: absolute;
@@ -90,9 +95,9 @@
 }
 
 @media (max-width: 980px) {
-  .sidebar {
+  /* .sidebar {
     display: none;
-  }
+  } */
 
   .content {
     margin: 0 !important;

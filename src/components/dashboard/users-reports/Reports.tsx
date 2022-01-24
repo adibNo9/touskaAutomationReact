@@ -23,6 +23,11 @@ export interface typeReportsValue {
   report_base_subTitle: { name: string; spend_time: number }[];
 }
 
+export interface typeSums {
+  name: string;
+  spend_time: number;
+}
+
 const Reports: React.FC = () => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
@@ -35,6 +40,9 @@ const Reports: React.FC = () => {
 
   const [reportsValue, setReportsValue] = useState<typeReportsValue[]>([]);
   const [value, setValue] = useState<typeReportsValue[]>([]);
+
+  const [sumTitlesValue, setSumTitlesValue] = useState<typeSums[]>([]);
+  const [sumSubtitlesValue, setSumSubtitlesValue] = useState<typeSums[]>([]);
 
   const [searchValue, setSearchValue] = useState<string>("");
 
@@ -108,8 +116,10 @@ const Reports: React.FC = () => {
 
             setTimeout(() => {
               setNotification("");
-              setReportsValue(res.data.report);
-              setValue(res.data.report);
+              setReportsValue(res.data.report.users);
+              setValue(res.data.report.users);
+              setSumTitlesValue(res.data.report.sum_all_title);
+              setSumSubtitlesValue(res.data.report.sum_all_subTitle);
             }, 2000);
           }
         })
@@ -221,8 +231,18 @@ const Reports: React.FC = () => {
         </Form>
       </div>
       <div className={classes.content}>
-        {titleReports && <ReportTitles reportsValue={reportsValue} />}
-        {subtitleReports && <ReportSubtitles reportsValue={reportsValue} />}
+        {titleReports && (
+          <ReportTitles
+            reportsValue={reportsValue}
+            sumTitles={sumTitlesValue}
+          />
+        )}
+        {subtitleReports && (
+          <ReportSubtitles
+            reportsValue={reportsValue}
+            sumSubtitles={sumSubtitlesValue}
+          />
+        )}
       </div>
       {notification && (
         <Notification

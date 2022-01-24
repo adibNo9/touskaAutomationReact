@@ -74,6 +74,11 @@
   width: 30%;
 }
 
+.active {
+  transform: scale(1.1);
+  background-color: var(--darkGreen) !important;
+}
+
 .links button:hover,
 .btnChanges:hover {
   background-color: var(--darkGreen);
@@ -106,11 +111,25 @@
   width: 40%;
 }
 
-.formGroup {
-  position: relative;
+.form {
+  max-width: 600px;
+  margin: auto;
+  background-color: rgba(255, 255, 255, 0.466);
+  padding: 1rem;
 }
 
-.formGroup input {
+.form input,
+.form select {
+  background-color: var(--white) !important;
+  margin-bottom: 10px;
+}
+
+.formGroup {
+  position: relative !important;
+}
+
+.formGroup input,
+.formGroup select {
   border-radius: 0;
   border: 5px solid var(--purple);
   background-color: var(--green);
@@ -126,6 +145,15 @@
 
 .formGroup input::placeholder {
   color: black;
+}
+
+.formGroup svg {
+  position: absolute;
+  left: 10px;
+  bottom: 12px;
+  font-size: 1.5rem;
+  color: var(--darkGreen);
+  cursor: pointer;
 }
 
 .searchIcon {
@@ -200,6 +228,12 @@
 
 .actions button:hover {
   border-color: var(--purple);
+}
+
+.actions button:disabled {
+  color: grey;
+  border-color: grey !important;
+  cursor: not-allowed;
 }
 
 .changeActivate {

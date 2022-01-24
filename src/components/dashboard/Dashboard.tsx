@@ -1,7 +1,7 @@
 import axios, { AxiosRequestHeaders } from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { ConnectToDB } from "../../lib/connect-to-db";
 import { AutoContext } from "../../store/auto-context";
 import { useHistory } from "react-router-dom";
@@ -14,7 +14,8 @@ import Users from "./users/Users";
 import EditTimeSheet from "./titleandsubtitle/EditTimeSheet";
 import TimeSheet from "./timesheet/TimeSheet";
 import Reports from "./users-reports/Reports";
-import SeoTask from "./all-tasks/SeoTask";
+import SeoTask from "./all-tasks/seo-task/SeoTask";
+import WebTask from "./all-tasks/web-task/WebTask";
 
 export interface userType {
   status: string;
@@ -97,19 +98,38 @@ const Dashboard: React.FC = () => {
           <h6> {userName ? userName : userEmail} </h6>
         </div>
 
-        <Link to="/dashboard/profile">پروفایل</Link>
+        <NavLink activeClassName={classes.activeLink} to="/dashboard/profile">
+          پروفایل
+        </NavLink>
 
         {userData.user.role_id === 1 && (
-          <Link to="/dashboard/users">کاربران</Link>
+          <NavLink activeClassName={classes.activeLink} to="/dashboard/users">
+            کاربران
+          </NavLink>
         )}
 
-        <Link to="/dashboard/edit-timesheet">آپدیت تایم شیت</Link>
+        <NavLink
+          activeClassName={classes.activeLink}
+          to="/dashboard/edit-timesheet"
+        >
+          آپدیت تایم شیت
+        </NavLink>
 
-        <Link to="/dashboard/timesheet">تایم شیت</Link>
+        <NavLink activeClassName={classes.activeLink} to="/dashboard/timesheet">
+          تایم شیت
+        </NavLink>
 
-        <Link to="/dashboard/reports">گزارشات</Link>
+        <NavLink activeClassName={classes.activeLink} to="/dashboard/reports">
+          گزارشات
+        </NavLink>
 
-        <Link to="/dashboard/task-seo">تسک سئو</Link>
+        <NavLink activeClassName={classes.activeLink} to="/dashboard/task-seo">
+          تسک سئو
+        </NavLink>
+
+        <NavLink activeClassName={classes.activeLink} to="/dashboard/task-web">
+          تسک وب
+        </NavLink>
 
         <Button variant="danger" onClick={logoutHandler}>
           خروج
@@ -133,6 +153,9 @@ const Dashboard: React.FC = () => {
         </Route>
         <Route path="/dashboard/task-seo">
           <SeoTask />
+        </Route>
+        <Route path="/dashboard/task-web">
+          <WebTask />
         </Route>
       </div>
     </section>

@@ -14,6 +14,7 @@ import { typeListTitles } from "../titleandsubtitle/EditTimeSheet";
 
 import { AiFillDelete } from "react-icons/ai";
 import TimeSheetChart from "./TimeSheetChart";
+import TimeSheetChart2 from "./TimeSheetChart2";
 
 export interface typeCharts {
   category: string;
@@ -123,6 +124,12 @@ const TimeSheetForm: React.FC<{
   useEffect(() => {
     getSheetHandler();
   }, []);
+
+  let formValidate = false;
+
+  if (typeValue !== 0 && subId !== 0) {
+    formValidate = true;
+  }
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -267,7 +274,7 @@ const TimeSheetForm: React.FC<{
           />
         </Form.Group>
         <div className={classes.actions}>
-          <button>تایید</button>
+          <button disabled={!formValidate}>تایید</button>
         </div>
         {notification && (
           <Notification
@@ -278,7 +285,8 @@ const TimeSheetForm: React.FC<{
         )}
       </Form>
       <div className={classes.chart}>
-        <TimeSheetChart chartValue={chartValue} />
+        {/* <TimeSheetChart chartValue={chartValue} /> */}
+        <TimeSheetChart2 chartValue={chartValue} />
       </div>
     </div>
   );

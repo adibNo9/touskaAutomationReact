@@ -103,6 +103,11 @@
   width: 30%;
 }
 
+.active {
+  transform: scale(1.1);
+  background-color: var(--darkGreen) !important;
+}
+
 .links button:hover {
   background-color: var(--darkGreen);
 }

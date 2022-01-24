@@ -45,6 +45,11 @@
   background-color: var(--darkGreen);
 }
 
+.active {
+  transform: scale(1.1);
+  background-color: var(--darkGreen) !important;
+}
+
 .calendar {
   background-color: var(--purple);
 }
@@ -106,4 +111,27 @@
 .formSearch svg {
   font-size: 2rem;
   color: var(--purple);
+}
+
+.print {
+  margin-top: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.print button {
+  font-family: var(--ordibehesht);
+  color: var(--darkGreen);
+  border: 4px solid var(--darkGreen);
+  font-size: 2rem;
+  width: 200px;
+  transition: 0.2s ease-in;
+}
+
+.print button:hover {
+  color: var(--white);
+  background-color: var(--darkGreen);
 }

@@ -138,3 +138,39 @@ h6 {
     font-size: 0.9rem !important;
   }
 }
+
+@media print {
+  @page {
+    size: landscape;
+    margin: 10px;
+  }
+  /* html,
+  body {
+    width: 100%;
+    max-width: 90vw;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .divPrint {
+    direction: rtl;
+    margin: 1rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .divPrint table {
+    width: 80%;
+    max-width: 600px;
+    margin: auto;
+  } */
+
+  .divPrint table th,
+  .divPrint table td {
+    font-size: 16px !important;
+  }
+}

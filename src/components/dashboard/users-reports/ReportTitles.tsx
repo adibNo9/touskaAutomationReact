@@ -1,16 +1,27 @@
-import { Fragment } from "react";
+import { Fragment, useRef } from "react";
 import { Table } from "react-bootstrap";
-import { typeReportsValue } from "./Reports";
+import { typeReportsValue, typeSums } from "./Reports";
 import ReportsChart from "./ReportsChart";
+import { useReactToPrint } from "react-to-print";
 
 import classes from "./repports.module.css";
+import { ComponentToPrint } from "./ComponentRef";
 
 const ReportTitles: React.FC<{
   reportsValue: typeReportsValue[];
+  sumTitles: typeSums[];
 }> = (props) => {
-  const { reportsValue } = props;
+  const { reportsValue, sumTitles } = props;
+
+  const componentRef = useRef(null);
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
   return (
     <Fragment>
+      <ComponentToPrint ref={componentRef} />
       {reportsValue.length === 0 && (
         <h4 className="text-center mt-3 bg-light p-3 w-100">
           تاریخ مورد نظر را انتخاب کنید!
@@ -18,7 +29,7 @@ const ReportTitles: React.FC<{
       )}
 
       {reportsValue.length > 0 && (
-        <div>
+        <div ref={componentRef} className="divPrint">
           <Table striped bordered hover>
             <thead>
               <tr>
@@ -39,8 +50,12 @@ const ReportTitles: React.FC<{
               ))}
             </tbody>
           </Table>
+          <ReportsChart chartValue={sumTitles} />
         </div>
       )}
+      <div className={classes.print}>
+        <button onClick={handlePrint}>پرینت</button>
+      </div>
     </Fragment>
   );
 };

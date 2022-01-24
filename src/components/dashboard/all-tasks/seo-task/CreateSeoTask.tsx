@@ -1,16 +1,16 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
-import classes from "./tasks.module.css";
+import classes from "../tasks.module.css";
 
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import DatePicker, { DayValue } from "react-modern-calendar-datepicker";
-import { getData } from "../../../lib/get-data";
-import { typeUsersList } from "../users/AllUsers";
+import { getData } from "../../../../lib/get-data";
+import { typeUsersList } from "../../users/AllUsers";
 import axios, { AxiosRequestHeaders } from "axios";
-import { ConnectToDB } from "../../../lib/connect-to-db";
-import Notification from "../../ui/notification";
+import { ConnectToDB } from "../../../../lib/connect-to-db";
+import Notification from "../../../ui/notification";
 
-const SeoTask: React.FC = () => {
+const CreateSeoTask: React.FC = () => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
 
@@ -59,6 +59,20 @@ const SeoTask: React.FC = () => {
     console.log(value);
     setSelectedFile(value);
   };
+
+  let formValidate = false;
+
+  if (
+    subjectVal.trim().length > 0 &&
+    assignmentVal.trim().length > 0 &&
+    selectedFile &&
+    deliveryTime &&
+    dueonTime &&
+    valueBox !== "" &&
+    assignSelected !== ""
+  ) {
+    formValidate = true;
+  }
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -155,8 +169,7 @@ const SeoTask: React.FC = () => {
   }
 
   return (
-    <section className={classes.tasks}>
-      <h1>تسک سئو</h1>
+    <section className={classes.seotasks}>
       <Form onSubmit={submitHandler} className={classes.form}>
         <Form.Group className={classes.formGroup} controlId="formBasicSubject">
           <Form.Label>موضوع</Form.Label>
@@ -242,7 +255,7 @@ const SeoTask: React.FC = () => {
           />
         </Form.Group>
         <div className={classes.actions}>
-          <button>تایید</button>
+          <button disabled={!formValidate}>تایید</button>
         </div>
       </Form>
       {notification && (
@@ -256,4 +269,4 @@ const SeoTask: React.FC = () => {
   );
 };
 
-export default SeoTask;
+export default CreateSeoTask;

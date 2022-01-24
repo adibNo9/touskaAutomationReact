@@ -33,9 +33,24 @@ const Profile: React.FC<{ userData: userType }> = (props) => {
     <section className={classes.profile}>
       <h1>پروفایل</h1>
       <div className={classes.links}>
-        <button onClick={contentHandler}>اطلاعات</button>
-        <button onClick={changePassHandler}>تغییر رمز عبور</button>
-        <button onClick={updateHandler}>به روزرسانی اطلاعات</button>
+        <button
+          onClick={contentHandler}
+          className={showContent ? classes.active : classes.noActive}
+        >
+          اطلاعات
+        </button>
+        <button
+          onClick={changePassHandler}
+          className={showChangePass ? classes.active : classes.noActive}
+        >
+          تغییر رمز عبور
+        </button>
+        <button
+          onClick={updateHandler}
+          className={showUpdate ? classes.active : classes.noActive}
+        >
+          به روزرسانی اطلاعات
+        </button>
       </div>
       {showContent && <ProfileContent userData={userData} />}
       {showUpdate && <ProfileUpdate />}

@@ -73,9 +73,24 @@ const EditTimeSheet: React.FC = () => {
     <section className={classes.edit}>
       <h1>آپدیت تایم شیت</h1>
       <div className={classes.links}>
-        <button onClick={showAllTitlessHandelr}>نمایش عنوان‌ها</button>
-        <button onClick={showCreateTitleHandelr}>ایجاد Title</button>
-        <button onClick={showCreateSubHandelr}>ایجاد Subtitle</button>
+        <button
+          onClick={showAllTitlessHandelr}
+          className={showAllTitles ? classes.active : classes.noActive}
+        >
+          نمایش عنوان‌ها
+        </button>
+        <button
+          onClick={showCreateTitleHandelr}
+          className={showCreateTitle ? classes.active : classes.noActive}
+        >
+          ایجاد Title
+        </button>
+        <button
+          onClick={showCreateSubHandelr}
+          className={showCreateSub ? classes.active : classes.noActive}
+        >
+          ایجاد Subtitle
+        </button>
       </div>
       {showAllTitles && <div className={classes.allTitles}>{singleTitle}</div>}
       {showCreateTitle && <CreateTitle />}
