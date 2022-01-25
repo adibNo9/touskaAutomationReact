@@ -1,6 +1,6 @@
 import { Fragment, useRef } from "react";
 import { Table } from "react-bootstrap";
-import { ComponentToPrint } from "./ComponentRef";
+import ComponentToPrint from "./ComponentRef";
 import { typeReportsValue, typeSums } from "./Reports";
 import ReportsChart from "./ReportsChart";
 import { useReactToPrint } from "react-to-print";

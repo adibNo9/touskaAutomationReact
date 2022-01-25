@@ -17,6 +17,8 @@ import Reports from "./users-reports/Reports";
 import SeoTask from "./all-tasks/seo-task/SeoTask";
 import WebTask from "./all-tasks/web-task/WebTask";
 
+import { RiNotification3Line } from "react-icons/ri";
+
 export interface userType {
   status: string;
   user: {
@@ -26,6 +28,17 @@ export interface userType {
     role_id: number;
   };
 }
+
+export interface typeNotif {
+  notif_data: {
+    task_from: string;
+    task_id: number;
+    task_title: number;
+    task_type: string;
+  };
+  notif_id: string;
+}
+
 const Dashboard: React.FC = () => {
   const [userData, setUserData] = useState<userType>({
     status: "",
@@ -36,6 +49,10 @@ const Dashboard: React.FC = () => {
       role_id: 0,
     },
   });
+
+  const [notification, setNotification] = useState<typeNotif[]>([]);
+  const [showNotifs, setShowNotifs] = useState<boolean>(false);
+  const [taskId, setTaskId] = useState("");
 
   const userName = userData?.user.name;
   const imageSrc = userData?.user.image_profile;
@@ -49,15 +66,16 @@ const Dashboard: React.FC = () => {
       setUserData(data);
     };
     getProfile();
-    const removeToken = () => {
-      if (userData.status === "nothing") {
-        localStorage.removeItem("token");
-      }
+
+    const getNotification = async () => {
+      const data = await getData("user/notification");
+      setNotification(data.tasks);
     };
-    // removeToken();
-  }, []);
+    getNotification();
+  }, [taskId]);
 
   console.log("profile:", userData);
+  console.log("notification:", notification);
 
   const logoutHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -88,8 +106,65 @@ const Dashboard: React.FC = () => {
         console.log("Error", err.response);
       });
   };
+
+  const notifHandler = (id: string) => {
+    setTaskId(id);
+
+    console.log("iddddddd", id);
+
+    const connectDB = ConnectToDB("read/notif/user");
+
+    const headers: AxiosRequestHeaders = {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    };
+
+    const fData = new FormData();
+
+    fData.append("id", taskId);
+
+    axios({
+      method: "POST",
+      url: connectDB,
+      headers: headers,
+      data: fData,
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.data.token === "success") {
+          setTaskId("");
+        }
+      })
+      .catch((err) => {
+        console.log("Error", err.response);
+      });
+  };
+
   return (
     <section className={classes.dashboard}>
+      <div className={classes.notifications}>
+        <div
+          className={classes.notifDing}
+          onClick={() => setShowNotifs(!showNotifs)}
+        >
+          <RiNotification3Line className={classes.notif} />
+          <span>{notification.length}</span>
+        </div>
+        {showNotifs && (
+          <div className={classes.notifContent}>
+            {notification.map((notif) => (
+              <div
+                key={notif.notif_id}
+                className={classes.singleNotif}
+                onClick={() => notifHandler(notif.notif_id)}
+              >
+                <h6>{notif.notif_data.task_type}</h6>
+                <h5>{notif.notif_data.task_title}</h5>
+                <p>فرستنده: {notif.notif_data.task_from}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
       <div className={classes.sidebar}>
         <div className={classes.imageUser}>
           <img src={imageSrc} />

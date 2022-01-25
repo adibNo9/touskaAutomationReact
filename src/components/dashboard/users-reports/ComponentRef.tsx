@@ -1,7 +1,9 @@
 import React from "react";
 
-export const ComponentToPrint = React.forwardRef<HTMLDivElement>(
-  (props, ref) => {
-    return <div ref={ref}></div>;
-  }
-);
+const ComponentToPrint = React.forwardRef<HTMLDivElement>((props, ref) => {
+  return <div ref={ref}></div>;
+});
+
+ComponentToPrint.displayName = "print";
+
+export default ComponentToPrint;

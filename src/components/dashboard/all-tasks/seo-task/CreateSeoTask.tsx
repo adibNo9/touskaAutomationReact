@@ -200,7 +200,7 @@ const CreateSeoTask: React.FC = () => {
         </Form.Group>
 
         <Form.Group className="mt-3" controlId="formBasicDeliveryTime">
-          <Form.Label className="mx-3">زمان تحویل</Form.Label>
+          <Form.Label className="mx-3">زمان ارسال</Form.Label>
           <DatePicker
             value={deliveryTime}
             onChange={setDeliveryTime}

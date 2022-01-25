@@ -257,3 +257,7 @@
 .activeUser {
   background-color: green !important;
 }
+
+.checkPass {
+  top: 0;
+}

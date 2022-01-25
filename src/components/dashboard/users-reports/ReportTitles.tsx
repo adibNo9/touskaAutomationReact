@@ -5,7 +5,7 @@ import ReportsChart from "./ReportsChart";
 import { useReactToPrint } from "react-to-print";
 
 import classes from "./repports.module.css";
-import { ComponentToPrint } from "./ComponentRef";
+import ComponentToPrint from "./ComponentRef";
 
 const ReportTitles: React.FC<{
   reportsValue: typeReportsValue[];

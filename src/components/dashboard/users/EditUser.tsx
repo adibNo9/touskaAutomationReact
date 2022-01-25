@@ -1,10 +1,16 @@
 import axios, { AxiosRequestHeaders } from "axios";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { ConnectToDB } from "../../../lib/connect-to-db";
+import { getData } from "../../../lib/get-data";
 import Notification from "../../ui/notification";
 import { typeUsersList } from "./AllUsers";
 import classes from "./users.module.css";
+
+export interface typeRoles {
+  id: number;
+  name: string;
+}
 
 const EditUser: React.FC<{ listUser: typeUsersList }> = (props) => {
   const { listUser } = props;
@@ -13,6 +19,10 @@ const EditUser: React.FC<{ listUser: typeUsersList }> = (props) => {
 
   const [nameVal, setNameVal] = useState<string>(listUser.name);
   const [selectedFile, setSelectedFile] = useState<File | undefined>();
+
+  const [roles, setRoles] = useState<typeRoles[]>([]);
+
+  const [valueBox, setValueBox] = useState<string>("");
 
   const emailChangeHandelr = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
@@ -25,6 +35,24 @@ const EditUser: React.FC<{ listUser: typeUsersList }> = (props) => {
     setSelectedFile(value);
   };
 
+  const changeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+
+    setValueBox(value);
+    console.log(valueBox);
+  };
+
+  useEffect(() => {
+    const getRoles = async () => {
+      const roleValues = await getData("get/roles");
+      setRoles(roleValues.roles);
+    };
+
+    getRoles();
+  }, []);
+
+  console.log(roles);
+
   interface notificationDetails {
     status: string;
     title: string;
@@ -34,6 +62,7 @@ const EditUser: React.FC<{ listUser: typeUsersList }> = (props) => {
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
     console.log("file:", selectedFile);
+    console.log("role_id", valueBox);
     console.log("id", JSON.stringify(listUser.id));
     {
       nameVal && console.log("name:", nameVal);
@@ -48,6 +77,7 @@ const EditUser: React.FC<{ listUser: typeUsersList }> = (props) => {
     const fData = new FormData();
 
     fData.append("id", JSON.stringify(listUser.id));
+    fData.append("role_id", valueBox);
 
     {
       nameVal && fData.append("name", nameVal);
@@ -124,6 +154,22 @@ const EditUser: React.FC<{ listUser: typeUsersList }> = (props) => {
           value={nameVal}
           onChange={emailChangeHandelr}
         />
+      </Form.Group>
+
+      <Form.Group className={classes.formGroup} controlId="formBasicEmail">
+        <Form.Label>نقش</Form.Label>
+        <Form.Select
+          value={valueBox}
+          onChange={changeHandler}
+          aria-label="Default select example"
+        >
+          <option>انتخاب عنوان ...</option>
+          {roles.map((role) => (
+            <option key={role.id} value={role.id}>
+              {role.name}
+            </option>
+          ))}
+        </Form.Select>
       </Form.Group>
 
       <Form.Group className="mb-3">

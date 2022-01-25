@@ -1,20 +1,13 @@
 import axios, { AxiosRequestHeaders } from "axios";
-import React, {
-  ChangeEvent,
-  Fragment,
-  MouseEventHandler,
-  useEffect,
-  useState,
-} from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { ConnectToDB } from "../../../lib/connect-to-db";
 import Notification from "../../ui/notification";
 import classes from "./timesheet.module.css";
 import { typeListTitles } from "../titleandsubtitle/EditTimeSheet";
 
-import { AiFillDelete } from "react-icons/ai";
-import TimeSheetChart from "./TimeSheetChart";
 import TimeSheetChart2 from "./TimeSheetChart2";
+import TimeSheetItems from "./TimeSheetItems";
 
 export interface typeCharts {
   category: string;
@@ -210,6 +203,14 @@ const TimeSheetForm: React.FC<{
     };
   }
 
+  let sheets = [];
+
+  for (let i = 0; i < chartValue.length; i++) {
+    sheets[i] = (
+      <TimeSheetItems chartValue={chartValue[i]} getSheet={getSheetHandler} />
+    );
+  }
+
   return (
     <div className={classes.results}>
       <Form onSubmit={submitHandler} className={classes.form}>
@@ -284,8 +285,9 @@ const TimeSheetForm: React.FC<{
           />
         )}
       </Form>
+      <div className={classes.sheets}>{sheets}</div>
+
       <div className={classes.chart}>
-        {/* <TimeSheetChart chartValue={chartValue} /> */}
         <TimeSheetChart2 chartValue={chartValue} />
       </div>
     </div>

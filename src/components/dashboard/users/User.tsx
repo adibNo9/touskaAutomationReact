@@ -7,14 +7,15 @@ import { AiFillEdit } from "react-icons/ai";
 import { BsFillPersonCheckFill } from "react-icons/bs";
 import { BsPersonXFill } from "react-icons/bs";
 import { MdOutlineClose } from "react-icons/md";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Modal from "../../ui/Modal";
-import EditUser from "./EditUser";
+import EditUser, { typeRoles } from "./EditUser";
 import UserChangePassword from "./UserChangePassword";
 import { ConnectToDB } from "../../../lib/connect-to-db";
 import axios, { AxiosRequestHeaders } from "axios";
 import Notification from "../../ui/notification";
 import { Col, Row, Button } from "react-bootstrap";
+import { getData } from "../../../lib/get-data";
 
 const User: React.FC<{ listUser: typeUsersList; number: number }> = (props) => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
@@ -25,6 +26,7 @@ const User: React.FC<{ listUser: typeUsersList; number: number }> = (props) => {
   const [changePass, setChangePass] = useState<boolean>(false);
 
   const [showActivate, setShowActivate] = useState<boolean>(false);
+  const [roles, setRoles] = useState<typeRoles[]>([]);
 
   const { listUser, number } = props;
   const createDate = new Date(listUser.created_at).getTime();
@@ -33,6 +35,27 @@ const User: React.FC<{ listUser: typeUsersList; number: number }> = (props) => {
 
   const updateDate = new Date(listUser.updated_at).getTime();
   const calcUpdateDate = Math.round((today - updateDate) / (1000 * 86400));
+
+  let roleName = "";
+  useEffect(() => {
+    const getRoles = async () => {
+      const roleValues = await getData("get/roles");
+      setRoles(roleValues.roles);
+    };
+
+    getRoles();
+  }, []);
+
+  if (roles.length > 0) {
+    const roleId = roles.filter((role) => +role.id === +listUser.role_id);
+    console.log(roleId);
+
+    if (roleId.length > 0) {
+      roleName = roleId[0].name;
+    }
+  }
+
+  console.log("roleId", roleName);
 
   const changePassHandler = () => {
     setEditUser(false);
@@ -128,7 +151,7 @@ const User: React.FC<{ listUser: typeUsersList; number: number }> = (props) => {
         </td>
         <td>{listUser.name}</td>
         <td>{listUser.email}</td>
-        <td>{listUser.role_id}</td>
+        <td>{roleName}</td>
         <td>
           {listUser.is_active === 1 ? (
             <AiFillCheckSquare className={classes.active} />

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Fragment, useState } from "react";
+import React, { ChangeEvent, Fragment, useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import classes from "./users.module.css";
 
@@ -6,27 +6,16 @@ import { AiFillEye } from "react-icons/ai";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { BsCheckAll } from "react-icons/bs";
 import { ConnectToDB } from "../../../lib/connect-to-db";
-import axios from "axios";
+import axios, { AxiosRequestHeaders } from "axios";
 import Notification from "../../ui/notification";
+import { getData } from "../../../lib/get-data";
+import { typeRoles } from "./EditUser";
 
 interface notificationDetails {
   status: string;
   title: string;
   message: string;
 }
-
-interface typeRoles {
-  id: number;
-  name: string;
-}
-
-const ROLES: typeRoles[] = [
-  { id: 1, name: "Superadmin" },
-  { id: 2, name: "Admin" },
-  { id: 3, name: "Developer" },
-  { id: 4, name: "Employee" },
-  { id: 5, name: "Apprentice" },
-];
 
 const AddUser: React.FC = () => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
@@ -41,11 +30,29 @@ const AddUser: React.FC = () => {
   const [confPassVal, setConfPassVal] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | undefined>();
   const [valueBox, setValueBox] = useState<string>("");
+  const [activeValue, setActiveValue] = useState<string>("1");
+
+  const [roles, setRoles] = useState<typeRoles[]>([]);
+
+  useEffect(() => {
+    const getRoles = async () => {
+      const roleValues = await getData("get/roles");
+      setRoles(roleValues.roles);
+    };
+
+    getRoles();
+  }, []);
 
   const changeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
 
     setValueBox(value);
+  };
+
+  const activateHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+
+    setActiveValue(value);
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +93,7 @@ const AddUser: React.FC = () => {
     emailVal?.trim().includes("@") &&
     emailVal?.trim().length > 0 &&
     valueBox !== "" &&
+    activeValue !== "" &&
     selectedFile &&
     emailVal?.trim().includes(".") &&
     passVal.trim().length > 6 &&
@@ -99,43 +107,51 @@ const AddUser: React.FC = () => {
 
     console.log("name", nameVal);
     console.log("email", emailVal);
-    console.log("role", valueBox);
+    console.log("is_active", activeValue);
+    console.log("role_id", valueBox);
     console.log("image", selectedFile ? selectedFile : "");
     console.log("password", passVal);
     console.log("password_confirmation", confPassVal);
 
-    // setNotification("pending");
+    const headers: AxiosRequestHeaders = {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    };
 
-    // const connectDB = ConnectToDB("register/user/email");
+    setNotification("pending");
 
-    // const fData = new FormData();
+    const connectDB = ConnectToDB("superadmin/create/user");
 
-    // fData.append("name", nameVal);
-    // fData.append("email", emailVal);
-    // fData.append("role", valueBox);
-    // fData.append("image", selectedFile ? selectedFile : "");
-    // fData.append("password", passVal);
-    // fData.append("password_confirmation", confPassVal);
+    const fData = new FormData();
 
-    // axios({
-    //   method: "POST",
-    //   url: connectDB,
-    //   data: fData,
-    // })
-    //   .then((res) => {
-    //     console.log(res);
-    //     if (res.data.status === "success") {
-    //       setNotification(res.data.status);
+    fData.append("name", nameVal);
+    fData.append("email", emailVal);
+    fData.append("is_active", activeValue);
+    fData.append("role_id", valueBox);
+    fData.append("image", selectedFile ? selectedFile : "");
+    fData.append("password", passVal);
+    fData.append("password_confirmation", confPassVal);
 
-    //       setTimeout(() => {
-    //         setNotification("");
-    //       }, 2000);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log("Error", err.response);
-    //     setNotification("error");
-    //   });
+    axios({
+      method: "POST",
+      url: connectDB,
+      headers: headers,
+      data: fData,
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.data.status === "success") {
+          setNotification(res.data.status);
+
+          setTimeout(() => {
+            setNotification("");
+            window.location.reload();
+          }, 2000);
+        }
+      })
+      .catch((err) => {
+        console.log("Error", err.response);
+        setNotification("error");
+      });
   };
 
   let notifDetails: notificationDetails = {
@@ -247,9 +263,24 @@ const AddUser: React.FC = () => {
             aria-label="Default select example"
           >
             <option>انتخاب نقش ...</option>
-            {ROLES.map((item) => (
+            {roles.map((item) => (
               <option value={item.id}>{item.name}</option>
             ))}
+          </Form.Select>
+        </Form.Group>
+
+        <Form.Group
+          className={classes.formGroup}
+          controlId="formBasicDeliveryPriority"
+        >
+          <Form.Label>فعال یا غیرفعال</Form.Label>
+          <Form.Select
+            value={activeValue}
+            onChange={activateHandler}
+            aria-label="Default select example"
+          >
+            <option value="1">فعال</option>
+            <option value="0">غیرفعال</option>
           </Form.Select>
         </Form.Group>
 

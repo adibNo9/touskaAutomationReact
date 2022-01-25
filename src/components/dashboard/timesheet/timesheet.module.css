@@ -29,7 +29,7 @@
 }
 
 .modal {
-  min-height: 100vh;
+  height: 100%;
   background: rgb(33, 61, 58, 0.9);
   background: linear-gradient(
     90deg,
@@ -43,6 +43,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  overflow-y: scroll;
 }
 
 .closeModal {
@@ -165,4 +166,53 @@
   cursor: not-allowed;
   opacity: 0.5;
   width: 60% !important;
+}
+
+.sheets {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  max-width: 800px;
+  margin-top: 20px;
+  padding: 1rem;
+}
+
+.sheets h6 {
+  color: var(--darkGreen);
+  margin: 0;
+}
+
+.sheets span {
+  margin-left: 10px;
+}
+
+.displaySheets {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 8px;
+  border: 2px solid var(--purple);
+  padding: 8px;
+  position: relative;
+}
+
+.displaySheets svg {
+  font-size: 1.5rem;
+  color: rgb(255, 0, 0);
+  background-color: var(--white);
+  margin-left: 15px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 40px;
+  padding: 2px;
+  cursor: pointer;
+  transition: width 0.4s ease-in-out, background-color 0.3s ease-in-out,
+    color 0.3s ease-in-out;
+}
+
+.displaySheets svg:hover {
+  width: 100%;
+  background-color: rgb(255, 0, 0);
+  color: var(--white);
 }
