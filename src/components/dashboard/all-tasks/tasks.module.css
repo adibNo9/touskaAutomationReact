@@ -40,6 +40,7 @@
 
 .calendar {
   background-color: var(--darkGreen);
+  z-index: 9999;
 }
 
 .inputCalendar {
@@ -106,4 +107,244 @@
 
 .links button:hover {
   background-color: var(--darkGreen);
+}
+
+.allTasks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.singleTask {
+  background-color: var(--green);
+  padding: 1rem;
+  width: 31.33%;
+  min-width: 370px;
+  margin: 1%;
+  border: 2px solid var(--purple);
+  position: relative;
+}
+
+.singleTask h4 {
+  text-align: center;
+  color: var(--darkGreen);
+}
+
+.text {
+  text-align: center;
+  color: black;
+  font-size: 16px;
+}
+
+.dates {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.dates p {
+  background-color: var(--darkGreen);
+  color: white;
+  font-size: 14px;
+  padding: 5px;
+}
+
+.adminEmail {
+  background-color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  margin-bottom: -1rem;
+  width: fit-content;
+  padding: 3px;
+}
+
+.adminEmail p {
+  margin: 0;
+  color: var(--darkGreen);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.activeTask {
+  border: 6px solid var(--purple);
+  transform: scale(1.1);
+}
+
+.download {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.download button {
+  border-radius: 0;
+  width: 60%;
+}
+
+.download a {
+  text-decoration: none;
+  font-family: var(--ordibehesht);
+  color: rgb(0, 9, 48);
+  padding: 0 29%;
+  font-size: 1.2rem;
+}
+
+.status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #1b6139;
+  padding: 5px;
+}
+
+.status svg {
+  font-size: 1.5rem;
+  color: var(--white);
+  cursor: pointer;
+}
+
+.status::after {
+  content: "وضعیت پروژه";
+  position: absolute;
+  bottom: -2rem;
+  right: 0;
+  width: 80px;
+  font-family: var(--ordibehesht);
+  font-size: 1rem;
+  background-color: var(--white);
+  text-align: center;
+  opacity: 0;
+  transition: 0.2s ease-in;
+  z-index: 9999;
+}
+
+.status:hover::after {
+  opacity: 1;
+}
+
+.closeModal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2rem;
+  color: #ff0800;
+  cursor: pointer;
+  padding: 2px;
+  background-color: var(--white);
+  transition: 0.2s ease-in-out;
+}
+
+.closeModal:hover {
+  background-color: #ff0800;
+  color: var(--white);
+}
+
+.modal {
+  background-color: var(--green);
+  padding: 2rem;
+  width: 60%;
+  overflow-y: auto;
+}
+
+.modal::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.modal::-webkit-scrollbar-track {
+  background: #8836765d;
+  border: 1px solid var(--purple);
+}
+
+/* Handle */
+.modal::-webkit-scrollbar-thumb {
+  background: var(--darkGreen);
+}
+
+/* Handle on hover */
+.modal::-webkit-scrollbar-thumb:hover {
+  background: rgb(6, 116, 43);
+}
+
+.modal form {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.modal form button {
+  width: 40%;
+  border-radius: 0;
+  transition: 0.3s ease-in-out;
+  font-family: var(--ordibehesht);
+  font-size: 1.5rem;
+}
+
+.modal form button:hover {
+  width: 90%;
+}
+
+.modal form p {
+  font-weight: 900;
+}
+
+.modal form select {
+  border-radius: 0;
+  border: 4px solid var(--purple);
+  width: 70%;
+}
+
+.statusText {
+  width: 80%;
+  padding: 3px 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 4px solid var(--darkGreen);
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+.statusText p {
+  text-align: center;
+  color: black;
+  font-weight: 900;
+  font-size: 14px;
+  margin: 0;
+}
+
+.formGroupUpdate {
+  width: 70%;
+  margin-top: 10px;
+}
+
+.formGroupUpdate select {
+  width: 100% !important;
+}
+
+.formGroupDate {
+  margin-top: 10px;
+}
+
+.delete {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background-color: #ff0800;
+  padding: 4px;
+  font-size: 2.2rem;
+  color: var(--white);
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.delete:hover {
+  color: #ff0800;
+  background-color: var(--white);
 }

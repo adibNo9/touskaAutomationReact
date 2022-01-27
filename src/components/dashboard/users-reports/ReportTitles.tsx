@@ -7,6 +7,8 @@ import { useReactToPrint } from "react-to-print";
 import classes from "./repports.module.css";
 import ComponentToPrint from "./ComponentRef";
 
+import { ExcelDownloadButton } from "@pickk/react-excel";
+
 const ReportTitles: React.FC<{
   reportsValue: typeReportsValue[];
   sumTitles: typeSums[];
@@ -18,6 +20,35 @@ const ReportTitles: React.FC<{
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+
+  const nameUserField = ["نام کاربر"];
+  const valueField = reportsValue[0]?.report_base_Title.map(
+    (item) => item.name
+  );
+
+  const thExcell = nameUserField.concat(valueField);
+
+  console.log("reportsValue", reportsValue);
+
+  let tdName = [];
+  let tdValue = [];
+  let tdExcell = [];
+
+  for (let i = 0; i < reportsValue.length; i++) {
+    tdName[i] = [reportsValue[i].name];
+    tdValue[i] = reportsValue[i].report_base_Title.map(
+      (item) => `${item.spend_time}`
+    );
+    tdExcell[i] = tdName[i].concat(tdValue[i]);
+  }
+
+  // console.log("tdValue", tdValue);
+  // console.log("tdName", tdName);
+  console.log("tdExcell", tdExcell);
+
+  const dataCsv = [thExcell].concat(tdExcell);
+
+  // const dataExcell = [thExcell, ];
 
   return (
     <Fragment>
@@ -55,6 +86,9 @@ const ReportTitles: React.FC<{
       )}
       <div className={classes.print}>
         <button onClick={handlePrint}>پرینت</button>
+      </div>
+      <div className={classes.excell}>
+        <ExcelDownloadButton fileName="touskaReports" data={dataCsv} />
       </div>
     </Fragment>
   );

@@ -17,6 +17,9 @@ import Reports from "./users-reports/Reports";
 import SeoTask from "./all-tasks/seo-task/SeoTask";
 import WebTask from "./all-tasks/web-task/WebTask";
 
+import { MdMenuOpen } from "react-icons/md";
+import { CgClose } from "react-icons/cg";
+
 import { RiNotification3Line } from "react-icons/ri";
 
 export interface userType {
@@ -53,6 +56,10 @@ const Dashboard: React.FC = () => {
   const [notification, setNotification] = useState<typeNotif[]>([]);
   const [showNotifs, setShowNotifs] = useState<boolean>(false);
   const [taskId, setTaskId] = useState("");
+
+  const [showMenu, setshowMenu] = useState<boolean>(window.outerWidth > 980);
+
+  const [width, setWidth] = useState(window.outerWidth);
 
   const userName = userData?.user.name;
   const imageSrc = userData?.user.image_profile;
@@ -107,10 +114,11 @@ const Dashboard: React.FC = () => {
       });
   };
 
-  const notifHandler = (id: string) => {
+  const notifHandler = (id: string, IdOfTask: number) => {
     setTaskId(id);
 
     console.log("iddddddd", id);
+    console.log("taskId", taskId);
 
     const connectDB = ConnectToDB("read/notif/user");
 
@@ -129,9 +137,11 @@ const Dashboard: React.FC = () => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
-        if (res.data.token === "success") {
+        console.log("resToken", res);
+        if (res.data.status === "success") {
           setTaskId("");
+          localStorage.setItem("taskId", `${IdOfTask}`);
+          history.push(`/dashboard/task-seo/${IdOfTask}`);
         }
       })
       .catch((err) => {
@@ -139,8 +149,21 @@ const Dashboard: React.FC = () => {
       });
   };
 
+  let sidebarClasses = `${classes.sidebar}`;
+
+  const mobileMenuHandler = () => {
+    setshowMenu(!showMenu);
+    console.log("showMenu", showMenu);
+  };
+
   return (
     <section className={classes.dashboard}>
+      {width < 980 && (
+        <div className={classes.burgerMenu}>
+          <MdMenuOpen onClick={mobileMenuHandler} />
+        </div>
+      )}
+
       <div className={classes.notifications}>
         <div
           className={classes.notifDing}
@@ -155,7 +178,9 @@ const Dashboard: React.FC = () => {
               <div
                 key={notif.notif_id}
                 className={classes.singleNotif}
-                onClick={() => notifHandler(notif.notif_id)}
+                onClick={() =>
+                  notifHandler(notif.notif_id, notif.notif_data.task_id)
+                }
               >
                 <h6>{notif.notif_data.task_type}</h6>
                 <h5>{notif.notif_data.task_title}</h5>
@@ -165,51 +190,69 @@ const Dashboard: React.FC = () => {
           </div>
         )}
       </div>
-      <div className={classes.sidebar}>
-        <div className={classes.imageUser}>
-          <img src={imageSrc} />
-        </div>
-        <div className={classes.user}>
-          <h6> {userName ? userName : userEmail} </h6>
-        </div>
 
-        <NavLink activeClassName={classes.activeLink} to="/dashboard/profile">
-          پروفایل
-        </NavLink>
+      {showMenu && (
+        <div className={sidebarClasses}>
+          {width < 980 && (
+            <CgClose
+              className={classes.closeMenu}
+              onClick={() => setshowMenu(false)}
+            />
+          )}
+          <div className={classes.imageUser}>
+            <img src={imageSrc} />
+          </div>
+          <div className={classes.user}>
+            <h6> {userName ? userName : userEmail} </h6>
+          </div>
 
-        {userData.user.role_id === 1 && (
-          <NavLink activeClassName={classes.activeLink} to="/dashboard/users">
-            کاربران
+          <NavLink activeClassName={classes.activeLink} to="/dashboard/profile">
+            پروفایل
           </NavLink>
-        )}
 
-        <NavLink
-          activeClassName={classes.activeLink}
-          to="/dashboard/edit-timesheet"
-        >
-          آپدیت تایم شیت
-        </NavLink>
+          {userData.user.role_id === 1 && (
+            <NavLink activeClassName={classes.activeLink} to="/dashboard/users">
+              کاربران
+            </NavLink>
+          )}
 
-        <NavLink activeClassName={classes.activeLink} to="/dashboard/timesheet">
-          تایم شیت
-        </NavLink>
+          <NavLink
+            activeClassName={classes.activeLink}
+            to="/dashboard/edit-timesheet"
+          >
+            آپدیت تایم شیت
+          </NavLink>
 
-        <NavLink activeClassName={classes.activeLink} to="/dashboard/reports">
-          گزارشات
-        </NavLink>
+          <NavLink
+            activeClassName={classes.activeLink}
+            to="/dashboard/timesheet"
+          >
+            تایم شیت
+          </NavLink>
 
-        <NavLink activeClassName={classes.activeLink} to="/dashboard/task-seo">
-          تسک سئو
-        </NavLink>
+          <NavLink activeClassName={classes.activeLink} to="/dashboard/reports">
+            گزارشات
+          </NavLink>
 
-        <NavLink activeClassName={classes.activeLink} to="/dashboard/task-web">
-          تسک وب
-        </NavLink>
+          <NavLink
+            activeClassName={classes.activeLink}
+            to="/dashboard/task-seo"
+          >
+            تسک سئو
+          </NavLink>
 
-        <Button variant="danger" onClick={logoutHandler}>
-          خروج
-        </Button>
-      </div>
+          <NavLink
+            activeClassName={classes.activeLink}
+            to="/dashboard/task-web"
+          >
+            تسک وب
+          </NavLink>
+
+          <Button variant="danger" onClick={logoutHandler}>
+            خروج
+          </Button>
+        </div>
+      )}
       <div className={classes.content}>
         <Route path="/dashboard/profile">
           <Profile userData={userData} />

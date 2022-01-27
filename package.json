@@ -6,6 +6,7 @@
     "@nivo/core": "^0.79.0",
     "@nivo/legends": "^0.79.1",
     "@nivo/pie": "^0.79.1",
+    "@pickk/react-excel": "^0.0.8",
     "@progress/kendo-drawing": "^1.16.1",
     "@progress/kendo-licensing": "^1.2.1",
     "@progress/kendo-react-pdf": "^5.0.1",

@@ -21,27 +21,23 @@ function App() {
   const token = localStorage.getItem("token");
   console.log("token", token === undefined);
   return (
-    <AutoContextProvider>
-      <Router>
-        <Header />
-        <Layout>
-          <Switch>
-            <Route path="/" exact>
-              <Redirect to="/dashboard" />
-            </Route>
-            <Route path="/register">
-              {!token ? <Register /> : <Dashboard />}
-            </Route>
-            <Route path="/login">{!token ? <Login /> : <Dashboard />}</Route>
+    <Router>
+      <Header />
+      <Layout>
+        <Switch>
+          <Route path="/" exact>
+            <Redirect to="/dashboard" />
+          </Route>
+          <Route path="/register">
+            {!token ? <Register /> : <Dashboard />}
+          </Route>
+          <Route path="/login">{!token ? <Login /> : <Dashboard />}</Route>
 
-            <Route path="/dashboard">
-              {!token ? <Login /> : <Dashboard />}
-            </Route>
-          </Switch>
-        </Layout>
-        <h2>token: {token}</h2>
-      </Router>
-    </AutoContextProvider>
+          <Route path="/dashboard">{!token ? <Login /> : <Dashboard />}</Route>
+        </Switch>
+      </Layout>
+      <h2>token: {token}</h2>
+    </Router>
   );
 }
 

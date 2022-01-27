@@ -11,7 +11,19 @@
   z-index: 99999;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  padding-top: 2rem;
+  padding-bottom: 15vh;
   overflow-y: scroll;
+}
+
+.modal h3 {
+  font-size: 1.8rem !important;
+  color: var(--darkGreen);
+}
+
+.modal h3 span {
+  font-size: 2.2rem !important;
+  color: var(--purple);
 }

@@ -2,48 +2,33 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { getData } from "../../../../lib/get-data";
 import classes from "../tasks.module.css";
-import { Button, Form } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 
 import Modal from "../../../ui/Modal";
 
 import { RiEditFill } from "react-icons/ri";
 import { RiCloseFill } from "react-icons/ri";
-import { ConnectToDB } from "../../../../lib/connect-to-db";
+import { MdDelete } from "react-icons/md";
+import { typeTasks } from "./ReportSeoTasks";
+import UpdateTaskAdmin from "./UpdateTaskAdmin";
 import axios, { AxiosRequestHeaders } from "axios";
+import { ConnectToDB } from "../../../../lib/connect-to-db";
 import Notification from "../../../ui/notification";
 
-export interface typeTasks {
-  Assignment: string;
-  Priority: string;
-  admin_task_email: string;
-  delivery_time: string;
-  due_on: string;
-  subject: string;
-  Status: string;
-  Verification: string;
-  assigned_to: string;
-  file: {
-    name: string;
-    url: string;
-  }[];
-  assignment_id: number;
-  id: number;
-}
-
-const ReportSeoTasks: React.FC = () => {
+const ReportSeoAdmin: React.FC = () => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
-
   const [tasks, setTasks] = useState<typeTasks[]>([]);
 
   const [id, setId] = useState<number>(0);
-  const [title, setTitle] = useState<string>("");
+  const [delId, setDelId] = useState<number>(0);
+  const [selectedTask, setSelectedTask] = useState<typeTasks>();
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [valueBox, setValueBox] = useState<string>("");
+  const [delModal, setDelModal] = useState<boolean>(false);
 
   useEffect(() => {
     const getTasks = async () => {
-      const data = await getData("get/tasks/Assigned");
+      const data = await getData("get/tasks/Assigned/admin");
       setTasks(data.tasks);
     };
     getTasks();
@@ -53,15 +38,10 @@ const ReportSeoTasks: React.FC = () => {
   const pathName = history.location.pathname.split("/");
   const taskId = pathName[pathName.length - 1];
 
-  const changeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
+  console.log("tasks", tasks);
 
-    setValueBox(value);
-  };
-
-  const showMOdalHandler = (id: number, title: string) => {
-    setId(id);
-    setTitle(title);
+  const showMOdalHandler = (task: typeTasks) => {
+    setSelectedTask(task);
     setShowModal(true);
   };
 
@@ -70,22 +50,18 @@ const ReportSeoTasks: React.FC = () => {
     setShowModal(false);
   };
 
-  const submitHandler = (event: React.FormEvent) => {
-    event.preventDefault();
+  const delIdHandler = (id: number) => {
+    setDelId(id);
+    setDelModal(true);
+  };
 
-    console.log("id", JSON.stringify(id));
-    console.log("type", "1");
-    console.log("Status", valueBox);
-
+  const deleteHandler = () => {
     setNotification("pending");
 
-    const connectDB = ConnectToDB("edit/tasks/Assigned");
+    const connectDB = ConnectToDB("delete/tasks/Assigned");
 
     const fData = new FormData();
-
-    fData.append("id", JSON.stringify(id));
-    fData.append("type", "1");
-    fData.append("Status", valueBox);
+    fData.append("id", JSON.stringify(delId));
 
     const headers: AxiosRequestHeaders = {
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -175,9 +151,7 @@ const ReportSeoTasks: React.FC = () => {
               </Button>
             </div>
             <div className={classes.status}>
-              <RiEditFill
-                onClick={() => showMOdalHandler(task.id, task.subject)}
-              />
+              <RiEditFill onClick={() => showMOdalHandler(task)} />
             </div>
             <div className={classes.statusText}>
               <p>وضعیت: {task.Status ? task.Status : "مشخص نشده"}</p>
@@ -186,44 +160,47 @@ const ReportSeoTasks: React.FC = () => {
               </p>
             </div>
             <div className={classes.adminEmail}>
-              <p>فرستنده: {task.admin_task_email}</p>
+              <p>گیرنده: {task.assigned_to}</p>
             </div>
+
+            <MdDelete
+              className={classes.delete}
+              onClick={() => delIdHandler(task.id)}
+            />
           </div>
         ))}
       </div>
+      {delModal && (
+        <Modal>
+          <Row className="bg-light p-2" dir="ltr">
+            <Col className="text-center mb-2" dir="ltr" lg={12}>
+              Are you sure ?
+            </Col>
+            <Col lg={6}>
+              <Button
+                className="w-100"
+                variant="success"
+                onClick={deleteHandler}
+              >
+                Yes
+              </Button>
+            </Col>
+            <Col lg={6}>
+              <Button
+                className="w-100"
+                variant="danger"
+                onClick={() => setDelModal(false)}
+              >
+                No
+              </Button>
+            </Col>
+          </Row>
+        </Modal>
+      )}
       {showModal && (
         <Modal>
           <div className={classes.modal}>
-            <h3 className="text-center">
-              وضعیت پروژه را برای <span>{title}</span> مشخص کنید!
-            </h3>
-
-            <Form className="mt-3" onSubmit={submitHandler}>
-              <Form.Select
-                value={valueBox}
-                onChange={changeHandler}
-                aria-label="Default select example"
-              >
-                <option>انتخاب اولویت ...</option>
-                <option value="skipped">Skipped</option>
-                <option value="Not Started">Not Started</option>
-                <option value="done">Done</option>
-                <option value="in Progress">In Progress</option>
-              </Form.Select>
-              <p className="text-center mt-3">
-                {" "}
-                وضعیت پروژه: <span>{valueBox}</span>
-              </p>
-              {valueBox !== "" && (
-                <Button
-                  variant="success"
-                  className="text-center"
-                  onClick={submitHandler}
-                >
-                  تایید
-                </Button>
-              )}
-            </Form>
+            <UpdateTaskAdmin value={selectedTask} />
           </div>
           <RiCloseFill
             className={classes.closeModal}
@@ -242,4 +219,4 @@ const ReportSeoTasks: React.FC = () => {
   );
 };
 
-export default ReportSeoTasks;
+export default ReportSeoAdmin;
