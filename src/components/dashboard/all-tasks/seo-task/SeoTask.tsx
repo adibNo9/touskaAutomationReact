@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { NavLink, Route } from "react-router-dom";
 import classes from "../tasks.module.css";
 import CreateSeoTask from "./CreateSeoTask";
 import ReportSeoAdmin from "./ReportSeoAdmin";
@@ -31,29 +32,35 @@ const SeoTask: React.FC = () => {
     <section className={classes.tasks}>
       <h1>تسک سئو</h1>
       <div className={classes.links}>
-        <button
-          onClick={showCreateHandler}
-          className={showCreate ? classes.active : classes.noActive}
+        <NavLink
+          activeClassName={classes.active}
+          to="/dashboard/task-seo/create"
         >
           ایجاد تسک سئو
-        </button>
-        <button
-          onClick={showReportsHandler}
-          className={showReports ? classes.active : classes.noActive}
+        </NavLink>
+        <NavLink
+          activeClassName={classes.active}
+          to="/dashboard/task-seo/reports"
         >
           تسک‌های شما
-        </button>
-        <button
-          onClick={showAdminReportsHandler}
-          className={showAdminReports ? classes.active : classes.noActive}
+        </NavLink>
+        <NavLink
+          activeClassName={classes.active}
+          to="/dashboard/task-seo/admin-reports"
         >
           گزارشات
-        </button>
+        </NavLink>
       </div>
       <div className={classes.content}>
-        {showCreate && <CreateSeoTask />}
-        {showReports && <ReportSeoTasks />}
-        {showAdminReports && <ReportSeoAdmin />}
+        <Route path="/dashboard/task-seo/create">
+          <CreateSeoTask />
+        </Route>
+        <Route path="/dashboard/task-seo/reports">
+          <ReportSeoTasks />
+        </Route>
+        <Route path="/dashboard/task-seo/admin-reports">
+          <ReportSeoAdmin />
+        </Route>
       </div>
     </section>
   );

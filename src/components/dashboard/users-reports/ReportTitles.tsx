@@ -73,7 +73,7 @@ const ReportTitles: React.FC<{
             <tbody>
               {reportsValue.map((item) => (
                 <tr key={item.id}>
-                  <td>{item.name}</td>
+                  <td>{item.name ? item.email : item.email}</td>
                   {item.report_base_Title.map((item, index) => (
                     <td key={index}>{item.spend_time}</td>
                   ))}

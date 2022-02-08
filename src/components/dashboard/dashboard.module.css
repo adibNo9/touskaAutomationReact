@@ -14,7 +14,7 @@
   flex-direction: column;
   position: fixed;
   right: 0;
-  top: 120px;
+  top: 0;
   background: rgb(33, 61, 58);
   background: linear-gradient(
     125deg,
@@ -22,7 +22,7 @@
     rgba(96, 154, 150, 1) 50%,
     rgba(33, 61, 58, 1) 100%
   );
-  height: 90vh;
+  height: 100%;
   padding: 10px 10px 40px;
   box-shadow: -5px 0 6px rgb(56, 56, 56);
   z-index: 999;
@@ -32,7 +32,7 @@
   text-decoration: none;
   color: var(--white);
   font-family: var(--ordibehesht);
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   margin-bottom: 1rem;
   transition: 0.3s ease-in-out;
 }
@@ -49,13 +49,13 @@
 
 .sidebar button {
   width: 80%;
-  position: absolute;
-  bottom: 100px;
+  /* position: absolute;
+  bottom: 100px; */
   border-width: 5px;
   border-radius: 0;
   font-family: var(--ordibehesht);
-  font-size: 1.5rem;
-  padding: 4px 10px;
+  font-size: 1.3rem;
+  padding: 1px 10px;
 }
 
 .sidebar h6 {

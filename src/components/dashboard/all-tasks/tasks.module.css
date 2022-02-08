@@ -89,7 +89,8 @@
   padding: 0.5rem 0;
 }
 
-.links button {
+.links button,
+.links a {
   background-color: var(--purple);
   color: var(--white);
   border: 2px solid var(--purple);
@@ -98,6 +99,8 @@
   padding: 4px 2rem;
   transition: 0.3s ease-in-out;
   width: 30%;
+  text-align: center;
+  text-decoration: none;
 }
 
 .active {
@@ -105,8 +108,10 @@
   background-color: var(--darkGreen) !important;
 }
 
-.links button:hover {
+.links button:hover,
+.links a:hover {
   background-color: var(--darkGreen);
+  color: var(--white);
 }
 
 .allTasks {

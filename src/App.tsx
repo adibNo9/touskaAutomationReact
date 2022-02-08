@@ -22,7 +22,7 @@ function App() {
   console.log("token", token === undefined);
   return (
     <Router>
-      <Header />
+      {/* <Header /> */}
       <Layout>
         <Switch>
           <Route path="/" exact>

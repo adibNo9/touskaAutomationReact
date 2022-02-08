@@ -3,14 +3,14 @@ import { Chart } from "react-google-charts";
 import { typeCharts } from "./TimeSheetForm";
 
 const TimeSheetChart2: React.FC<{ chartValue: typeCharts[] }> = (props) => {
-  let data = [["Task", "Hours per Day"]];
+  let data: (string | number)[][] = [["Task", "Hours per Day"]];
   const { chartValue } = props;
 
   console.log("chartValue", chartValue);
 
   const datas = chartValue.map((item) => [
     `${item.title}(${item.category})`,
-    item.spend_time,
+    +item.spend_time,
   ]);
 
   const dataFinal = data.concat(datas);

@@ -42,7 +42,7 @@ const ReportSubtitles: React.FC<{
             <tbody>
               {reportsValue.map((item) => (
                 <tr key={item.id}>
-                  <td>{item.name}</td>
+                  <td>{item.name ? item.name : item.email}</td>
                   {item.report_base_subTitle.map((item, index) => (
                     <td key={index}>{item.spend_time}</td>
                   ))}

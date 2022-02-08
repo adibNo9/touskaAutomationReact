@@ -28,7 +28,8 @@ export interface userType {
     email: string;
     name: string | null;
     image_profile: string | undefined;
-    role_id: number;
+    role_id: string;
+    is_master: null | string;
   };
 }
 
@@ -49,7 +50,8 @@ const Dashboard: React.FC = () => {
       email: "",
       name: "",
       image_profile: "",
-      role_id: 0,
+      role_id: "0",
+      is_master: null,
     },
   });
 
@@ -210,7 +212,7 @@ const Dashboard: React.FC = () => {
             پروفایل
           </NavLink>
 
-          {userData.user.role_id === 1 && (
+          {userData.user.role_id === "1" && (
             <NavLink activeClassName={classes.activeLink} to="/dashboard/users">
               کاربران
             </NavLink>
@@ -273,7 +275,7 @@ const Dashboard: React.FC = () => {
           <SeoTask />
         </Route>
         <Route path="/dashboard/task-web">
-          <WebTask />
+          <WebTask userData={userData} />
         </Route>
       </div>
     </section>

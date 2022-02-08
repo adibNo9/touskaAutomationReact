@@ -2,66 +2,65 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { getData } from "../../../../lib/get-data";
 import classes from "../tasks.module.css";
-import { Button, Form } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 
 import Modal from "../../../ui/Modal";
 
 import { RiEditFill } from "react-icons/ri";
 import { RiCloseFill } from "react-icons/ri";
-import { ConnectToDB } from "../../../../lib/connect-to-db";
+import { MdDelete } from "react-icons/md";
+import { typeTasks } from "./ReportWebTasks";
+import UpdateTaskAdmin from "./UpdateTaskAdmin";
 import axios, { AxiosRequestHeaders } from "axios";
+import { ConnectToDB } from "../../../../lib/connect-to-db";
 import Notification from "../../../ui/notification";
+import UpdateTaskDeveloper from "./UpdateTaskDeveloper";
 
-export interface typeTasks {
+export interface typeWebTasks {
   Assignment: string;
   Priority: string;
-  admin_task_email: string;
-  delivery_time: string;
-  due_on: string;
-  subject: string;
   Status: string;
   Verification: string;
-  assigned_to: string;
-  file: {
-    name: string;
-    url: string;
-  }[];
-  assignment_id: number;
+  assignment_id: string;
+  subject: string;
+  user_id: string;
+  delivery_time: string;
+  due_on: string;
   id: number;
 }
 
-const ReportWebTasks: React.FC = () => {
+const ReportMasterWeb: React.FC = () => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
-
   const [tasks, setTasks] = useState<typeTasks[]>([]);
 
   const [id, setId] = useState<number>(0);
-  const [title, setTitle] = useState<string>("");
+  const [delId, setDelId] = useState<number>(0);
+  const [selectedTask, setSelectedTask] = useState<typeWebTasks>();
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [valueBox, setValueBox] = useState<string>("");
+  const [delModal, setDelModal] = useState<boolean>(false);
+
+  const [taskWeb, setTaskWeb] = useState<typeWebTasks[]>([]);
+
+  const getTaskWeb = async () => {
+    const data = await getData("assigned/task/all/accepted");
+    setTaskWeb(data.tasks);
+  };
 
   useEffect(() => {
-    const getTasks = async () => {
-      const data = await getData("get/tasks/Assigned");
-      setTasks(data.tasks);
-    };
-    getTasks();
+    getTaskWeb();
   }, []);
 
+  console.log("taskWeb:", taskWeb);
   const history = useHistory();
   const pathName = history.location.pathname.split("/");
   const taskId = pathName[pathName.length - 1];
 
-  const changeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
+  console.log("tasks", tasks);
 
-    setValueBox(value);
-  };
-
-  const showMOdalHandler = (id: number, title: string) => {
-    setId(id);
-    setTitle(title);
+  const showMOdalHandler = (task: typeWebTasks) => {
+    console.log(task);
+    setSelectedTask(task);
     setShowModal(true);
   };
 
@@ -70,22 +69,18 @@ const ReportWebTasks: React.FC = () => {
     setShowModal(false);
   };
 
-  const submitHandler = (event: React.FormEvent) => {
-    event.preventDefault();
+  const delIdHandler = (id: number) => {
+    setDelId(id);
+    setDelModal(true);
+  };
 
-    console.log("id", JSON.stringify(id));
-    console.log("type", "1");
-    console.log("Status", valueBox);
-
+  const deleteHandler = () => {
     setNotification("pending");
 
-    const connectDB = ConnectToDB("edit/tasks/Assigned");
+    const connectDB = ConnectToDB("delete/tasks/Assigned");
 
     const fData = new FormData();
-
-    fData.append("id", JSON.stringify(id));
-    fData.append("type", "1");
-    fData.append("Status", valueBox);
+    fData.append("id", JSON.stringify(delId));
 
     const headers: AxiosRequestHeaders = {
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -104,7 +99,8 @@ const ReportWebTasks: React.FC = () => {
 
           setTimeout(() => {
             setNotification("");
-            window.location.reload();
+            // window.location.reload();
+            getTaskWeb();
           }, 2000);
         }
       })
@@ -154,7 +150,7 @@ const ReportWebTasks: React.FC = () => {
   return (
     <div className={classes.reports}>
       <div className={classes.allTasks}>
-        {tasks.map((task) => (
+        {taskWeb.map((task) => (
           <div
             className={
               `${task.id}` === taskId
@@ -169,15 +165,8 @@ const ReportWebTasks: React.FC = () => {
               <p>تاریخ ارسال: {task.delivery_time}</p>
               <p>تاریخ تحویل: {task.due_on}</p>
             </div>
-            <div className={classes.download}>
-              <Button variant="info">
-                <a href={task.file[0].url}>دانلود فایل</a>
-              </Button>
-            </div>
             <div className={classes.status}>
-              <RiEditFill
-                onClick={() => showMOdalHandler(task.id, task.subject)}
-              />
+              <RiEditFill onClick={() => showMOdalHandler(task)} />
             </div>
             <div className={classes.statusText}>
               <p>وضعیت: {task.Status ? task.Status : "مشخص نشده"}</p>
@@ -185,45 +174,45 @@ const ReportWebTasks: React.FC = () => {
                 تاییدیه: {task.Verification ? task.Verification : "مشخص نشده"}
               </p>
             </div>
-            <div className={classes.adminEmail}>
-              <p>فرستنده: {task.admin_task_email}</p>
-            </div>
+
+            <MdDelete
+              className={classes.delete}
+              onClick={() => delIdHandler(task.id)}
+            />
           </div>
         ))}
       </div>
+      {delModal && (
+        <Modal>
+          <Row className="bg-light p-2" dir="ltr">
+            <Col className="text-center mb-2" dir="ltr" lg={12}>
+              Are you sure ?
+            </Col>
+            <Col lg={6}>
+              <Button
+                className="w-100"
+                variant="success"
+                onClick={deleteHandler}
+              >
+                Yes
+              </Button>
+            </Col>
+            <Col lg={6}>
+              <Button
+                className="w-100"
+                variant="danger"
+                onClick={() => setDelModal(false)}
+              >
+                No
+              </Button>
+            </Col>
+          </Row>
+        </Modal>
+      )}
       {showModal && (
         <Modal>
           <div className={classes.modal}>
-            <h3 className="text-center">
-              وضعیت پروژه را برای <span>{title}</span> مشخص کنید!
-            </h3>
-
-            <Form className="mt-3" onSubmit={submitHandler}>
-              <Form.Select
-                value={valueBox}
-                onChange={changeHandler}
-                aria-label="Default select example"
-              >
-                <option>انتخاب اولویت ...</option>
-                <option value="skipped">Skipped</option>
-                <option value="Not Started">Not Started</option>
-                <option value="done">Done</option>
-                <option value="in Progress">In Progress</option>
-              </Form.Select>
-              <p className="text-center mt-3">
-                {" "}
-                وضعیت پروژه: <span>{valueBox}</span>
-              </p>
-              {valueBox !== "" && (
-                <Button
-                  variant="success"
-                  className="text-center"
-                  onClick={submitHandler}
-                >
-                  تایید
-                </Button>
-              )}
-            </Form>
+            <UpdateTaskDeveloper value={selectedTask} />
           </div>
           <RiCloseFill
             className={classes.closeModal}
@@ -242,4 +231,4 @@ const ReportWebTasks: React.FC = () => {
   );
 };
 
-export default ReportWebTasks;
+export default ReportMasterWeb;

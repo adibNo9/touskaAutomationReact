@@ -207,7 +207,11 @@ const TimeSheetForm: React.FC<{
 
   for (let i = 0; i < chartValue.length; i++) {
     sheets[i] = (
-      <TimeSheetItems chartValue={chartValue[i]} getSheet={getSheetHandler} />
+      <TimeSheetItems
+        key={i}
+        chartValue={chartValue[i]}
+        getSheet={getSheetHandler}
+      />
     );
   }
 

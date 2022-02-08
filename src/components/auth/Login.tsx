@@ -124,7 +124,7 @@ const Login: React.FC = () => {
   return (
     <Fragment>
       <div className={classes.title}>
-        <h1> ثبت نام </h1>
+        <h1> ورود </h1>
       </div>
       <Form className={classes.form} onSubmit={submitHandler}>
         <Form.Group className={classes.formGroup} controlId="formBasicEmail">
