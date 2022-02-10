@@ -2,60 +2,43 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { getData } from "../../../../lib/get-data";
 import classes from "../tasks.module.css";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 
 import Modal from "../../../ui/Modal";
 
 import { RiEditFill } from "react-icons/ri";
 import { RiCloseFill } from "react-icons/ri";
 import { MdDelete } from "react-icons/md";
-import UpdateTaskAdmin from "./UpdateTaskAdmin";
+import { typeWebTasks } from "./ReportWebAdmin";
 import axios, { AxiosRequestHeaders } from "axios";
 import { ConnectToDB } from "../../../../lib/connect-to-db";
 import Notification from "../../../ui/notification";
+import UpdateTaskForAdmins from "./UpdateTaskForAdmins";
 
-export interface typeWebTasks {
-  Assignment: string;
-  Priority: string;
-  Status: string;
-  Verification: string;
-  assignment_id: string;
-  subject: string;
-  user_id: string;
-  delivery_time: string;
-  due_on: string;
-  assigned_to: string | null;
-  id: number;
-  file: {
-    name: string;
-    url: string;
-  }[];
-}
-
-const ReportWebAdmin: React.FC = () => {
+const ReportWebForAdmins: React.FC = () => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
+  const [tasks, setTasks] = useState<typeWebTasks[]>([]);
 
+  const [id, setId] = useState<number>(0);
   const [delId, setDelId] = useState<number>(0);
   const [selectedTask, setSelectedTask] = useState<typeWebTasks>();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [delModal, setDelModal] = useState<boolean>(false);
 
-  const [taskWeb, setTaskWeb] = useState<typeWebTasks[]>([]);
-
-  const getTaskWeb = async () => {
-    const data = await getData("get/all/task/web/superadmin");
-    setTaskWeb(data.tasks);
-  };
-
   useEffect(() => {
-    getTaskWeb();
+    const getTasks = async () => {
+      const data = await getData("assigned/all/task/web");
+      setTasks(data.tasks);
+    };
+    getTasks();
   }, []);
 
-  console.log("taskWeb:", taskWeb);
   const history = useHistory();
   const pathName = history.location.pathname.split("/");
   const taskId = pathName[pathName.length - 1];
+
+  console.log("tasksweeeeeeeb", tasks);
 
   const showMOdalHandler = (task: typeWebTasks) => {
     setSelectedTask(task);
@@ -63,6 +46,7 @@ const ReportWebAdmin: React.FC = () => {
   };
 
   const closeMOdalHandler = () => {
+    setId(0);
     setShowModal(false);
   };
 
@@ -97,7 +81,6 @@ const ReportWebAdmin: React.FC = () => {
           setTimeout(() => {
             setNotification("");
             window.location.reload();
-            getTaskWeb();
           }, 2000);
         }
       })
@@ -147,7 +130,7 @@ const ReportWebAdmin: React.FC = () => {
   return (
     <div className={classes.reports}>
       <div className={classes.allTasks}>
-        {taskWeb.map((task) => (
+        {tasks.map((task) => (
           <div
             className={
               `${task.id}` === taskId
@@ -162,6 +145,11 @@ const ReportWebAdmin: React.FC = () => {
               <p>تاریخ ارسال: {task.delivery_time}</p>
               <p>تاریخ تحویل: {task.due_on}</p>
             </div>
+            <div className={classes.download}>
+              <Button variant="info">
+                <a href={task.file[0].url}>دانلود فایل</a>
+              </Button>
+            </div>
             <div className={classes.status}>
               <RiEditFill onClick={() => showMOdalHandler(task)} />
             </div>
@@ -174,6 +162,7 @@ const ReportWebAdmin: React.FC = () => {
             <div className={classes.adminEmail}>
               <p>گیرنده: {task.assigned_to}</p>
             </div>
+
             <MdDelete
               className={classes.delete}
               onClick={() => delIdHandler(task.id)}
@@ -211,7 +200,7 @@ const ReportWebAdmin: React.FC = () => {
       {showModal && (
         <Modal>
           <div className={classes.modal}>
-            <UpdateTaskAdmin value={selectedTask} />
+            <UpdateTaskForAdmins value={selectedTask} />
           </div>
           <RiCloseFill
             className={classes.closeModal}
@@ -230,4 +219,4 @@ const ReportWebAdmin: React.FC = () => {
   );
 };
 
-export default ReportWebAdmin;
+export default ReportWebForAdmins;

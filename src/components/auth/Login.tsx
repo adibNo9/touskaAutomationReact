@@ -13,7 +13,7 @@ import { AiFillEyeInvisible } from "react-icons/ai";
 import { ConnectToDB } from "../../lib/connect-to-db";
 import axios from "axios";
 import Notification from "../ui/notification";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { AutoContext } from "../../store/auto-context";
 
 interface notificationDetails {
@@ -162,6 +162,9 @@ const Login: React.FC = () => {
         <Button disabled={!formValidate} variant="primary" type="submit">
           ورود
         </Button>
+        <Link className="mt-3" to="/register">
+          ثبت نام نکرده‌اید؟
+        </Link>
       </Form>
       {notification && (
         <Notification

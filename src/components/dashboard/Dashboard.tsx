@@ -1,6 +1,6 @@
 import axios, { AxiosRequestHeaders } from "axios";
 import { useContext, useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Alert, Button } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { ConnectToDB } from "../../lib/connect-to-db";
 import { AutoContext } from "../../store/auto-context";
@@ -116,11 +116,11 @@ const Dashboard: React.FC = () => {
       });
   };
 
-  const notifHandler = (id: string, IdOfTask: number) => {
+  const notifHandler = (id: string, IdOfTask: number, typeTask: string) => {
     setTaskId(id);
 
     console.log("iddddddd", id);
-    console.log("taskId", taskId);
+    console.log("taskId", IdOfTask);
 
     const connectDB = ConnectToDB("read/notif/user");
 
@@ -130,7 +130,7 @@ const Dashboard: React.FC = () => {
 
     const fData = new FormData();
 
-    fData.append("id", taskId);
+    fData.append("id", id);
 
     axios({
       method: "POST",
@@ -143,7 +143,34 @@ const Dashboard: React.FC = () => {
         if (res.data.status === "success") {
           setTaskId("");
           localStorage.setItem("taskId", `${IdOfTask}`);
-          history.push(`/dashboard/task-seo/${IdOfTask}`);
+          if (
+            typeTask === "seo_created" ||
+            typeTask === "seo_delete" ||
+            typeTask === "seo_task_done"
+          ) {
+            history.push(`/dashboard/task-seo/reports/${IdOfTask}`);
+          }
+          if (typeTask === "web_superadmin") {
+            history.push(`/dashboard/task-web/admin-reports/${IdOfTask}`);
+          }
+          if (
+            typeTask === "admin_accept_task" ||
+            typeTask === "admin_reject_task" ||
+            (typeTask === "developer_task_done" &&
+              userData.user.role_id !== "3")
+          ) {
+            history.push(`/dashboard/task-web/tasks-reports/${IdOfTask}`);
+          }
+          if (
+            typeTask === "developeradmin_accept_task" ||
+            (typeTask === "developer_task_done" &&
+              userData.user.role_id === "3")
+          ) {
+            history.push(`/dashboard/task-web/developer-reports/${IdOfTask}`);
+          }
+          if (typeTask === "developer_task_assign") {
+            history.push(`/dashboard/task-web/reports/${IdOfTask}`);
+          }
         }
       })
       .catch((err) => {
@@ -181,10 +208,77 @@ const Dashboard: React.FC = () => {
                 key={notif.notif_id}
                 className={classes.singleNotif}
                 onClick={() =>
-                  notifHandler(notif.notif_id, notif.notif_data.task_id)
+                  notifHandler(
+                    notif.notif_id,
+                    notif.notif_data.task_id,
+                    notif.notif_data.task_type
+                  )
                 }
               >
-                <h6>{notif.notif_data.task_type}</h6>
+                {notif.notif_data.task_type === "seo_created" && (
+                  <Alert
+                    className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
+                  >
+                    تسک سئوی جدید برای شما
+                  </Alert>
+                )}
+                {notif.notif_data.task_type === "seo_task_done" && (
+                  <Alert
+                    className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
+                  >
+                    تسک سئوی مورد نظر با موفقیت انجام شده است!
+                  </Alert>
+                )}
+                {notif.notif_data.task_type === "seo_delete" && (
+                  <Alert
+                    className={`${classes.alertNotifDanger} ${classes.alertNotif}`}
+                  >
+                    این تسک سئو برای شما حذف شده است
+                  </Alert>
+                )}
+                {notif.notif_data.task_type === "web_superadmin" && (
+                  <Alert
+                    className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
+                  >
+                    یک تسک وب در انتظار تایید شما
+                  </Alert>
+                )}
+                {notif.notif_data.task_type ===
+                  "developeradmin_accept_task" && (
+                  <Alert
+                    className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
+                  >
+                    یک تسک وب تاییدی در انتظار بررسی
+                  </Alert>
+                )}
+                {notif.notif_data.task_type === "admin_accept_task" && (
+                  <Alert
+                    className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
+                  >
+                    تسک درخواستی شما مورد موافقت قرار گرفت!
+                  </Alert>
+                )}
+                {notif.notif_data.task_type === "admin_reject_task" && (
+                  <Alert
+                    className={`${classes.alertNotifDanger} ${classes.alertNotif}`}
+                  >
+                    تسک درخواستی شما رد شده است!
+                  </Alert>
+                )}
+                {notif.notif_data.task_type === "developer_task_assign" && (
+                  <Alert
+                    className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
+                  >
+                    یک تسک وب برای شما ارسال شده است!
+                  </Alert>
+                )}
+                {notif.notif_data.task_type === "developer_task_done" && (
+                  <Alert
+                    className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
+                  >
+                    تسک وب مورد نظر با موفقیت انجام شد!
+                  </Alert>
+                )}
                 <h5>{notif.notif_data.task_title}</h5>
                 <p>فرستنده: {notif.notif_data.task_from}</p>
               </div>
@@ -202,7 +296,7 @@ const Dashboard: React.FC = () => {
             />
           )}
           <div className={classes.imageUser}>
-            <img src={imageSrc} />
+            <img src={imageSrc} alt={userName ? userName : userEmail} />
           </div>
           <div className={classes.user}>
             <h6> {userName ? userName : userEmail} </h6>
@@ -218,12 +312,14 @@ const Dashboard: React.FC = () => {
             </NavLink>
           )}
 
-          <NavLink
-            activeClassName={classes.activeLink}
-            to="/dashboard/edit-timesheet"
-          >
-            آپدیت تایم شیت
-          </NavLink>
+          {userData.user.role_id === "1" && (
+            <NavLink
+              activeClassName={classes.activeLink}
+              to="/dashboard/edit-timesheet"
+            >
+              آپدیت تایم شیت
+            </NavLink>
+          )}
 
           <NavLink
             activeClassName={classes.activeLink}
@@ -232,23 +328,34 @@ const Dashboard: React.FC = () => {
             تایم شیت
           </NavLink>
 
-          <NavLink activeClassName={classes.activeLink} to="/dashboard/reports">
-            گزارشات
-          </NavLink>
+          {userData.user.role_id === "1" && (
+            <NavLink
+              activeClassName={classes.activeLink}
+              to="/dashboard/reports"
+            >
+              گزارشات
+            </NavLink>
+          )}
 
-          <NavLink
-            activeClassName={classes.activeLink}
-            to="/dashboard/task-seo"
-          >
-            تسک سئو
-          </NavLink>
+          {userData.user.role_id !== "3" && (
+            <NavLink
+              activeClassName={classes.activeLink}
+              to="/dashboard/task-seo"
+            >
+              تسک سئو
+            </NavLink>
+          )}
 
-          <NavLink
-            activeClassName={classes.activeLink}
-            to="/dashboard/task-web"
-          >
-            تسک وب
-          </NavLink>
+          {(userData.user.role_id === "1" ||
+            userData.user.role_id === "2" ||
+            userData.user.role_id === "3") && (
+            <NavLink
+              activeClassName={classes.activeLink}
+              to="/dashboard/task-web"
+            >
+              تسک وب
+            </NavLink>
+          )}
 
           <Button variant="danger" onClick={logoutHandler}>
             خروج
@@ -259,24 +366,36 @@ const Dashboard: React.FC = () => {
         <Route path="/dashboard/profile">
           <Profile userData={userData} />
         </Route>
-        <Route path="/dashboard/users">
-          <Users />
-        </Route>
-        <Route path="/dashboard/edit-timesheet">
-          <EditTimeSheet />
-        </Route>
+        {userData.user.role_id === "1" && (
+          <Route path="/dashboard/users">
+            <Users />
+          </Route>
+        )}
+        {userData.user.role_id === "1" && (
+          <Route path="/dashboard/edit-timesheet">
+            <EditTimeSheet />
+          </Route>
+        )}
         <Route path="/dashboard/timesheet">
           <TimeSheet />
         </Route>
-        <Route path="/dashboard/reports">
-          <Reports />
-        </Route>
-        <Route path="/dashboard/task-seo">
-          <SeoTask />
-        </Route>
-        <Route path="/dashboard/task-web">
-          <WebTask userData={userData} />
-        </Route>
+        {userData.user.role_id === "1" && (
+          <Route path="/dashboard/reports">
+            <Reports />
+          </Route>
+        )}
+        {userData.user.role_id !== "3" && (
+          <Route path="/dashboard/task-seo">
+            <SeoTask userData={userData} />
+          </Route>
+        )}
+        {(userData.user.role_id === "1" ||
+          userData.user.role_id === "2" ||
+          userData.user.role_id === "3") && (
+          <Route path="/dashboard/task-web">
+            <WebTask userData={userData} />
+          </Route>
+        )}
       </div>
     </section>
   );

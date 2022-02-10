@@ -43,11 +43,13 @@ const ReportWebTasks: React.FC = () => {
 
   useEffect(() => {
     const getTasks = async () => {
-      const data = await getData("get/tasks/Assigned");
+      const data = await getData("task/assigned/developer");
       setTasks(data.tasks);
     };
     getTasks();
   }, []);
+
+  console.log("singleTasks:", tasks);
 
   const history = useHistory();
   const pathName = history.location.pathname.split("/");
@@ -79,12 +81,12 @@ const ReportWebTasks: React.FC = () => {
 
     setNotification("pending");
 
-    const connectDB = ConnectToDB("edit/tasks/Assigned");
+    const connectDB = ConnectToDB("edit/task/web/userDeveloper");
 
     const fData = new FormData();
 
-    fData.append("id", JSON.stringify(id));
-    fData.append("type", "1");
+    fData.append("task_id", JSON.stringify(id));
+    // fData.append("type", "1");
     fData.append("Status", valueBox);
 
     const headers: AxiosRequestHeaders = {
@@ -204,7 +206,7 @@ const ReportWebTasks: React.FC = () => {
                 onChange={changeHandler}
                 aria-label="Default select example"
               >
-                <option>انتخاب اولویت ...</option>
+                <option>انتخاب وضعیت ...</option>
                 <option value="skipped">Skipped</option>
                 <option value="Not Started">Not Started</option>
                 <option value="done">Done</option>

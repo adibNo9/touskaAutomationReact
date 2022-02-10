@@ -11,7 +11,7 @@ import { Form, Table } from "react-bootstrap";
 export interface typeUsersList {
   id: number;
   role_id: number;
-  is_active: number;
+  is_active: string;
   created_at: string;
   updated_at: string;
   name: string;
@@ -33,6 +33,8 @@ const AllUsers: React.FC = () => {
     };
     getListUsers();
   }, []);
+
+  console.log("listUsers:", listUsers);
 
   const searchChangeHandelr = (event: ChangeEvent<HTMLInputElement>) => {
     setListUsers(getValue);
@@ -63,12 +65,12 @@ const AllUsers: React.FC = () => {
   };
 
   const activeUsersHandler = () => {
-    const value = getValue.filter((user) => user.is_active === 1);
+    const value = getValue.filter((user) => user.is_active === "1");
     setListUsers(value);
   };
 
   const deactiveUsersHandler = () => {
-    const value = getValue.filter((user) => user.is_active !== 1);
+    const value = getValue.filter((user) => user.is_active !== "1");
     setListUsers(value);
   };
 

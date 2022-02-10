@@ -189,7 +189,6 @@
   margin-bottom: 3px;
   border-right: 3px solid rgb(59, 59, 59);
   border-bottom: 3px solid rgb(59, 59, 59);
-  padding-top: 25px;
   position: relative;
   cursor: pointer;
   transition: 0.2s ease-in-out;
@@ -209,15 +208,25 @@
   color: var(--darkGreen);
   text-shadow: 2px 2px 3px var(--white);
 }
-.singleNotif h6 {
-  position: absolute;
-  left: 0;
-  top: 0;
-  background-color: var(--darkGreen);
+
+.alertNotif {
+  margin-bottom: 3px !important;
   color: var(--white);
   font-family: var(--iranFont);
   padding: 2px 6px;
-  font-size: 16px !important;
+  font-size: 12px !important;
+  width: 100%;
+  text-align: center;
+  color: white !important;
+  border-radius: 0 !important;
+}
+
+.alertNotifSuccess {
+  background-color: green !important;
+}
+
+.alertNotifDanger {
+  background-color: red !important;
 }
 
 .burgerMenu {

@@ -153,7 +153,7 @@ const User: React.FC<{ listUser: typeUsersList; number: number }> = (props) => {
         <td>{listUser.email}</td>
         <td>{roleName}</td>
         <td>
-          {listUser.is_active === 1 ? (
+          {listUser.is_active === "1" ? (
             <AiFillCheckSquare className={classes.active} />
           ) : (
             <AiFillCloseSquare className={classes.notActive} />
@@ -167,13 +167,13 @@ const User: React.FC<{ listUser: typeUsersList; number: number }> = (props) => {
           className={classes.editUser}
           onClick={() => setShowEdit(true)}
         />
-        {listUser.is_active === 1 && (
+        {listUser.is_active === "1" && (
           <BsPersonXFill
             onClick={() => setShowActivate(true)}
             className={`${classes.deActive} ${classes.changeActivate}`}
           />
         )}
-        {listUser.is_active !== 1 && (
+        {listUser.is_active !== "1" && (
           <BsFillPersonCheckFill
             onClick={() => setShowActivate(true)}
             className={`${classes.activeUser} ${classes.changeActivate}`}
@@ -210,10 +210,10 @@ const User: React.FC<{ listUser: typeUsersList; number: number }> = (props) => {
         <Modal>
           <Row className="bg-light p-2">
             <Col className="mb-3 text-center" lg={12}>
-              {listUser.is_active === 1 && (
+              {listUser.is_active === "1" && (
                 <p>از غیر فعال کردن {listUser.name} مطمئن هستید ؟</p>
               )}
-              {listUser.is_active !== 1 && (
+              {listUser.is_active !== "1" && (
                 <p>از فعال کردن {listUser.name} مطمئن هستید ؟</p>
               )}
             </Col>

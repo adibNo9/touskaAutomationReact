@@ -9,6 +9,7 @@ import { ConnectToDB } from "../../lib/connect-to-db";
 import axios from "axios";
 import Notification from "../ui/notification";
 import Modal from "../ui/Modal";
+import { Link } from "react-router-dom";
 
 interface notificationDetails {
   status: string;
@@ -202,6 +203,9 @@ const Register: React.FC = () => {
         <Button disabled={!formValidate} variant="primary" type="submit">
           تایید و ارسال
         </Button>
+        <Link dir="rtl" className="mt-3" to="/login">
+          وارد شوید!
+        </Link>
       </Form>
       {notification && (
         <Notification

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { getData } from "../../../../lib/get-data";
 import classes from "../tasks.module.css";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 
 import Modal from "../../../ui/Modal";
 
@@ -10,24 +10,11 @@ import { RiEditFill } from "react-icons/ri";
 import { RiCloseFill } from "react-icons/ri";
 import { MdDelete } from "react-icons/md";
 import { typeTasks } from "./ReportWebTasks";
-import UpdateTaskAdmin from "./UpdateTaskAdmin";
 import axios, { AxiosRequestHeaders } from "axios";
 import { ConnectToDB } from "../../../../lib/connect-to-db";
 import Notification from "../../../ui/notification";
 import UpdateTaskDeveloper from "./UpdateTaskDeveloper";
-
-export interface typeWebTasks {
-  Assignment: string;
-  Priority: string;
-  Status: string;
-  Verification: string;
-  assignment_id: string;
-  subject: string;
-  user_id: string;
-  delivery_time: string;
-  due_on: string;
-  id: number;
-}
+import { typeWebTasks } from "./ReportWebAdmin";
 
 const ReportMasterWeb: React.FC = () => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
@@ -174,7 +161,9 @@ const ReportMasterWeb: React.FC = () => {
                 تاییدیه: {task.Verification ? task.Verification : "مشخص نشده"}
               </p>
             </div>
-
+            <div className={classes.adminEmail}>
+              <p>گیرنده: {task.assigned_to}</p>
+            </div>
             <MdDelete
               className={classes.delete}
               onClick={() => delIdHandler(task.id)}

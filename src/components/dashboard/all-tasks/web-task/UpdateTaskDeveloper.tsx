@@ -26,11 +26,13 @@ const UpdateTaskDeveloper: React.FC<{ value: typeWebTasks | undefined }> = (
 
   useEffect(() => {
     const getListUsers = async () => {
-      const value = await getData("listuser");
+      const value = await getData("list/developer/users");
       setAssignList(value.users);
     };
     getListUsers();
   }, []);
+
+  console.log("developers:", assignList);
 
   const AssignChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -48,7 +50,7 @@ const UpdateTaskDeveloper: React.FC<{ value: typeWebTasks | undefined }> = (
     event.preventDefault();
     setNotification("pending");
 
-    const connectDB = ConnectToDB("edit/task/web/superadmin");
+    const connectDB = ConnectToDB("edit/task/developer/admin");
 
     const fData = new FormData();
 
@@ -79,7 +81,7 @@ const UpdateTaskDeveloper: React.FC<{ value: typeWebTasks | undefined }> = (
 
           setTimeout(() => {
             setNotification("");
-            // window.location.reload();
+            window.location.reload();
           }, 2000);
         }
       })
