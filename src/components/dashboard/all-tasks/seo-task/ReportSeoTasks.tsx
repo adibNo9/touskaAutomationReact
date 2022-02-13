@@ -8,9 +8,11 @@ import Modal from "../../../ui/Modal";
 
 import { RiEditFill } from "react-icons/ri";
 import { RiCloseFill } from "react-icons/ri";
+import { IoMdChatboxes } from "react-icons/io";
 import { ConnectToDB } from "../../../../lib/connect-to-db";
 import axios, { AxiosRequestHeaders } from "axios";
 import Notification from "../../../ui/notification";
+import SeoComments, { comments } from "./SeoComments";
 
 export interface typeTasks {
   Assignment: string;
@@ -26,6 +28,7 @@ export interface typeTasks {
     name: string;
     url: string;
   }[];
+  comments: comments[];
   assignment_id: number;
   id: number;
 }
@@ -40,6 +43,9 @@ const ReportSeoTasks: React.FC = () => {
   const [title, setTitle] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [valueBox, setValueBox] = useState<string>("");
+  const [commentsModal, setCommentsModal] = useState<boolean>(false);
+  const [commentsDetails, setCommentsDetails] = useState<comments[]>([]);
+  const [updateDetails, setUpdateDetails] = useState<boolean>(false);
 
   useEffect(() => {
     const getTasks = async () => {
@@ -48,6 +54,8 @@ const ReportSeoTasks: React.FC = () => {
     };
     getTasks();
   }, []);
+
+  console.log("tasks:", tasks);
 
   const history = useHistory();
   const pathName = history.location.pathname.split("/");
@@ -68,6 +76,12 @@ const ReportSeoTasks: React.FC = () => {
   const closeMOdalHandler = () => {
     setId(0);
     setShowModal(false);
+  };
+
+  const commentsHandler = (comments: comments[], id: number) => {
+    setCommentsModal(true);
+    setCommentsDetails(comments);
+    setId(id);
   };
 
   const submitHandler = (event: React.FormEvent) => {
@@ -169,14 +183,28 @@ const ReportSeoTasks: React.FC = () => {
               <p>تاریخ ارسال: {task.delivery_time}</p>
               <p>تاریخ تحویل: {task.due_on}</p>
             </div>
-            <div className={classes.download}>
-              <Button variant="info">
-                <a href={task.file[0].url}>دانلود فایل</a>
-              </Button>
-            </div>
+            {task.file.length > 0 && (
+              <div className={classes.download}>
+                <Button variant="info">
+                  <a href={task.file[0].url}>دانلود فایل</a>
+                </Button>
+              </div>
+            )}
+            {task.file.length === 0 && (
+              <div className={classes.download}>
+                <Button variant="danger">
+                  <a>بدون فایل</a>
+                </Button>
+              </div>
+            )}
             <div className={classes.status}>
               <RiEditFill
                 onClick={() => showMOdalHandler(task.id, task.subject)}
+              />
+            </div>
+            <div className={classes.commentIcon}>
+              <IoMdChatboxes
+                onClick={() => commentsHandler(task.comments, task.id)}
               />
             </div>
             <div className={classes.statusText}>
@@ -228,6 +256,17 @@ const ReportSeoTasks: React.FC = () => {
           <RiCloseFill
             className={classes.closeModal}
             onClick={closeMOdalHandler}
+          />
+        </Modal>
+      )}
+      {commentsModal && (
+        <Modal>
+          <div className={classes.modal}>
+            <SeoComments comments={commentsDetails} id={id} />
+          </div>
+          <RiCloseFill
+            className={classes.closeModal}
+            onClick={() => setCommentsModal(false)}
           />
         </Modal>
       )}

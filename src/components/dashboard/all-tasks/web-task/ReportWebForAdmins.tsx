@@ -145,11 +145,20 @@ const ReportWebForAdmins: React.FC = () => {
               <p>تاریخ ارسال: {task.delivery_time}</p>
               <p>تاریخ تحویل: {task.due_on}</p>
             </div>
-            <div className={classes.download}>
-              <Button variant="info">
-                <a href={task.file[0].url}>دانلود فایل</a>
-              </Button>
-            </div>
+            {task.file.length > 0 && (
+              <div className={classes.download}>
+                <Button variant="info">
+                  <a href={task.file[0].url}>دانلود فایل</a>
+                </Button>
+              </div>
+            )}
+            {task.file.length === 0 && (
+              <div className={classes.download}>
+                <Button variant="danger">
+                  <a>بدون فایل</a>
+                </Button>
+              </div>
+            )}
             <div className={classes.status}>
               <RiEditFill onClick={() => showMOdalHandler(task)} />
             </div>

@@ -24,6 +24,7 @@ const CreateWebTask: React.FC = () => {
   const [assignSelected, setAssignSelected] = useState<string>("");
   const [verificationSelected, setVerificationSelected] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | undefined>();
+  const [commentVal, setCommentVal] = useState<string>("");
 
   useEffect(() => {
     const getListUsers = async () => {
@@ -61,6 +62,11 @@ const CreateWebTask: React.FC = () => {
   const assignmentChangeHandelr = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
     setAssignmentVal(value);
+  };
+
+  const commentChangeHandelr = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.currentTarget.value;
+    setCommentVal(value);
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -205,78 +211,20 @@ const CreateWebTask: React.FC = () => {
           <Form.Control name="فایل" type="file" onChange={handleChange} />
         </Form.Group>
 
-        {/* <Form.Group className="mt-3" controlId="formBasicDeliveryTime">
-          <Form.Label className="mx-3">زمان ارسال</Form.Label>
-          <DatePicker
-            value={deliveryTime}
-            onChange={setDeliveryTime}
-            inputPlaceholder="انتخاب زمان تحویل"
-            locale="fa"
-            calendarClassName={classes.calendar}
-            inputClassName={classes.InputCalendar}
-            shouldHighlightWeekends
-          />
-        </Form.Group> */}
-
-        {/* <Form.Group className="mt-3" controlId="formBasicDeliveryPriority">
-          <Form.Label className="mx-3">اولویت</Form.Label>
-          <Form.Select
-            value={valueBox}
-            onChange={changeHandler}
-            aria-label="Default select example"
-          >
-            <option>انتخاب اولویت ...</option>
-            <option value="0">اورژانسی</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </Form.Select>
-        </Form.Group> */}
-        {/* <Form.Group className="mt-3" controlId="formBasicDeliveryAssignId">
-          <Form.Label className="mx-3">اختصاص به</Form.Label>
-          <Form.Select
-            value={assignSelected}
-            onChange={AssignChangeHandler}
-            aria-label="Default select example"
-          >
-            <option>انتخاب کاربر ...</option>
-            {assignList.map((item) => (
-              <option value={`${item.id}`} key={item.id}>
-                {item.email}({item.name})
-              </option>
-            ))}
-          </Form.Select>
-        </Form.Group> */}
-
-        {/* <Form.Group
-          className={classes.formGroupUpdate}
-          controlId="formBasicDeliveryAssignId"
+        <Form.Group
+          className={classes.formGroup}
+          controlId="formBasicAssignment"
         >
-          <Form.Label className="mx-3">Verification</Form.Label>
-          <Form.Select
-            value={verificationSelected}
-            onChange={verificationChangeHandelr}
-            aria-label="Default select example"
-          >
-            <option>انتخاب Verification ...</option>
-            <option value="pending">pending</option>
-            <option value="accept">accept</option>
-            <option value="reject">reject</option>
-          </Form.Select>
-        </Form.Group> */}
-
-        {/* <Form.Group className="mt-3" controlId="formBasicDeliveryTime">
-          <Form.Label className="mx-3">مهلت زمان تحویل</Form.Label>
-          <DatePicker
-            value={dueonTime}
-            onChange={setDueonTime}
-            inputPlaceholder="انتخاب مهلت تحویل"
-            locale="fa"
-            calendarClassName={classes.calendar}
-            inputClassName={classes.InputCalendar}
-            shouldHighlightWeekends
+          <Form.Label>دیدگاه</Form.Label>
+          <Form.Control
+            type="text"
+            as="textarea"
+            rows={5}
+            placeholder="دیدگاه"
+            value={commentVal}
+            onChange={commentChangeHandelr}
           />
-        </Form.Group> */}
+        </Form.Group>
         <div className={classes.actions}>
           <button disabled={!formValidate}>تایید</button>
         </div>

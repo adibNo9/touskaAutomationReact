@@ -30,6 +30,7 @@ export interface userType {
     image_profile: string | undefined;
     role_id: string;
     is_master: null | string;
+    id: number;
   };
 }
 
@@ -52,6 +53,7 @@ const Dashboard: React.FC = () => {
       image_profile: "",
       role_id: "0",
       is_master: null,
+      id: 0,
     },
   });
 

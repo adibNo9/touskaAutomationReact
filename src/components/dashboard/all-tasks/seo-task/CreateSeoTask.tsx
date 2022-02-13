@@ -16,6 +16,7 @@ const CreateSeoTask: React.FC = () => {
 
   const [subjectVal, setSubjectVal] = useState<string>("");
   const [assignmentVal, setAssignmentVal] = useState<string>("");
+  const [commentVal, setCommentVal] = useState<string>("");
   const [deliveryTime, setDeliveryTime] = useState<DayValue>(null);
   const [dueonTime, setDueonTime] = useState<DayValue>(null);
 
@@ -61,6 +62,11 @@ const CreateSeoTask: React.FC = () => {
   const assignmentChangeHandelr = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
     setAssignmentVal(value);
+  };
+
+  const commentChangeHandelr = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.currentTarget.value;
+    setCommentVal(value);
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -114,6 +120,9 @@ const CreateSeoTask: React.FC = () => {
     fData.append("assignment_id", assignSelected);
     fData.append("Verification", verificationSelected);
     fData.append("file", selectedFile ? selectedFile : "");
+    {
+      commentVal !== "" && fData.append("comment", commentVal);
+    }
 
     const headers: AxiosRequestHeaders = {
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -282,6 +291,22 @@ const CreateSeoTask: React.FC = () => {
             shouldHighlightWeekends
           />
         </Form.Group>
+
+        <Form.Group
+          className={classes.formGroup}
+          controlId="formBasicAssignment"
+        >
+          <Form.Label>دیدگاه</Form.Label>
+          <Form.Control
+            type="text"
+            as="textarea"
+            rows={5}
+            placeholder="دیدگاه"
+            value={commentVal}
+            onChange={commentChangeHandelr}
+          />
+        </Form.Group>
+
         <div className={classes.actions}>
           <button disabled={!formValidate}>تایید</button>
         </div>

@@ -8,12 +8,14 @@ import Modal from "../../../ui/Modal";
 
 import { RiEditFill } from "react-icons/ri";
 import { RiCloseFill } from "react-icons/ri";
+import { IoMdChatboxes } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import { typeTasks } from "./ReportSeoTasks";
 import UpdateTaskAdmin from "./UpdateTaskAdmin";
 import axios, { AxiosRequestHeaders } from "axios";
 import { ConnectToDB } from "../../../../lib/connect-to-db";
 import Notification from "../../../ui/notification";
+import SeoComments, { comments } from "./SeoComments";
 
 const ReportSeoAdmin: React.FC = () => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
@@ -25,6 +27,8 @@ const ReportSeoAdmin: React.FC = () => {
   const [selectedTask, setSelectedTask] = useState<typeTasks>();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [delModal, setDelModal] = useState<boolean>(false);
+  const [commentsModal, setCommentsModal] = useState<boolean>(false);
+  const [commentsDetails, setCommentsDetails] = useState<comments[]>([]);
 
   useEffect(() => {
     const getTasks = async () => {
@@ -53,6 +57,12 @@ const ReportSeoAdmin: React.FC = () => {
   const delIdHandler = (id: number) => {
     setDelId(id);
     setDelModal(true);
+  };
+
+  const commentsHandler = (comments: comments[], id: number) => {
+    setCommentsModal(true);
+    setCommentsDetails(comments);
+    setId(id);
   };
 
   const deleteHandler = () => {
@@ -145,13 +155,27 @@ const ReportSeoAdmin: React.FC = () => {
               <p>تاریخ ارسال: {task.delivery_time}</p>
               <p>تاریخ تحویل: {task.due_on}</p>
             </div>
-            <div className={classes.download}>
-              <Button variant="info">
-                <a href={task.file[0].url}>دانلود فایل</a>
-              </Button>
-            </div>
+            {task.file.length > 0 && (
+              <div className={classes.download}>
+                <Button variant="info">
+                  <a href={task.file[0].url}>دانلود فایل</a>
+                </Button>
+              </div>
+            )}
+            {task.file.length === 0 && (
+              <div className={classes.download}>
+                <Button variant="danger">
+                  <a>بدون فایل</a>
+                </Button>
+              </div>
+            )}
             <div className={classes.status}>
               <RiEditFill onClick={() => showMOdalHandler(task)} />
+            </div>
+            <div className={classes.commentIcon}>
+              <IoMdChatboxes
+                onClick={() => commentsHandler(task.comments, task.id)}
+              />
             </div>
             <div className={classes.statusText}>
               <p>وضعیت: {task.Status ? task.Status : "مشخص نشده"}</p>
@@ -205,6 +229,17 @@ const ReportSeoAdmin: React.FC = () => {
           <RiCloseFill
             className={classes.closeModal}
             onClick={closeMOdalHandler}
+          />
+        </Modal>
+      )}
+      {commentsModal && (
+        <Modal>
+          <div className={classes.modal}>
+            <SeoComments comments={commentsDetails} id={id} />
+          </div>
+          <RiCloseFill
+            className={classes.closeModal}
+            onClick={() => setCommentsModal(false)}
           />
         </Modal>
       )}
