@@ -1,12 +1,15 @@
+import React, { Suspense } from "react";
+import LoadingSpinner from "../../../ui/LoadingSpinner";
 import { NavLink, Route } from "react-router-dom";
 import classes from "../tasks.module.css";
-import CreateWebTask from "./CreateWebTask";
-import ReportWebAdmin from "./ReportWebAdmin";
-import ReportWebTasks from "./ReportWebTasks";
-import ReportMasterWeb from "./ReportMasterWeb";
 
 import { userType } from "../../Dashboard";
-import ReportWebForAdmins from "./ReportWebForAdmins";
+
+const CreateWebTask = React.lazy(() => import("./CreateWebTask"));
+const ReportWebAdmin = React.lazy(() => import("./ReportWebAdmin"));
+const ReportWebTasks = React.lazy(() => import("./ReportWebTasks"));
+const ReportMasterWeb = React.lazy(() => import("./ReportMasterWeb"));
+const ReportWebForAdmins = React.lazy(() => import("./ReportWebForAdmins"));
 
 const WebTask: React.FC<{ userData: userType }> = (props) => {
   const { userData } = props;
@@ -57,33 +60,43 @@ const WebTask: React.FC<{ userData: userType }> = (props) => {
         )}
       </div>
       <div className={classes.content}>
-        {((userData.user.role_id === "3" && userData.user.is_master === "1") ||
-          userData.user.role_id === "1" ||
-          userData.user.role_id === "2") && (
-          <Route path="/dashboard/task-web/create">
-            <CreateWebTask />
-          </Route>
-        )}
+        <Suspense
+          fallback={
+            <div className="spinner">
+              <LoadingSpinner />
+            </div>
+          }
+        >
+          {((userData.user.role_id === "3" &&
+            userData.user.is_master === "1") ||
+            userData.user.role_id === "1" ||
+            userData.user.role_id === "2") && (
+            <Route path="/dashboard/task-web/create">
+              <CreateWebTask />
+            </Route>
+          )}
 
-        <Route path="/dashboard/task-web/reports">
-          <ReportWebTasks />
-        </Route>
-        {userData.user.role_id === "1" && (
-          <Route path="/dashboard/task-web/admin-reports">
-            <ReportWebAdmin />
+          <Route path="/dashboard/task-web/reports">
+            <ReportWebTasks />
           </Route>
-        )}
-        {userData.user.role_id === "3" && userData.user.is_master === "1" && (
-          <Route path="/dashboard/task-web/developer-reports">
-            <ReportMasterWeb />
-          </Route>
-        )}
-        {((userData.user.role_id === "3" && userData.user.is_master === "1") ||
-          userData.user.role_id === "2") && (
-          <Route path="/dashboard/task-web/tasks-reports">
-            <ReportWebForAdmins />
-          </Route>
-        )}
+          {userData.user.role_id === "1" && (
+            <Route path="/dashboard/task-web/admin-reports">
+              <ReportWebAdmin userEmail={userData.user.email} />
+            </Route>
+          )}
+          {userData.user.role_id === "3" && userData.user.is_master === "1" && (
+            <Route path="/dashboard/task-web/developer-reports">
+              <ReportMasterWeb userEmail={userData.user.email} />
+            </Route>
+          )}
+          {((userData.user.role_id === "3" &&
+            userData.user.is_master === "1") ||
+            userData.user.role_id === "2") && (
+            <Route path="/dashboard/task-web/tasks-reports">
+              <ReportWebForAdmins />
+            </Route>
+          )}
+        </Suspense>
       </div>
     </section>
   );

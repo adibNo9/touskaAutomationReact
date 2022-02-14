@@ -1,11 +1,7 @@
 import classes from "./timesheet.module.css";
 
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
-import DatePicker, {
-  DayValue,
-  Calendar,
-  Day,
-} from "react-modern-calendar-datepicker";
+import { DayValue, Calendar } from "react-modern-calendar-datepicker";
 import { useEffect, useState } from "react";
 import Modal from "../../ui/Modal";
 

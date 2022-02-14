@@ -1,9 +1,13 @@
+import React, { Suspense } from "react";
+
 import { NavLink, Route } from "react-router-dom";
+import LoadingSpinner from "../../../ui/LoadingSpinner";
 import { userType } from "../../Dashboard";
 import classes from "../tasks.module.css";
-import CreateSeoTask from "./CreateSeoTask";
-import ReportSeoAdmin from "./ReportSeoAdmin";
-import ReportSeoTasks from "./ReportSeoTasks";
+
+const CreateSeoTask = React.lazy(() => import("./CreateSeoTask"));
+const ReportSeoAdmin = React.lazy(() => import("./ReportSeoAdmin"));
+const ReportSeoTasks = React.lazy(() => import("./ReportSeoTasks"));
 
 const SeoTask: React.FC<{ userData: userType }> = (props) => {
   const { userData } = props;
@@ -36,19 +40,27 @@ const SeoTask: React.FC<{ userData: userType }> = (props) => {
         )}
       </div>
       <div className={classes.content}>
-        {(userData.user.role_id === "1" || userData.user.role_id === "2") && (
-          <Route path="/dashboard/task-seo/create">
-            <CreateSeoTask />
+        <Suspense
+          fallback={
+            <div className="spinner">
+              <LoadingSpinner />
+            </div>
+          }
+        >
+          {(userData.user.role_id === "1" || userData.user.role_id === "2") && (
+            <Route path="/dashboard/task-seo/create">
+              <CreateSeoTask />
+            </Route>
+          )}
+          <Route path="/dashboard/task-seo/reports">
+            <ReportSeoTasks />
           </Route>
-        )}
-        <Route path="/dashboard/task-seo/reports">
-          <ReportSeoTasks />
-        </Route>
-        {(userData.user.role_id === "1" || userData.user.role_id === "2") && (
-          <Route path="/dashboard/task-seo/admin-reports">
-            <ReportSeoAdmin />
-          </Route>
-        )}
+          {(userData.user.role_id === "1" || userData.user.role_id === "2") && (
+            <Route path="/dashboard/task-seo/admin-reports">
+              <ReportSeoAdmin userEmail={userData.user.email} />
+            </Route>
+          )}
+        </Suspense>
       </div>
     </section>
   );

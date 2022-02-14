@@ -1,11 +1,8 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Form } from "react-bootstrap";
 import classes from "../tasks.module.css";
 
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
-import DatePicker, { DayValue } from "react-modern-calendar-datepicker";
-import { getData } from "../../../../lib/get-data";
-import { typeUsersList } from "../../users/AllUsers";
 import axios, { AxiosRequestHeaders } from "axios";
 import { ConnectToDB } from "../../../../lib/connect-to-db";
 import Notification from "../../../ui/notification";
@@ -16,43 +13,9 @@ const CreateWebTask: React.FC = () => {
 
   const [subjectVal, setSubjectVal] = useState<string>("");
   const [assignmentVal, setAssignmentVal] = useState<string>("");
-  const [deliveryTime, setDeliveryTime] = useState<DayValue>(null);
-  const [dueonTime, setDueonTime] = useState<DayValue>(null);
 
-  const [valueBox, setValueBox] = useState<string>("");
-  const [assignList, setAssignList] = useState<typeUsersList[]>([]);
-  const [assignSelected, setAssignSelected] = useState<string>("");
-  const [verificationSelected, setVerificationSelected] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | undefined>();
   const [commentVal, setCommentVal] = useState<string>("");
-
-  useEffect(() => {
-    const getListUsers = async () => {
-      const value = await getData("listuser");
-      setAssignList(value.users);
-    };
-    getListUsers();
-  }, []);
-
-  const changeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-
-    setValueBox(value);
-  };
-
-  const AssignChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-
-    setAssignSelected(value);
-  };
-
-  const verificationChangeHandelr = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const value = e.target.value;
-
-    setVerificationSelected(value);
-  };
 
   const subjectChangeHandelr = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
@@ -88,13 +51,6 @@ const CreateWebTask: React.FC = () => {
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
-    console.log("subjectVal", subjectVal);
-    console.log("Assignment", assignmentVal);
-    console.log("deliveryTime", deliveryTime);
-    console.log("dueonTime", dueonTime);
-    console.log("valueBox", valueBox);
-    console.log("assignSelected", assignSelected);
-
     setNotification("pending");
 
     const connectDB = ConnectToDB("create/task/web");
@@ -103,17 +59,7 @@ const CreateWebTask: React.FC = () => {
 
     fData.append("subject", subjectVal);
     fData.append("Assignment", assignmentVal);
-    // fData.append(
-    //   "delivery_time",
-    //   `${deliveryTime?.year}/${deliveryTime?.month}/${deliveryTime?.day}`
-    // );
-    // fData.append(
-    //   "due_on",
-    //   `${dueonTime?.year}/${dueonTime?.month}/${dueonTime?.day}`
-    // );
-    // fData.append("Priority", valueBox);
-    // fData.append("assignment_id", assignSelected);
-    // fData.append("Status", verificationSelected);
+    fData.append("comment", commentVal);
     fData.append("file", selectedFile ? selectedFile : "");
 
     const headers: AxiosRequestHeaders = {

@@ -1,10 +1,4 @@
-import React, {
-  ChangeEvent,
-  FormEventHandler,
-  Fragment,
-  useContext,
-  useState,
-} from "react";
+import React, { ChangeEvent, Fragment, useContext, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import classes from "./auth.module.css";
 

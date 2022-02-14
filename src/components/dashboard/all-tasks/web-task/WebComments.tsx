@@ -6,7 +6,7 @@ import { RiAddBoxFill } from "react-icons/ri";
 import { ConnectToDB } from "../../../../lib/connect-to-db";
 import axios, { AxiosRequestHeaders } from "axios";
 import Notification from "../../../ui/notification";
-import SeoReplies from "./SeoReplies";
+import WebReplies from "./WebReplies";
 
 export interface comments {
   comment: string;
@@ -31,7 +31,7 @@ export interface comments {
   }[];
 }
 
-const SeoComments: React.FC<{
+const WebComments: React.FC<{
   comments: comments[];
   id: number;
   update: () => void;
@@ -53,13 +53,11 @@ const SeoComments: React.FC<{
     formValidate = true;
   }
 
-  let seoReplies = [];
-
-  console.log("comments:", props.comments);
+  let webReplies = [];
 
   for (let i = 0; i < props.comments.length; i++) {
-    seoReplies[i] = (
-      <SeoReplies
+    webReplies[i] = (
+      <WebReplies
         comments={props.comments[i]}
         id={props.id}
         update={props.update}
@@ -75,7 +73,7 @@ const SeoComments: React.FC<{
 
     const fData = new FormData();
 
-    fData.append("type", "1");
+    fData.append("type", "2");
     fData.append("task_id", JSON.stringify(props.id));
     fData.append("comment", commentVal);
 
@@ -148,7 +146,7 @@ const SeoComments: React.FC<{
   return (
     <div className={classes.comments}>
       <div className={classes.oldComments}>
-        {props.comments.length > 0 && seoReplies}
+        {props.comments.length > 0 && webReplies}
       </div>
       <RiAddBoxFill
         className={classes.btnCmnt}
@@ -190,4 +188,4 @@ const SeoComments: React.FC<{
   );
 };
 
-export default SeoComments;
+export default WebComments;

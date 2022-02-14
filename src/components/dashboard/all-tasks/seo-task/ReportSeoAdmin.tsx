@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { getData } from "../../../../lib/get-data";
 import classes from "../tasks.module.css";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 
 import Modal from "../../../ui/Modal";
 
@@ -17,7 +17,7 @@ import { ConnectToDB } from "../../../../lib/connect-to-db";
 import Notification from "../../../ui/notification";
 import SeoComments, { comments } from "./SeoComments";
 
-const ReportSeoAdmin: React.FC = () => {
+const ReportSeoAdmin: React.FC<{ userEmail: string }> = (props) => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
   const [tasks, setTasks] = useState<typeTasks[]>([]);
@@ -30,17 +30,31 @@ const ReportSeoAdmin: React.FC = () => {
   const [commentsModal, setCommentsModal] = useState<boolean>(false);
   const [commentsDetails, setCommentsDetails] = useState<comments[]>([]);
 
+  const [taskId, setTaskId] = useState<string>("");
+
+  const getTasks = async () => {
+    const data = await getData("get/tasks/Assigned/admin");
+    setTasks(data.tasks);
+    console.log("taskssssss", data.tasks);
+    if (id !== 0) {
+      const value = data.tasks.filter((task: typeTasks) => task.id === id);
+      setCommentsDetails(value[0].comments);
+      console.log("value[0].comments:", value[0].comments);
+      console.log("newTaks", tasks);
+    }
+  };
+
+  const history = useHistory();
+
   useEffect(() => {
-    const getTasks = async () => {
+    const tasksHandler = async () => {
       const data = await getData("get/tasks/Assigned/admin");
       setTasks(data.tasks);
     };
-    getTasks();
-  }, []);
-
-  const history = useHistory();
-  const pathName = history.location.pathname.split("/");
-  const taskId = pathName[pathName.length - 1];
+    tasksHandler();
+    const pathName = history.location.pathname.split("/");
+    setTaskId(pathName[pathName.length - 1]);
+  }, [history.location.pathname]);
 
   console.log("tasks", tasks);
 
@@ -63,6 +77,11 @@ const ReportSeoAdmin: React.FC = () => {
     setCommentsModal(true);
     setCommentsDetails(comments);
     setId(id);
+    setTaskId("");
+  };
+
+  const updateTasks = () => {
+    getTasks();
   };
 
   const deleteHandler = () => {
@@ -143,7 +162,7 @@ const ReportSeoAdmin: React.FC = () => {
         {tasks.map((task) => (
           <div
             className={
-              `${task.id}` === taskId
+              taskId.replace("msg", "") === `${task.id}`
                 ? `${classes.activeTask} ${classes.singleTask}`
                 : classes.singleTask
             }
@@ -165,7 +184,7 @@ const ReportSeoAdmin: React.FC = () => {
             {task.file.length === 0 && (
               <div className={classes.download}>
                 <Button variant="danger">
-                  <a>بدون فایل</a>
+                  <p>بدون فایل</p>
                 </Button>
               </div>
             )}
@@ -176,6 +195,7 @@ const ReportSeoAdmin: React.FC = () => {
               <IoMdChatboxes
                 onClick={() => commentsHandler(task.comments, task.id)}
               />
+              {taskId === `${task.id}msg` && <h6>جدید</h6>}
             </div>
             <div className={classes.statusText}>
               <p>وضعیت: {task.Status ? task.Status : "مشخص نشده"}</p>
@@ -184,13 +204,20 @@ const ReportSeoAdmin: React.FC = () => {
               </p>
             </div>
             <div className={classes.adminEmail}>
-              <p>گیرنده: {task.assigned_to}</p>
+              <p className={classes.assignedTo}>گیرنده: {task.assigned_to}</p>
+              {task.admin_task_email !== props.userEmail && (
+                <p className={classes.assignedFrom}>
+                  فرستنده: {task.admin_task_email}
+                </p>
+              )}
             </div>
 
-            <MdDelete
-              className={classes.delete}
-              onClick={() => delIdHandler(task.id)}
-            />
+            {task.admin_task_email === props.userEmail && (
+              <MdDelete
+                className={classes.delete}
+                onClick={() => delIdHandler(task.id)}
+              />
+            )}
           </div>
         ))}
       </div>
@@ -235,7 +262,11 @@ const ReportSeoAdmin: React.FC = () => {
       {commentsModal && (
         <Modal>
           <div className={classes.modal}>
-            <SeoComments comments={commentsDetails} id={id} />
+            <SeoComments
+              comments={commentsDetails}
+              id={id}
+              update={updateTasks}
+            />
           </div>
           <RiCloseFill
             className={classes.closeModal}

@@ -45,21 +45,35 @@ const ReportSeoTasks: React.FC = () => {
   const [valueBox, setValueBox] = useState<string>("");
   const [commentsModal, setCommentsModal] = useState<boolean>(false);
   const [commentsDetails, setCommentsDetails] = useState<comments[]>([]);
-  const [updateDetails, setUpdateDetails] = useState<boolean>(false);
 
-  useEffect(() => {
-    const getTasks = async () => {
-      const data = await getData("get/tasks/Assigned");
-      setTasks(data.tasks);
-    };
-    getTasks();
-  }, []);
+  const [taskId, setTaskId] = useState<string>("");
 
-  console.log("tasks:", tasks);
+  const getTasks = async () => {
+    const data = await getData("get/tasks/Assigned/admin");
+    setTasks(data.tasks);
+    console.log("taskssssss", data.tasks);
+    if (id !== 0) {
+      const value = data.tasks.filter((task: typeTasks) => task.id === id);
+      setCommentsDetails(value[0].comments);
+      console.log("value[0].comments:", value[0].comments);
+      console.log("newTaks", tasks);
+    }
+  };
 
   const history = useHistory();
-  const pathName = history.location.pathname.split("/");
-  const taskId = pathName[pathName.length - 1];
+
+  useEffect(() => {
+    const tasksHandler = async () => {
+      const data = await getData("get/tasks/Assigned/admin");
+      setTasks(data.tasks);
+    };
+    tasksHandler();
+
+    const pathName = history.location.pathname.split("/");
+    setTaskId(pathName[pathName.length - 1]);
+  }, [history.location.pathname]);
+
+  console.log("tasks:", tasks);
 
   const changeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -82,6 +96,11 @@ const ReportSeoTasks: React.FC = () => {
     setCommentsModal(true);
     setCommentsDetails(comments);
     setId(id);
+    setTaskId("");
+  };
+
+  const updateTasks = () => {
+    getTasks();
   };
 
   const submitHandler = (event: React.FormEvent) => {
@@ -171,7 +190,7 @@ const ReportSeoTasks: React.FC = () => {
         {tasks.map((task) => (
           <div
             className={
-              `${task.id}` === taskId
+              taskId.replace("msg", "") === `${task.id}`
                 ? `${classes.activeTask} ${classes.singleTask}`
                 : classes.singleTask
             }
@@ -193,7 +212,7 @@ const ReportSeoTasks: React.FC = () => {
             {task.file.length === 0 && (
               <div className={classes.download}>
                 <Button variant="danger">
-                  <a>بدون فایل</a>
+                  <p>بدون فایل</p>
                 </Button>
               </div>
             )}
@@ -206,6 +225,7 @@ const ReportSeoTasks: React.FC = () => {
               <IoMdChatboxes
                 onClick={() => commentsHandler(task.comments, task.id)}
               />
+              {taskId === `${task.id}msg` && <h6>جدید</h6>}
             </div>
             <div className={classes.statusText}>
               <p>وضعیت: {task.Status ? task.Status : "مشخص نشده"}</p>
@@ -262,7 +282,11 @@ const ReportSeoTasks: React.FC = () => {
       {commentsModal && (
         <Modal>
           <div className={classes.modal}>
-            <SeoComments comments={commentsDetails} id={id} />
+            <SeoComments
+              comments={commentsDetails}
+              id={id}
+              update={updateTasks}
+            />
           </div>
           <RiCloseFill
             className={classes.closeModal}

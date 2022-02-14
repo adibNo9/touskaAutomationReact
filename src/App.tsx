@@ -1,4 +1,4 @@
-import Header from "./components/header/Header";
+import React, { Suspense } from "react";
 
 import {
   Route,
@@ -6,35 +6,42 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
-
-import Dashboard from "./components/dashboard/Dashboard";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import AutoContextProvider, { AutoContext } from "./store/auto-context";
-import { useContext } from "react";
-import Profile from "./components/dashboard/profile/Profile";
 import Layout from "./components/header/Layout";
+import LoadingSpinner from "./components/ui/LoadingSpinner";
+
+const Login = React.lazy(() => import("./components/auth/Login"));
+const Register = React.lazy(() => import("./components/auth/Register"));
+const Dashboard = React.lazy(() => import("./components/dashboard/Dashboard"));
 
 function App() {
   const token = localStorage.getItem("token");
   console.log("token", token === undefined);
   return (
     <Router>
-      {/* <Header /> */}
       <Layout>
-        <Switch>
-          <Route path="/" exact>
-            <Redirect to="/dashboard" />
-          </Route>
-          <Route path="/register">
-            {!token ? <Register /> : <Dashboard />}
-          </Route>
-          <Route path="/login">{!token ? <Login /> : <Dashboard />}</Route>
+        <Suspense
+          fallback={
+            <div className="spinner">
+              <LoadingSpinner />
+            </div>
+          }
+        >
+          <Switch>
+            <Route path="/" exact>
+              <Redirect to="/dashboard" />
+            </Route>
+            <Route path="/register">
+              {!token ? <Register /> : <Dashboard />}
+            </Route>
+            <Route path="/login">{!token ? <Login /> : <Dashboard />}</Route>
 
-          <Route path="/dashboard">{!token ? <Login /> : <Dashboard />}</Route>
-        </Switch>
+            <Route path="/dashboard">
+              {!token ? <Login /> : <Dashboard />}
+            </Route>
+          </Switch>
+        </Suspense>
       </Layout>
       <h2>token: {token}</h2>
     </Router>

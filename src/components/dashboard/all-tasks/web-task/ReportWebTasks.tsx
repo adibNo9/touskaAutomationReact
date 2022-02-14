@@ -11,6 +11,8 @@ import { RiCloseFill } from "react-icons/ri";
 import { ConnectToDB } from "../../../../lib/connect-to-db";
 import axios, { AxiosRequestHeaders } from "axios";
 import Notification from "../../../ui/notification";
+import WebComments, { comments } from "./WebComments";
+import { IoMdChatboxes } from "react-icons/io";
 
 export interface typeTasks {
   Assignment: string;
@@ -26,6 +28,7 @@ export interface typeTasks {
     name: string;
     url: string;
   }[];
+  comments: comments[];
   assignment_id: number;
   id: number;
 }
@@ -41,19 +44,40 @@ const ReportWebTasks: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [valueBox, setValueBox] = useState<string>("");
 
+  const [commentsModal, setCommentsModal] = useState<boolean>(false);
+  const [idCmnt, setIdCmnt] = useState<number>(0);
+  const [commentsDetails, setCommentsDetails] = useState<comments[]>([]);
+
+  const [taskId, setTaskId] = useState<string>("");
+
+  const getTasks = async () => {
+    const data = await getData("task/assigned/developer");
+    setTasks(data.tasks);
+    if (idCmnt !== 0) {
+      const value = data.tasks.filter((task: typeTasks) => task.id === idCmnt);
+      setCommentsDetails(value[0].comments);
+      console.log("value[0].comments:", value);
+    }
+  };
+
+  const history = useHistory();
+
   useEffect(() => {
-    const getTasks = async () => {
+    const getTask = async () => {
       const data = await getData("task/assigned/developer");
       setTasks(data.tasks);
     };
+    getTask();
+
+    const pathName = history.location.pathname.split("/");
+    setTaskId(pathName[pathName.length - 1]);
+  }, [history.location.pathname]);
+
+  const updateTasks = () => {
     getTasks();
-  }, []);
+  };
 
   console.log("singleTasks:", tasks);
-
-  const history = useHistory();
-  const pathName = history.location.pathname.split("/");
-  const taskId = pathName[pathName.length - 1];
 
   const changeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -70,6 +94,13 @@ const ReportWebTasks: React.FC = () => {
   const closeMOdalHandler = () => {
     setId(0);
     setShowModal(false);
+  };
+
+  const commentsHandler = (comments: comments[], id: number) => {
+    setCommentsModal(true);
+    setCommentsDetails(comments);
+    setIdCmnt(id);
+    setTaskId("");
   };
 
   const submitHandler = (event: React.FormEvent) => {
@@ -159,7 +190,7 @@ const ReportWebTasks: React.FC = () => {
         {tasks.map((task) => (
           <div
             className={
-              `${task.id}` === taskId
+              taskId.replace("msg", "") === `${task.id}`
                 ? `${classes.activeTask} ${classes.singleTask}`
                 : classes.singleTask
             }
@@ -181,7 +212,7 @@ const ReportWebTasks: React.FC = () => {
             {task.file.length === 0 && (
               <div className={classes.download}>
                 <Button variant="danger">
-                  <a>بدون فایل</a>
+                  <p>بدون فایل</p>
                 </Button>
               </div>
             )}
@@ -189,6 +220,13 @@ const ReportWebTasks: React.FC = () => {
               <RiEditFill
                 onClick={() => showMOdalHandler(task.id, task.subject)}
               />
+            </div>
+            <div
+              className={classes.commentIcon}
+              onClick={() => commentsHandler(task.comments, task.id)}
+            >
+              <IoMdChatboxes />
+              {taskId === `${task.id}msg` && <h6>جدید</h6>}
             </div>
             <div className={classes.statusText}>
               <p>وضعیت: {task.Status ? task.Status : "مشخص نشده"}</p>
@@ -239,6 +277,21 @@ const ReportWebTasks: React.FC = () => {
           <RiCloseFill
             className={classes.closeModal}
             onClick={closeMOdalHandler}
+          />
+        </Modal>
+      )}
+      {commentsModal && (
+        <Modal>
+          <div className={classes.modal}>
+            <WebComments
+              comments={commentsDetails}
+              id={idCmnt}
+              update={updateTasks}
+            />
+          </div>
+          <RiCloseFill
+            className={classes.closeModal}
+            onClick={() => setCommentsModal(false)}
           />
         </Modal>
       )}

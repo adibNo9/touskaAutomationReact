@@ -1,4 +1,4 @@
-import { comments } from "./SeoComments";
+import { comments } from "./WebComments";
 import classes from "../tasks.module.css";
 
 import { BsReplyFill } from "react-icons/bs";
@@ -10,7 +10,7 @@ import { Form, Button } from "react-bootstrap";
 import Notification from "../../../ui/notification";
 import { MdOutlineDelete } from "react-icons/md";
 
-const SeoReplies: React.FC<{
+const WebReplies: React.FC<{
   comments: comments;
   id: number;
   update: () => void;
@@ -54,7 +54,7 @@ const SeoReplies: React.FC<{
 
     const fData = new FormData();
 
-    fData.append("type", "1");
+    fData.append("type", "2");
     fData.append("task_id", JSON.stringify(props.id));
     fData.append("comment", replyVal);
     fData.append("reply_to", JSON.stringify(replyId));
@@ -73,15 +73,13 @@ const SeoReplies: React.FC<{
         console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
-
+          props.update();
           setTimeout(() => {
             setNotification("");
-            // window.location.reload();
-            props.update();
             setReplyVal("");
-            setSelectedReply("");
             setReplyId(0);
-          }, 2000);
+            setSelectedReply("");
+          }, 500);
         }
       })
       .catch((err) => {
@@ -90,6 +88,7 @@ const SeoReplies: React.FC<{
         setdataError(err.response.data.user);
       });
   };
+
   const deleteHandler = (idDel: number) => {
     console.log("comment_id", JSON.stringify(idDel));
 
@@ -130,6 +129,7 @@ const SeoReplies: React.FC<{
         setdataError(err.response.data.user);
       });
   };
+
   interface notificationDetails {
     status: string;
     title: string;
@@ -273,4 +273,4 @@ const SeoReplies: React.FC<{
   );
 };
 
-export default SeoReplies;
+export default WebReplies;

@@ -9,19 +9,18 @@ import Modal from "../../../ui/Modal";
 import { RiEditFill } from "react-icons/ri";
 import { RiCloseFill } from "react-icons/ri";
 import { MdDelete } from "react-icons/md";
-import { typeTasks } from "./ReportWebTasks";
 import axios, { AxiosRequestHeaders } from "axios";
 import { ConnectToDB } from "../../../../lib/connect-to-db";
 import Notification from "../../../ui/notification";
 import UpdateTaskDeveloper from "./UpdateTaskDeveloper";
 import { typeWebTasks } from "./ReportWebAdmin";
+import WebComments, { comments } from "./WebComments";
+import { IoMdChatboxes } from "react-icons/io";
 
-const ReportMasterWeb: React.FC = () => {
+const ReportMasterWeb: React.FC<{ userEmail: string }> = (props) => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
-  const [tasks, setTasks] = useState<typeTasks[]>([]);
 
-  const [id, setId] = useState<number>(0);
   const [delId, setDelId] = useState<number>(0);
   const [selectedTask, setSelectedTask] = useState<typeWebTasks>();
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -29,21 +28,39 @@ const ReportMasterWeb: React.FC = () => {
 
   const [taskWeb, setTaskWeb] = useState<typeWebTasks[]>([]);
 
+  const [commentsModal, setCommentsModal] = useState<boolean>(false);
+  const [id, setId] = useState<number>(0);
+  const [commentsDetails, setCommentsDetails] = useState<comments[]>([]);
+
+  const [taskId, setTaskId] = useState<string>("");
+
   const getTaskWeb = async () => {
     const data = await getData("assigned/task/all/accepted");
     setTaskWeb(data.tasks);
+    if (id !== 0) {
+      const value = data.tasks.filter((task: typeWebTasks) => task.id === id);
+      setCommentsDetails(value[0].comments);
+      console.log("value[0].comments:", value[0].comments);
+    }
   };
 
+  const history = useHistory();
   useEffect(() => {
+    const getTasks = async () => {
+      const data = await getData("assigned/task/all/accepted");
+      setTaskWeb(data.tasks);
+    };
+    getTasks();
+
+    const pathName = history.location.pathname.split("/");
+    setTaskId(pathName[pathName.length - 1]);
+  }, [history.location.pathname]);
+
+  const updateTasks = () => {
     getTaskWeb();
-  }, []);
+  };
 
   console.log("taskWeb:", taskWeb);
-  const history = useHistory();
-  const pathName = history.location.pathname.split("/");
-  const taskId = pathName[pathName.length - 1];
-
-  console.log("tasks", tasks);
 
   const showMOdalHandler = (task: typeWebTasks) => {
     console.log(task);
@@ -61,10 +78,19 @@ const ReportMasterWeb: React.FC = () => {
     setDelModal(true);
   };
 
+  const commentsHandler = (comments: comments[], id: number) => {
+    setCommentsModal(true);
+    setCommentsDetails(comments);
+    setId(id);
+    setTaskId("");
+  };
+
   const deleteHandler = () => {
     setNotification("pending");
 
-    const connectDB = ConnectToDB("delete/tasks/Assigned");
+    console.log("id", JSON.stringify(delId));
+
+    const connectDB = ConnectToDB("delete/tasks/web");
 
     const fData = new FormData();
     fData.append("id", JSON.stringify(delId));
@@ -88,6 +114,7 @@ const ReportMasterWeb: React.FC = () => {
             setNotification("");
             // window.location.reload();
             getTaskWeb();
+            setDelModal(false);
           }, 2000);
         }
       })
@@ -140,7 +167,7 @@ const ReportMasterWeb: React.FC = () => {
         {taskWeb.map((task) => (
           <div
             className={
-              `${task.id}` === taskId
+              taskId.replace("msg", "") === `${task.id}`
                 ? `${classes.activeTask} ${classes.singleTask}`
                 : classes.singleTask
             }
@@ -155,6 +182,12 @@ const ReportMasterWeb: React.FC = () => {
             <div className={classes.status}>
               <RiEditFill onClick={() => showMOdalHandler(task)} />
             </div>
+            <div className={classes.commentIcon}>
+              <IoMdChatboxes
+                onClick={() => commentsHandler(task.comments, task.id)}
+              />
+              {taskId === `${task.id}msg` && <h6>جدید</h6>}
+            </div>
             <div className={classes.statusText}>
               <p>وضعیت: {task.Status ? task.Status : "مشخص نشده"}</p>
               <p>
@@ -164,10 +197,12 @@ const ReportMasterWeb: React.FC = () => {
             <div className={classes.adminEmail}>
               <p>گیرنده: {task.assigned_to}</p>
             </div>
-            <MdDelete
-              className={classes.delete}
-              onClick={() => delIdHandler(task.id)}
-            />
+            {task.admin_task_email === props.userEmail && (
+              <MdDelete
+                className={classes.delete}
+                onClick={() => delIdHandler(task.id)}
+              />
+            )}
           </div>
         ))}
       </div>
@@ -206,6 +241,21 @@ const ReportMasterWeb: React.FC = () => {
           <RiCloseFill
             className={classes.closeModal}
             onClick={closeMOdalHandler}
+          />
+        </Modal>
+      )}
+      {commentsModal && (
+        <Modal>
+          <div className={classes.modal}>
+            <WebComments
+              comments={commentsDetails}
+              id={id}
+              update={updateTasks}
+            />
+          </div>
+          <RiCloseFill
+            className={classes.closeModal}
+            onClick={() => setCommentsModal(false)}
           />
         </Modal>
       )}

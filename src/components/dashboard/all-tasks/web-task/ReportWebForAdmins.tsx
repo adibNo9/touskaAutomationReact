@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { getData } from "../../../../lib/get-data";
 import classes from "../tasks.module.css";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 
 import Modal from "../../../ui/Modal";
 
@@ -14,29 +14,51 @@ import axios, { AxiosRequestHeaders } from "axios";
 import { ConnectToDB } from "../../../../lib/connect-to-db";
 import Notification from "../../../ui/notification";
 import UpdateTaskForAdmins from "./UpdateTaskForAdmins";
+import WebComments, { comments } from "./WebComments";
+import { IoMdChatboxes } from "react-icons/io";
 
 const ReportWebForAdmins: React.FC = () => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
   const [tasks, setTasks] = useState<typeWebTasks[]>([]);
 
-  const [id, setId] = useState<number>(0);
   const [delId, setDelId] = useState<number>(0);
   const [selectedTask, setSelectedTask] = useState<typeWebTasks>();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [delModal, setDelModal] = useState<boolean>(false);
 
+  const [commentsModal, setCommentsModal] = useState<boolean>(false);
+  const [id, setId] = useState<number>(0);
+  const [commentsDetails, setCommentsDetails] = useState<comments[]>([]);
+
+  const [taskId, setTaskId] = useState<string>("");
+
+  const getTasks = async () => {
+    const data = await getData("assigned/all/task/web");
+    setTasks(data.tasks);
+    if (id !== 0) {
+      const value = data.tasks.filter((task: typeWebTasks) => task.id === id);
+      setCommentsDetails(value[0].comments);
+      console.log("value[0].comments:", value[0].comments);
+    }
+  };
+
+  const history = useHistory();
+
   useEffect(() => {
-    const getTasks = async () => {
+    const getTask = async () => {
       const data = await getData("assigned/all/task/web");
       setTasks(data.tasks);
     };
-    getTasks();
-  }, []);
+    getTask();
 
-  const history = useHistory();
-  const pathName = history.location.pathname.split("/");
-  const taskId = pathName[pathName.length - 1];
+    const pathName = history.location.pathname.split("/");
+    setTaskId(pathName[pathName.length - 1]);
+  }, [history.location.pathname]);
+
+  const updateTasks = () => {
+    getTasks();
+  };
 
   console.log("tasksweeeeeeeb", tasks);
 
@@ -50,6 +72,13 @@ const ReportWebForAdmins: React.FC = () => {
     setShowModal(false);
   };
 
+  const commentsHandler = (comments: comments[], id: number) => {
+    setCommentsModal(true);
+    setCommentsDetails(comments);
+    setId(id);
+    setTaskId("");
+  };
+
   const delIdHandler = (id: number) => {
     setDelId(id);
     setDelModal(true);
@@ -58,7 +87,9 @@ const ReportWebForAdmins: React.FC = () => {
   const deleteHandler = () => {
     setNotification("pending");
 
-    const connectDB = ConnectToDB("delete/tasks/Assigned");
+    console.log("id", JSON.stringify(delId));
+
+    const connectDB = ConnectToDB("delete/tasks/web");
 
     const fData = new FormData();
     fData.append("id", JSON.stringify(delId));
@@ -80,7 +111,9 @@ const ReportWebForAdmins: React.FC = () => {
 
           setTimeout(() => {
             setNotification("");
-            window.location.reload();
+            // window.location.reload();
+            getTasks();
+            setDelModal(false);
           }, 2000);
         }
       })
@@ -133,7 +166,7 @@ const ReportWebForAdmins: React.FC = () => {
         {tasks.map((task) => (
           <div
             className={
-              `${task.id}` === taskId
+              taskId.replace("msg", "") === `${task.id}`
                 ? `${classes.activeTask} ${classes.singleTask}`
                 : classes.singleTask
             }
@@ -155,12 +188,18 @@ const ReportWebForAdmins: React.FC = () => {
             {task.file.length === 0 && (
               <div className={classes.download}>
                 <Button variant="danger">
-                  <a>بدون فایل</a>
+                  <p>بدون فایل</p>
                 </Button>
               </div>
             )}
             <div className={classes.status}>
               <RiEditFill onClick={() => showMOdalHandler(task)} />
+            </div>
+            <div className={classes.commentIcon}>
+              <IoMdChatboxes
+                onClick={() => commentsHandler(task.comments, task.id)}
+              />
+              {taskId === `${task.id}msg` && <h6>جدید</h6>}
             </div>
             <div className={classes.statusText}>
               <p>وضعیت: {task.Status ? task.Status : "مشخص نشده"}</p>
@@ -214,6 +253,21 @@ const ReportWebForAdmins: React.FC = () => {
           <RiCloseFill
             className={classes.closeModal}
             onClick={closeMOdalHandler}
+          />
+        </Modal>
+      )}
+      {commentsModal && (
+        <Modal>
+          <div className={classes.modal}>
+            <WebComments
+              comments={commentsDetails}
+              id={id}
+              update={updateTasks}
+            />
+          </div>
+          <RiCloseFill
+            className={classes.closeModal}
+            onClick={() => setCommentsModal(false)}
           />
         </Modal>
       )}

@@ -161,6 +161,7 @@
 .adminEmail {
   background-color: var(--white);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: auto;
@@ -482,8 +483,15 @@
   background-color: var(--green);
   color: black;
   width: fit-content;
-  padding: 5px 10px;
+  max-width: 80%;
   margin: 0.5rem;
+}
+
+.txtChat {
+  font-size: 14px;
+  font-weight: 700;
+  color: black;
+  padding: 0 10px 4px;
 }
 
 .replyForm {
@@ -498,6 +506,12 @@
   z-index: 99999;
   width: 100px !important;
   font-size: 1rem !important;
+}
+
+.replyForm button:disabled {
+  cursor: not-allowed;
+  background-color: grey !important;
+  border-color: grey !important;
 }
 
 .replyForm .formGroupCmnt {
@@ -520,4 +534,87 @@
   height: auto;
   background-color: var(--white);
   border: none;
+}
+
+.replyForm textarea:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.replyTxt {
+  background-color: #3cb371 !important;
+  margin-right: auto;
+  margin-left: 40px;
+}
+
+.chat {
+  background-color: var(--white);
+  width: 88%;
+  display: flex;
+  margin: auto;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-top: 1rem;
+  padding: 8px;
+}
+
+.userChat {
+  font-family: var(--ordibehesht);
+  font-size: 1.1rem;
+  color: var(--white);
+  text-shadow: 1px 1px 2px black;
+  padding: 0 10px;
+}
+
+.replyTo {
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 100%;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.errorReply {
+  color: rgb(160, 0, 0) !important;
+  font-family: var(--ordibehesht);
+  font-size: 1rem !important;
+}
+
+.delCmnt {
+  width: 20px;
+  padding: 2px;
+  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s ease-in;
+}
+
+.delCmnt svg {
+  font-size: 1.2rem;
+  color: var(--white);
+}
+
+.delCmnt:hover {
+  transform: scale(1.3);
+}
+
+.newMsg {
+  position: relative;
+}
+
+.newMsg:after {
+  content: "جدید";
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.commentIcon h6 {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 0.8rem;
+  cursor: pointer;
 }

@@ -1,26 +1,30 @@
+import React, { Suspense } from "react";
+
 import axios, { AxiosRequestHeaders } from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Button } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { ConnectToDB } from "../../lib/connect-to-db";
-import { AutoContext } from "../../store/auto-context";
 import { useHistory } from "react-router-dom";
 import classes from "./dashboard.module.css";
 
 import { Route } from "react-router-dom";
-import Profile from "./profile/Profile";
 import { getData } from "../../lib/get-data";
 import Users from "./users/Users";
 import EditTimeSheet from "./titleandsubtitle/EditTimeSheet";
-import TimeSheet from "./timesheet/TimeSheet";
-import Reports from "./users-reports/Reports";
-import SeoTask from "./all-tasks/seo-task/SeoTask";
-import WebTask from "./all-tasks/web-task/WebTask";
+
+import LoadingSpinner from "../ui/LoadingSpinner";
 
 import { MdMenuOpen } from "react-icons/md";
 import { CgClose } from "react-icons/cg";
 
 import { RiNotification3Line } from "react-icons/ri";
+
+const Profile = React.lazy(() => import("./profile/Profile"));
+const TimeSheet = React.lazy(() => import("./timesheet/TimeSheet"));
+const Reports = React.lazy(() => import("./users-reports/Reports"));
+const SeoTask = React.lazy(() => import("./all-tasks/seo-task/SeoTask"));
+const WebTask = React.lazy(() => import("./all-tasks/web-task/WebTask"));
 
 export interface userType {
   status: string;
@@ -63,7 +67,7 @@ const Dashboard: React.FC = () => {
 
   const [showMenu, setshowMenu] = useState<boolean>(window.outerWidth > 980);
 
-  const [width, setWidth] = useState(window.outerWidth);
+  const width = window.outerWidth;
 
   const userName = userData?.user.name;
   const imageSrc = userData?.user.image_profile;
@@ -173,6 +177,12 @@ const Dashboard: React.FC = () => {
           if (typeTask === "developer_task_assign") {
             history.push(`/dashboard/task-web/reports/${IdOfTask}`);
           }
+          if (typeTask === "web_comment_user") {
+            history.push(`/dashboard/task-web/reports/${IdOfTask}msg`);
+          }
+          if (typeTask === "web_comment_admin") {
+            history.push(`/dashboard/task-web/admin-reports/${IdOfTask}msg`);
+          }
         }
       })
       .catch((err) => {
@@ -281,6 +291,20 @@ const Dashboard: React.FC = () => {
                     تسک وب مورد نظر با موفقیت انجام شد!
                   </Alert>
                 )}
+                {notif.notif_data.task_type === "web_comment_user" && (
+                  <Alert
+                    className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
+                  >
+                    یک پیام جدید برای تسک وب مورد نظر دارید!
+                  </Alert>
+                )}
+                {notif.notif_data.task_type === "web_comment_admin" && (
+                  <Alert
+                    className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
+                  >
+                    یک پیام جدید برای تسک وب مورد نظر دارید!
+                  </Alert>
+                )}
                 <h5>{notif.notif_data.task_title}</h5>
                 <p>فرستنده: {notif.notif_data.task_from}</p>
               </div>
@@ -365,39 +389,47 @@ const Dashboard: React.FC = () => {
         </div>
       )}
       <div className={classes.content}>
-        <Route path="/dashboard/profile">
-          <Profile userData={userData} />
-        </Route>
-        {userData.user.role_id === "1" && (
-          <Route path="/dashboard/users">
-            <Users />
+        <Suspense
+          fallback={
+            <div className="spinner">
+              <LoadingSpinner />
+            </div>
+          }
+        >
+          <Route path="/dashboard/profile">
+            <Profile userData={userData} />
           </Route>
-        )}
-        {userData.user.role_id === "1" && (
-          <Route path="/dashboard/edit-timesheet">
-            <EditTimeSheet />
+          {userData.user.role_id === "1" && (
+            <Route path="/dashboard/users">
+              <Users />
+            </Route>
+          )}
+          {userData.user.role_id === "1" && (
+            <Route path="/dashboard/edit-timesheet">
+              <EditTimeSheet />
+            </Route>
+          )}
+          <Route path="/dashboard/timesheet">
+            <TimeSheet />
           </Route>
-        )}
-        <Route path="/dashboard/timesheet">
-          <TimeSheet />
-        </Route>
-        {userData.user.role_id === "1" && (
-          <Route path="/dashboard/reports">
-            <Reports />
-          </Route>
-        )}
-        {userData.user.role_id !== "3" && (
-          <Route path="/dashboard/task-seo">
-            <SeoTask userData={userData} />
-          </Route>
-        )}
-        {(userData.user.role_id === "1" ||
-          userData.user.role_id === "2" ||
-          userData.user.role_id === "3") && (
-          <Route path="/dashboard/task-web">
-            <WebTask userData={userData} />
-          </Route>
-        )}
+          {userData.user.role_id === "1" && (
+            <Route path="/dashboard/reports">
+              <Reports />
+            </Route>
+          )}
+          {userData.user.role_id !== "3" && (
+            <Route path="/dashboard/task-seo">
+              <SeoTask userData={userData} />
+            </Route>
+          )}
+          {(userData.user.role_id === "1" ||
+            userData.user.role_id === "2" ||
+            userData.user.role_id === "3") && (
+            <Route path="/dashboard/task-web">
+              <WebTask userData={userData} />
+            </Route>
+          )}
+        </Suspense>
       </div>
     </section>
   );
