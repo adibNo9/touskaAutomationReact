@@ -1,11 +1,9 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useState } from "react";
 import { Form } from "react-bootstrap";
 import classes from "../tasks.module.css";
 
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import DatePicker, { DayValue } from "react-modern-calendar-datepicker";
-import { getData } from "../../../../lib/get-data";
-import { typeUsersList } from "../../users/AllUsers";
 import axios, { AxiosRequestHeaders } from "axios";
 import { ConnectToDB } from "../../../../lib/connect-to-db";
 import Notification from "../../../ui/notification";
@@ -19,35 +17,16 @@ const UpdateTaskAdmin: React.FC<{ value: typeWebTasks | undefined }> = (
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
 
-  const [subjectVal, setSubjectVal] = useState<string>("");
-  const [assignmentVal, setAssignmentVal] = useState<string>("");
   const [deliveryTime, setDeliveryTime] = useState<DayValue>(null);
   const [dueonTime, setDueonTime] = useState<DayValue>(null);
 
   const [valueBox, setValueBox] = useState<string>("");
-  const [assignList, setAssignList] = useState<typeUsersList[]>([]);
-  const [assignSelected, setAssignSelected] = useState<string>("");
   const [verificationSelected, setVerificationSelected] = useState<string>("");
-  const [selectedFile, setSelectedFile] = useState<File | undefined>();
-
-  useEffect(() => {
-    const getListUsers = async () => {
-      const value = await getData("listuser");
-      setAssignList(value.users);
-    };
-    getListUsers();
-  }, []);
 
   const changeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
 
     setValueBox(value);
-  };
-
-  const AssignChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-
-    setAssignSelected(value);
   };
 
   const verificationChangeHandelr = (
@@ -56,22 +35,6 @@ const UpdateTaskAdmin: React.FC<{ value: typeWebTasks | undefined }> = (
     const value = e.target.value;
 
     setVerificationSelected(value);
-  };
-
-  const subjectChangeHandelr = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
-    setSubjectVal(value);
-  };
-
-  const assignmentChangeHandelr = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
-    setAssignmentVal(value);
-  };
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.files?.[0];
-    console.log(value);
-    setSelectedFile(value);
   };
 
   let formValidate = false;
@@ -94,13 +57,6 @@ const UpdateTaskAdmin: React.FC<{ value: typeWebTasks | undefined }> = (
     const fData = new FormData();
 
     fData.append("task_id", JSON.stringify(value?.id));
-    // fData.append("type", "1");
-    // {
-    //   subjectVal !== "" && fData.append("subject", subjectVal);
-    // }
-    // {
-    //   assignmentVal !== "" && fData.append("Assignment", assignmentVal);
-    // }
 
     deliveryTime &&
       fData.append(
@@ -116,18 +72,6 @@ const UpdateTaskAdmin: React.FC<{ value: typeWebTasks | undefined }> = (
 
     valueBox !== "" && fData.append("Priority", valueBox);
 
-    // {
-    //   assignSelected !== "" && fData.append("assignment_id", assignSelected);
-    // }
-    // {
-    //   selectedFile && fData.append("file", selectedFile ? selectedFile : "");
-    // }
-
-    // {
-    //   verificationSelected !== "" &&
-    //     fData.append("Verification", verificationSelected);
-    // }
-
     verificationSelected !== "" &&
       fData.append("Verification", verificationSelected);
 
@@ -142,7 +86,6 @@ const UpdateTaskAdmin: React.FC<{ value: typeWebTasks | undefined }> = (
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
 
@@ -252,24 +195,6 @@ const UpdateTaskAdmin: React.FC<{ value: typeWebTasks | undefined }> = (
             <option value="3">3</option>
           </Form.Select>
         </Form.Group>
-        {/* <Form.Group
-          className={classes.formGroupUpdate}
-          controlId="formBasicDeliveryAssignId"
-        >
-          <Form.Label className="mx-3">اختصاص به</Form.Label>
-          <Form.Select
-            value={assignSelected}
-            onChange={AssignChangeHandler}
-            aria-label="Default select example"
-          >
-            <option>انتخاب کاربر ...</option>
-            {assignList.map((item) => (
-              <option value={`${item.id}`} key={item.id}>
-                {item.email}({item.name})
-              </option>
-            ))}
-          </Form.Select>
-        </Form.Group> */}
 
         <Form.Group
           className={classes.formGroupUpdate}

@@ -40,7 +40,6 @@ const ReportMasterWeb: React.FC<{ userEmail: string }> = (props) => {
     if (id !== 0) {
       const value = data.tasks.filter((task: typeWebTasks) => task.id === id);
       setCommentsDetails(value[0].comments);
-      console.log("value[0].comments:", value[0].comments);
     }
   };
 
@@ -60,10 +59,7 @@ const ReportMasterWeb: React.FC<{ userEmail: string }> = (props) => {
     getTaskWeb();
   };
 
-  console.log("taskWeb:", taskWeb);
-
   const showMOdalHandler = (task: typeWebTasks) => {
-    console.log(task);
     setSelectedTask(task);
     setShowModal(true);
   };
@@ -88,8 +84,6 @@ const ReportMasterWeb: React.FC<{ userEmail: string }> = (props) => {
   const deleteHandler = () => {
     setNotification("pending");
 
-    console.log("id", JSON.stringify(delId));
-
     const connectDB = ConnectToDB("delete/tasks/web");
 
     const fData = new FormData();
@@ -106,7 +100,6 @@ const ReportMasterWeb: React.FC<{ userEmail: string }> = (props) => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
 

@@ -1,11 +1,8 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Form } from "react-bootstrap";
 import classes from "../tasks.module.css";
 
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
-import DatePicker, { DayValue } from "react-modern-calendar-datepicker";
-import { getData } from "../../../../lib/get-data";
-import { typeUsersList } from "../../users/AllUsers";
 import axios, { AxiosRequestHeaders } from "axios";
 import { ConnectToDB } from "../../../../lib/connect-to-db";
 import Notification from "../../../ui/notification";
@@ -21,13 +18,7 @@ const UpdateTaskForAdmins: React.FC<{ value: typeWebTasks | undefined }> = (
 
   const [subjectVal, setSubjectVal] = useState<string>("");
   const [assignmentVal, setAssignmentVal] = useState<string>("");
-  const [deliveryTime, setDeliveryTime] = useState<DayValue>(null);
-  const [dueonTime, setDueonTime] = useState<DayValue>(null);
 
-  const [valueBox, setValueBox] = useState<string>("");
-  const [assignList, setAssignList] = useState<typeUsersList[]>([]);
-  const [assignSelected, setAssignSelected] = useState<string>("");
-  const [verificationSelected, setVerificationSelected] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | undefined>();
 
   const subjectChangeHandelr = (event: ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +33,7 @@ const UpdateTaskForAdmins: React.FC<{ value: typeWebTasks | undefined }> = (
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.files?.[0];
-    console.log(value);
+
     setSelectedFile(value);
   };
 
@@ -65,7 +56,6 @@ const UpdateTaskForAdmins: React.FC<{ value: typeWebTasks | undefined }> = (
     const fData = new FormData();
 
     fData.append("id", JSON.stringify(value?.id));
-    // fData.append("type", "1");
 
     subjectVal !== "" && fData.append("subject", subjectVal);
 
@@ -84,7 +74,6 @@ const UpdateTaskForAdmins: React.FC<{ value: typeWebTasks | undefined }> = (
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
 

@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "../../ui/Modal";
 import classes from "./edit.module.css";
 import { typeListTitles, typeSubtitles } from "./EditTimeSheet";
 
 import { AiFillDelete } from "react-icons/ai";
 import { MdClose } from "react-icons/md";
-import { Form } from "react-bootstrap";
+import { Col, Form, Row, Button } from "react-bootstrap";
 import Notification from "../../ui/notification";
 import { ConnectToDB } from "../../../lib/connect-to-db";
 import axios, { AxiosRequestHeaders } from "axios";
+
+import { AiFillCheckSquare } from "react-icons/ai";
+import { AiFillCloseSquare } from "react-icons/ai";
 
 const SingleTitle: React.FC<{
   value: typeListTitles;
@@ -25,11 +28,9 @@ const SingleTitle: React.FC<{
   const [removeSubsOld, setRemoveSubsOld] = useState<string[]>([]);
 
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [valueBox, setValueBox] = useState<string[]>([]);
   const [typeValue, setTypeValue] = useState<string[]>([]);
-
-  const [deleteVal, setDeleteVal] = useState<string>("");
-  const [removeVal, setRemoveVal] = useState<string>("");
 
   const changeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -45,36 +46,26 @@ const SingleTitle: React.FC<{
     if (!valueBox.includes(value) && !oldSubNames.includes(value)) {
       setValueBox([...valueBox, value]);
     }
-
-    console.log("valueBox", valueBox);
   };
 
-  useEffect(() => {
-    const deleteHandler = () => {
-      const valTitle = valueBox.filter((item) => item !== deleteVal);
-      setValueBox(valTitle);
-      deleteVal.split(".");
+  const deleteHandler = (del: any) => {
+    const valTitle = valueBox.filter((item) => item !== del);
+    setValueBox(valTitle);
+    const delSplit = del.split(".");
 
-      const valTypes = typeValue.filter((item) => item !== deleteVal[0]);
-      setTypeValue(valTypes);
-    };
+    const valTypes = typeValue.filter((item) => item !== delSplit[0]);
+    setTypeValue(valTypes);
+    console.log(del, typeValue);
+  };
 
-    deleteHandler();
-  }, [deleteVal]);
-
-  useEffect(() => {
-    const removeHandler = () => {
-      if (!removeSubsOld.includes(removeVal)) {
-        const val = removeVal.split(".");
-        setRemoveSubsOld([...removeSubsOld, `${val[0]}`]);
-      }
-      const values = nameSubsOld.filter((item) => item !== removeVal);
-      setNameSubsOld(values);
-    };
-
-    removeHandler();
-    console.log("removeSubsOld", removeSubsOld);
-  }, [removeVal]);
+  const removeHandler = (sub: any) => {
+    if (!removeSubsOld.includes(sub)) {
+      const val = sub.split(".");
+      setRemoveSubsOld([...removeSubsOld, `${val[0]}`]);
+    }
+    const values = nameSubsOld.filter((item) => item !== sub);
+    setNameSubsOld(values);
+  };
 
   interface notificationDetails {
     status: string;
@@ -86,9 +77,6 @@ const SingleTitle: React.FC<{
     event.preventDefault();
 
     const removedVal = removeSubsOld.filter((item) => item !== "");
-    console.log("id", value.id);
-    console.log("sub_ids_add", JSON.stringify(typeValue));
-    console.log("sub_ids_remove", JSON.stringify(removedVal));
 
     setNotification("pending");
 
@@ -110,7 +98,6 @@ const SingleTitle: React.FC<{
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
 
@@ -126,6 +113,44 @@ const SingleTitle: React.FC<{
         setdataError(err.response.data.user);
       });
   };
+
+  const activateHandler = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    setNotification("pending");
+
+    const connectDB = ConnectToDB("title/activeOrdeactive");
+
+    const fData = new FormData();
+    fData.append("id", `${value.id}`);
+
+    const headers: AxiosRequestHeaders = {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    };
+
+    axios({
+      method: "POST",
+      url: connectDB,
+      headers: headers,
+      data: fData,
+    })
+      .then((res) => {
+        if (res.data.status === "success") {
+          setNotification(res.data.status);
+
+          setTimeout(() => {
+            setNotification("");
+            window.location.reload();
+          }, 2000);
+        }
+      })
+      .catch((err) => {
+        console.log("Error", err.response);
+        setNotification("error");
+        setdataError(err.response.data.user);
+      });
+  };
+
   let notifDetails: notificationDetails = {
     status: "",
     title: "",
@@ -157,12 +182,29 @@ const SingleTitle: React.FC<{
   }
 
   return (
-    <div className={classes.singleTitle}>
+    <div
+      className={
+        value.is_active === null
+          ? `${classes.singleTitle}`
+          : `${classes.singleTitle} ${classes.deactiveTitle}`
+      }
+    >
       <h6>
         <span>#</span>
         {value.id}
       </h6>
       <h2>{value.title}</h2>
+      <div
+        onClick={() => setShowModal(true)}
+        className={classes.changeActivate}
+      >
+        {value.is_active !== null && (
+          <AiFillCheckSquare className={classes.checkIcon} />
+        )}
+        {value.is_active === null && (
+          <AiFillCloseSquare className={classes.closeIcon} />
+        )}
+      </div>
       <button onClick={() => setOpenModal(true)}>زیر مجموعه‌ها</button>
       {openModal && (
         <Modal>
@@ -189,7 +231,7 @@ const SingleTitle: React.FC<{
               <div key={index} className={classes.subs}>
                 <div className={classes.selectedSingleTitle}>
                   <h6>{sub}</h6>
-                  <AiFillDelete onClick={() => setRemoveVal(sub)} />
+                  <AiFillDelete onClick={() => removeHandler(sub)} />
                 </div>
               </div>
             ))}
@@ -197,7 +239,7 @@ const SingleTitle: React.FC<{
               <div key={sub} className={classes.subs}>
                 <div className={classes.selectedSingleTitle}>
                   <h6>{sub}</h6>
-                  <AiFillDelete onClick={() => setDeleteVal(sub)} />
+                  <AiFillDelete onClick={() => deleteHandler(sub)} />
                 </div>
               </div>
             ))}
@@ -208,6 +250,46 @@ const SingleTitle: React.FC<{
           <MdClose
             className={classes.closeModal}
             onClick={() => setOpenModal(false)}
+          />
+        </Modal>
+      )}
+      {showModal && (
+        <Modal>
+          <Row dir="rtl" className="mt-5 bg-light p-3">
+            <Col lg={12}>
+              {value.is_active === null && (
+                <p className="text-center">
+                  آیا از غیر فعال کردن {value.title} مطمئن هستید ؟
+                </p>
+              )}
+              {value.is_active !== null && (
+                <p className="text-center">
+                  آیا از فعال کردن {value.title} مطمئن هستید ؟
+                </p>
+              )}
+            </Col>
+            <Col lg={6}>
+              <Button
+                className="text-center w-100"
+                variant="success"
+                onClick={activateHandler}
+              >
+                بله
+              </Button>
+            </Col>
+            <Col lg={6}>
+              <Button
+                className="text-center w-100"
+                variant="danger"
+                onClick={() => setShowModal(false)}
+              >
+                خیر
+              </Button>
+            </Col>
+          </Row>
+          <MdClose
+            className={classes.closeModal}
+            onClick={() => setShowModal(false)}
           />
         </Modal>
       )}

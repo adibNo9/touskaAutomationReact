@@ -85,7 +85,9 @@
 }
 
 .imageUser {
-  width: 200px;
+  width: 150px;
+  border: 4px solid var(--purple);
+  background-color: var(--white);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -93,8 +95,6 @@
 
 .imageUser img {
   max-width: 150px;
-  border: 4px solid var(--purple);
-  background-color: var(--white);
 }
 
 .notifications {

@@ -68,7 +68,6 @@ const UpdateTaskAdmin: React.FC<{ value: typeTasks | undefined }> = (props) => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.files?.[0];
-    console.log(value);
     setSelectedFile(value);
   };
 
@@ -97,40 +96,31 @@ const UpdateTaskAdmin: React.FC<{ value: typeTasks | undefined }> = (props) => {
 
     fData.append("id", JSON.stringify(value?.id));
     fData.append("type", "1");
-    {
-      subjectVal !== "" && fData.append("subject", subjectVal);
-    }
-    {
-      assignmentVal !== "" && fData.append("Assignment", assignmentVal);
-    }
-    {
-      deliveryTime &&
-        fData.append(
-          "delivery_time",
-          `${deliveryTime?.year}/${deliveryTime?.month}/${deliveryTime?.day}`
-        );
-    }
-    {
-      dueonTime &&
-        fData.append(
-          "due_on",
-          `${dueonTime?.year}/${dueonTime?.month}/${dueonTime?.day}`
-        );
-    }
-    {
-      valueBox !== "" && fData.append("Priority", valueBox);
-    }
-    {
-      assignSelected !== "" && fData.append("assignment_id", assignSelected);
-    }
-    {
-      selectedFile && fData.append("file", selectedFile ? selectedFile : "");
-    }
 
-    {
-      verificationSelected !== "" &&
-        fData.append("Verification", verificationSelected);
-    }
+    subjectVal !== "" && fData.append("subject", subjectVal);
+
+    assignmentVal !== "" && fData.append("Assignment", assignmentVal);
+
+    deliveryTime &&
+      fData.append(
+        "delivery_time",
+        `${deliveryTime?.year}/${deliveryTime?.month}/${deliveryTime?.day}`
+      );
+
+    dueonTime &&
+      fData.append(
+        "due_on",
+        `${dueonTime?.year}/${dueonTime?.month}/${dueonTime?.day}`
+      );
+
+    valueBox !== "" && fData.append("Priority", valueBox);
+
+    assignSelected !== "" && fData.append("assignment_id", assignSelected);
+
+    selectedFile && fData.append("file", selectedFile ? selectedFile : "");
+
+    verificationSelected !== "" &&
+      fData.append("Verification", verificationSelected);
 
     const headers: AxiosRequestHeaders = {
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -143,7 +133,6 @@ const UpdateTaskAdmin: React.FC<{ value: typeTasks | undefined }> = (props) => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
 

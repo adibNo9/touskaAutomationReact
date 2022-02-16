@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { getData } from "../../../lib/get-data";
-import { userType } from "../Dashboard";
 
 import classes from "./users.module.css";
 
@@ -33,8 +32,6 @@ const AllUsers: React.FC = () => {
     };
     getListUsers();
   }, []);
-
-  console.log("listUsers:", listUsers);
 
   const searchChangeHandelr = (event: ChangeEvent<HTMLInputElement>) => {
     setListUsers(getValue);

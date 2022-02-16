@@ -70,7 +70,6 @@ const WebReplies: React.FC<{
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
           props.update();
@@ -90,8 +89,6 @@ const WebReplies: React.FC<{
   };
 
   const deleteHandler = (idDel: number) => {
-    console.log("comment_id", JSON.stringify(idDel));
-
     setNotification("pending");
 
     const connectDB = ConnectToDB("delete/comment");
@@ -111,7 +108,6 @@ const WebReplies: React.FC<{
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
           props.update();

@@ -51,12 +51,12 @@
 }
 
 .calendar {
-  background-color: var(--purple);
+  background-color: var(--purple) !important;
 }
 
 .inputCalendar {
   font-family: var(--ordibehesht);
-  background-color: var(--darkGreen);
+  background-color: var(--darkGreen) !important;
   color: var(--white) !important;
   font-size: 1.2rem;
   border: 4px solid var(--purple);
@@ -73,12 +73,20 @@
   background-color: var(--darkGreen);
   margin-top: 1rem;
   border: 5px solid var(--purple);
+  margin-left: 500px;
 }
 
 .content Table td,
 .content Table th {
   color: var(--white) !important;
   text-align: center;
+  /* font-size: 0.4vw !important;
+  max-width: 0.4vw; */
+  /* padding: 2px !important; */
+}
+
+.content Table th:first-child {
+  max-width: 1vw;
 }
 
 .charts {
@@ -164,3 +172,7 @@
   color: var(--white);
   background-color: var(--darkGreen);
 }
+
+/* .tableP {
+  width: calc(100% + 500px);
+} */

@@ -35,12 +35,10 @@ const ReportSeoAdmin: React.FC<{ userEmail: string }> = (props) => {
   const getTasks = async () => {
     const data = await getData("get/tasks/Assigned/admin");
     setTasks(data.tasks);
-    console.log("taskssssss", data.tasks);
+
     if (id !== 0) {
       const value = data.tasks.filter((task: typeTasks) => task.id === id);
       setCommentsDetails(value[0].comments);
-      console.log("value[0].comments:", value[0].comments);
-      console.log("newTaks", tasks);
     }
   };
 
@@ -55,8 +53,6 @@ const ReportSeoAdmin: React.FC<{ userEmail: string }> = (props) => {
     const pathName = history.location.pathname.split("/");
     setTaskId(pathName[pathName.length - 1]);
   }, [history.location.pathname]);
-
-  console.log("tasks", tasks);
 
   const showMOdalHandler = (task: typeTasks) => {
     setSelectedTask(task);
@@ -103,7 +99,6 @@ const ReportSeoAdmin: React.FC<{ userEmail: string }> = (props) => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
 

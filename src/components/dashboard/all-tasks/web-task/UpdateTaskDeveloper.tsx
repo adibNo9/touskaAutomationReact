@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import classes from "../tasks.module.css";
 
@@ -31,8 +31,6 @@ const UpdateTaskDeveloper: React.FC<{ value: typeWebTasks | undefined }> = (
     };
     getListUsers();
   }, []);
-
-  console.log("developers:", assignList);
 
   const AssignChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -75,7 +73,6 @@ const UpdateTaskDeveloper: React.FC<{ value: typeWebTasks | undefined }> = (
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
 

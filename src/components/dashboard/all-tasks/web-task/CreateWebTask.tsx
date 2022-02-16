@@ -34,7 +34,7 @@ const CreateWebTask: React.FC = () => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.files?.[0];
-    console.log(value);
+
     setSelectedFile(value);
   };
 
@@ -73,7 +73,6 @@ const CreateWebTask: React.FC = () => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
 

@@ -56,7 +56,6 @@ const ReportWebTasks: React.FC = () => {
     if (idCmnt !== 0) {
       const value = data.tasks.filter((task: typeTasks) => task.id === idCmnt);
       setCommentsDetails(value[0].comments);
-      console.log("value[0].comments:", value);
     }
   };
 
@@ -76,8 +75,6 @@ const ReportWebTasks: React.FC = () => {
   const updateTasks = () => {
     getTasks();
   };
-
-  console.log("singleTasks:", tasks);
 
   const changeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -106,10 +103,6 @@ const ReportWebTasks: React.FC = () => {
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
-    console.log("id", JSON.stringify(id));
-    console.log("type", "1");
-    console.log("Status", valueBox);
-
     setNotification("pending");
 
     const connectDB = ConnectToDB("edit/task/web/userDeveloper");
@@ -117,7 +110,7 @@ const ReportWebTasks: React.FC = () => {
     const fData = new FormData();
 
     fData.append("task_id", JSON.stringify(id));
-    // fData.append("type", "1");
+
     fData.append("Status", valueBox);
 
     const headers: AxiosRequestHeaders = {
@@ -131,7 +124,6 @@ const ReportWebTasks: React.FC = () => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
 

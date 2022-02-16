@@ -1,5 +1,5 @@
 import React, { ChangeEvent, Fragment, useEffect, useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import classes from "./users.module.css";
 
 import { AiFillEye } from "react-icons/ai";
@@ -57,7 +57,7 @@ const AddUser: React.FC = () => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.files?.[0];
-    console.log(value);
+
     setSelectedFile(value);
   };
 
@@ -105,14 +105,6 @@ const AddUser: React.FC = () => {
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
-    console.log("name", nameVal);
-    console.log("email", emailVal);
-    console.log("is_active", activeValue);
-    console.log("role_id", valueBox);
-    console.log("image", selectedFile ? selectedFile : "");
-    console.log("password", passVal);
-    console.log("password_confirmation", confPassVal);
-
     const headers: AxiosRequestHeaders = {
       Authorization: "Bearer " + localStorage.getItem("token"),
     };
@@ -138,7 +130,6 @@ const AddUser: React.FC = () => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
 
@@ -150,6 +141,7 @@ const AddUser: React.FC = () => {
       })
       .catch((err) => {
         console.log("Error", err.response);
+        setdataError(err.response.data.message);
         setNotification("error");
       });
   };

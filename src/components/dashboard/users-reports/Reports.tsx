@@ -110,7 +110,6 @@ const Reports: React.FC = () => {
         data: fData,
       })
         .then((res) => {
-          console.log(res.data.report);
           if (res.data.status === "success") {
             setNotification(res.data.status);
 
@@ -170,11 +169,7 @@ const Reports: React.FC = () => {
   const searchSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log(searchValue);
-
     const valueSearch = value.filter((item) => item.name.includes(searchValue));
-
-    console.log("valueSearch", valueSearch);
 
     setReportsValue(valueSearch);
   };

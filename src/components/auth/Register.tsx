@@ -81,7 +81,6 @@ const Register: React.FC = () => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
           setSuccessRegister(true);
@@ -94,6 +93,7 @@ const Register: React.FC = () => {
       .catch((err) => {
         console.log("Error", err.response);
         setNotification("error");
+        setdataError(err.response.data.user);
       });
   };
 

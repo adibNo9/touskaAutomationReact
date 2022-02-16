@@ -28,8 +28,6 @@ const ReportTitles: React.FC<{
 
   const thExcell = nameUserField.concat(valueField);
 
-  console.log("reportsValue", reportsValue);
-
   let tdName = [];
   let tdValue = [];
   let tdExcell = [];
@@ -41,10 +39,6 @@ const ReportTitles: React.FC<{
     );
     tdExcell[i] = tdName[i].concat(tdValue[i]);
   }
-
-  // console.log("tdValue", tdValue);
-  // console.log("tdName", tdName);
-  console.log("tdExcell", tdExcell);
 
   const dataCsv = [thExcell].concat(tdExcell);
 
@@ -61,7 +55,7 @@ const ReportTitles: React.FC<{
 
       {reportsValue.length > 0 && (
         <div ref={componentRef} className="divPrint">
-          <Table striped bordered hover>
+          <Table striped bordered hover responsive size="sm">
             <thead>
               <tr>
                 <th>نام کاربر</th>
@@ -73,7 +67,7 @@ const ReportTitles: React.FC<{
             <tbody>
               {reportsValue.map((item) => (
                 <tr key={item.id}>
-                  <td>{item.name ? item.email : item.email}</td>
+                  <td>{item.name ? item.name : item.email}</td>
                   {item.report_base_Title.map((item, index) => (
                     <td key={index}>{item.spend_time}</td>
                   ))}
@@ -81,6 +75,7 @@ const ReportTitles: React.FC<{
               ))}
             </tbody>
           </Table>
+
           <ReportsChart chartValue={sumTitles} />
         </div>
       )}

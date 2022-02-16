@@ -155,7 +155,7 @@
   background-color: var(--darkGreen);
   color: var(--white);
   padding: 5px;
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 .singleTitle h6 span {
@@ -165,6 +165,7 @@
 
 .singleTitle h2 {
   color: var(--darkGreen);
+  font-size: 1.2rem !important;
 }
 
 .singleTitle button {
@@ -180,6 +181,47 @@
 .singleTitle button:hover {
   background-color: var(--darkGreen);
   border-color: var(--purple);
+}
+
+.deactiveTitle {
+  background-color: rgb(255, 83, 83) !important;
+}
+
+.deactiveTitle::after {
+  content: "غیر فعال";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 40%;
+  background-color: red;
+  font-family: var(--ordibehesht);
+  text-align: center;
+  color: black;
+}
+
+.changeActivate {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: 0.1s ease-in;
+}
+
+.changeActivate:hover {
+  opacity: 1;
+}
+
+.checkIcon {
+  color: green;
+}
+
+.closeIcon {
+  color: rgb(255, 0, 0);
+}
+
+.changeActivate svg {
+  font-size: 2rem;
 }
 
 .selectedTitles {
@@ -223,7 +265,7 @@
 .closeModal {
   position: absolute;
   right: 220px;
-  top: 150px;
+  top: 5px;
   font-size: 2rem;
   color: red;
   background-color: white;

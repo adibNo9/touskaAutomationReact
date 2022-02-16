@@ -39,7 +39,6 @@ const ReportWebForAdmins: React.FC = () => {
     if (id !== 0) {
       const value = data.tasks.filter((task: typeWebTasks) => task.id === id);
       setCommentsDetails(value[0].comments);
-      console.log("value[0].comments:", value[0].comments);
     }
   };
 
@@ -59,8 +58,6 @@ const ReportWebForAdmins: React.FC = () => {
   const updateTasks = () => {
     getTasks();
   };
-
-  console.log("tasksweeeeeeeb", tasks);
 
   const showMOdalHandler = (task: typeWebTasks) => {
     setSelectedTask(task);
@@ -87,8 +84,6 @@ const ReportWebForAdmins: React.FC = () => {
   const deleteHandler = () => {
     setNotification("pending");
 
-    console.log("id", JSON.stringify(delId));
-
     const connectDB = ConnectToDB("delete/tasks/web");
 
     const fData = new FormData();
@@ -105,7 +100,6 @@ const ReportWebForAdmins: React.FC = () => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
 

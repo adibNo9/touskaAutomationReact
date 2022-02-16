@@ -161,17 +161,17 @@ h6 {
     position: absolute;
     top: 0;
     right: 0;
-  }
+  }*/
 
   .divPrint table {
     width: 80%;
     max-width: 600px;
     margin: auto;
-  } */
+  }
 
   .divPrint table th,
   .divPrint table td {
-    font-size: 16px !important;
+    font-size: 8px !important;
   }
 }
 
@@ -180,4 +180,25 @@ h6 {
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+.table-responsive::-webkit-scrollbar {
+  height: 10px !important;
+}
+
+/* Track */
+.table-responsive::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px var(--lightGreen);
+  border-radius: 2px;
+}
+
+/* Handle */
+.table-responsive::-webkit-scrollbar-thumb {
+  background: var(--purple);
+  border-radius: 2px;
+}
+
+/* Handle on hover */
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #3b0034;
 }

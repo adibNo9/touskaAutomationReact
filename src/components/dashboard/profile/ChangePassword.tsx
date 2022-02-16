@@ -44,9 +44,7 @@ const ChangePassword: React.FC = () => {
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("oldpassword:", oldPassVal);
-    console.log("password:", newPassVal);
-    console.log("password_confirmation", confPassVal);
+
     setNotification("pending");
 
     const connectDB = ConnectToDB("update/user");
@@ -68,7 +66,6 @@ const ChangePassword: React.FC = () => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success updated") {
           setNotification(res.data.status);
 

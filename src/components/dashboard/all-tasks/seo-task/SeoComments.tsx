@@ -55,8 +55,6 @@ const SeoComments: React.FC<{
 
   let seoReplies = [];
 
-  console.log("comments:", props.comments);
-
   for (let i = 0; i < props.comments.length; i++) {
     seoReplies[i] = (
       <SeoReplies
@@ -90,7 +88,6 @@ const SeoComments: React.FC<{
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
 

@@ -51,12 +51,9 @@ const ReportSeoTasks: React.FC = () => {
   const getTasks = async () => {
     const data = await getData("get/tasks/Assigned/admin");
     setTasks(data.tasks);
-    console.log("taskssssss", data.tasks);
     if (id !== 0) {
       const value = data.tasks.filter((task: typeTasks) => task.id === id);
       setCommentsDetails(value[0].comments);
-      console.log("value[0].comments:", value[0].comments);
-      console.log("newTaks", tasks);
     }
   };
 
@@ -72,8 +69,6 @@ const ReportSeoTasks: React.FC = () => {
     const pathName = history.location.pathname.split("/");
     setTaskId(pathName[pathName.length - 1]);
   }, [history.location.pathname]);
-
-  console.log("tasks:", tasks);
 
   const changeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -106,10 +101,6 @@ const ReportSeoTasks: React.FC = () => {
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
-    console.log("id", JSON.stringify(id));
-    console.log("type", "1");
-    console.log("Status", valueBox);
-
     setNotification("pending");
 
     const connectDB = ConnectToDB("edit/tasks/Assigned");
@@ -131,7 +122,6 @@ const ReportSeoTasks: React.FC = () => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
 

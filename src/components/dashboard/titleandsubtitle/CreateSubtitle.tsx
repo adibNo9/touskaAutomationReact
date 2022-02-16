@@ -1,11 +1,6 @@
 import axios, { AxiosRequestHeaders } from "axios";
-import React, {
-  ChangeEvent,
-  MouseEventHandler,
-  useEffect,
-  useState,
-} from "react";
-import { Form, Button } from "react-bootstrap";
+import React, { ChangeEvent, useState } from "react";
+import { Form } from "react-bootstrap";
 import { ConnectToDB } from "../../../lib/connect-to-db";
 import Notification from "../../ui/notification";
 import classes from "./edit.module.css";
@@ -22,11 +17,6 @@ const CreateSubtitle: React.FC<{ titles: typeListTitles[] }> = (props) => {
   const [nameVal, setNameVal] = useState<string>("");
   const [valueBox, setValueBox] = useState<string[]>([]);
   const [typeValue, setTypeValue] = useState<string[]>([]);
-
-  const [deleteVal, setDeleteVal] = useState<string>("");
-
-  let typeArray: string[] = [];
-  let titleArray = [];
 
   const changeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -46,18 +36,14 @@ const CreateSubtitle: React.FC<{ titles: typeListTitles[] }> = (props) => {
     setNameVal(value);
   };
 
-  useEffect(() => {
-    const deleteHandler = () => {
-      const valTitle = valueBox.filter((item) => item !== deleteVal);
-      setValueBox(valTitle);
-      deleteVal.split(".");
+  const deleteHandler = (delItem: string) => {
+    const valTitle = valueBox.filter((item) => item !== delItem);
+    setValueBox(valTitle);
+    const itemSplit = delItem.split(".");
 
-      const valTypes = typeValue.filter((item) => item !== deleteVal[0]);
-      setTypeValue(valTypes);
-    };
-
-    deleteHandler();
-  }, [deleteVal]);
+    const valTypes = typeValue.filter((item) => item !== itemSplit[0]);
+    setTypeValue(valTypes);
+  };
 
   interface notificationDetails {
     status: string;
@@ -67,9 +53,6 @@ const CreateSubtitle: React.FC<{ titles: typeListTitles[] }> = (props) => {
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-
-    console.log("name:", nameVal);
-    console.log("titlesId", JSON.stringify(typeValue));
 
     setNotification("pending");
 
@@ -90,7 +73,6 @@ const CreateSubtitle: React.FC<{ titles: typeListTitles[] }> = (props) => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success created") {
           setNotification(res.data.status);
 
@@ -147,7 +129,7 @@ const CreateSubtitle: React.FC<{ titles: typeListTitles[] }> = (props) => {
         {valueBox.map((item, index) => (
           <div className={classes.selectedSingleTitle} key={index}>
             <h6>{item}</h6>
-            <AiFillDelete onClick={() => setDeleteVal(item)} />
+            <AiFillDelete onClick={() => deleteHandler(item)} />
           </div>
         ))}
       </div>

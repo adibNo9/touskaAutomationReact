@@ -8,6 +8,7 @@ import CreateSubtitle from "./CreateSubtitle";
 export interface typeListTitles {
   id: number;
   title: string;
+  is_active: null | string;
   subtitles: {
     id: number;
     name: string;
@@ -42,8 +43,7 @@ const EditTimeSheet: React.FC = () => {
     getSubtitles();
   }, []);
 
-  console.log("allSubtitles", allSubtitles);
-  console.log("titles", allTitles);
+  console.log("allTitles:", allTitles);
 
   const singleTitle = [];
   for (let i = 0; i < allTitles.length; i++) {

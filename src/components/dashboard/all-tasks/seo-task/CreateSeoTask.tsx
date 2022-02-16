@@ -71,7 +71,6 @@ const CreateSeoTask: React.FC = () => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.files?.[0];
-    console.log(value);
     setSelectedFile(value);
   };
 
@@ -93,13 +92,6 @@ const CreateSeoTask: React.FC = () => {
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
-    console.log("subjectVal", subjectVal);
-    console.log("Assignment", assignmentVal);
-    console.log("deliveryTime", deliveryTime);
-    console.log("dueonTime", dueonTime);
-    console.log("valueBox", valueBox);
-    console.log("assignSelected", assignSelected);
-
     setNotification("pending");
 
     const connectDB = ConnectToDB("create/task/seo");
@@ -120,9 +112,8 @@ const CreateSeoTask: React.FC = () => {
     fData.append("assignment_id", assignSelected);
     fData.append("Verification", verificationSelected);
     fData.append("file", selectedFile ? selectedFile : "");
-    {
-      commentVal !== "" && fData.append("comment", commentVal);
-    }
+
+    commentVal !== "" && fData.append("comment", commentVal);
 
     const headers: AxiosRequestHeaders = {
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -135,7 +126,6 @@ const CreateSeoTask: React.FC = () => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
 

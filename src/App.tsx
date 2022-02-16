@@ -17,7 +17,6 @@ const Dashboard = React.lazy(() => import("./components/dashboard/Dashboard"));
 
 function App() {
   const token = localStorage.getItem("token");
-  console.log("token", token === undefined);
   return (
     <Router>
       <Layout>
@@ -43,7 +42,6 @@ function App() {
           </Switch>
         </Suspense>
       </Layout>
-      <h2>token: {token}</h2>
     </Router>
   );
 }

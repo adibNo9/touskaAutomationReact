@@ -37,8 +37,6 @@ const TimeSheet: React.FC = () => {
     year: newToday[0].split(""),
   };
 
-  console.log("today", todayObj);
-
   const setDate = (val: string[]) => {
     let value = [];
     for (let i = 0; i < val.length; i++) {
@@ -51,8 +49,6 @@ const TimeSheet: React.FC = () => {
     return posValue.join("");
   };
 
-  console.log("month:", setDate(todayObj.month));
-
   const todayDay = setDate(todayObj.day);
   const todayMonth = setDate(todayObj.month);
   const todayYear = setDate(todayObj.year);
@@ -63,13 +59,9 @@ const TimeSheet: React.FC = () => {
     day: +todayDay,
   };
 
-  console.log("maxDate:", maxDate);
-
   let selectedDate = `${day?.year}/${day?.month}/${day?.day}`;
 
   useEffect(() => {
-    console.log(day);
-
     if (day !== null) {
       setShowModal(true);
     }

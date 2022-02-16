@@ -1,6 +1,6 @@
 import axios, { AxiosRequestHeaders } from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { ConnectToDB } from "../../../lib/connect-to-db";
 import { getData } from "../../../lib/get-data";
 import Notification from "../../ui/notification";
@@ -31,7 +31,7 @@ const EditUser: React.FC<{ listUser: typeUsersList }> = (props) => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.files?.[0];
-    console.log(value);
+
     setSelectedFile(value);
   };
 
@@ -39,7 +39,6 @@ const EditUser: React.FC<{ listUser: typeUsersList }> = (props) => {
     const value = e.target.value;
 
     setValueBox(value);
-    console.log(valueBox);
   };
 
   useEffect(() => {
@@ -51,8 +50,6 @@ const EditUser: React.FC<{ listUser: typeUsersList }> = (props) => {
     getRoles();
   }, []);
 
-  console.log(roles);
-
   interface notificationDetails {
     status: string;
     title: string;
@@ -61,15 +58,7 @@ const EditUser: React.FC<{ listUser: typeUsersList }> = (props) => {
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("file:", selectedFile);
-    console.log("role_id", valueBox);
-    console.log("id", JSON.stringify(listUser.id));
-    {
-      nameVal && console.log("name:", nameVal);
-    }
-    {
-      selectedFile && console.log("image", selectedFile ? selectedFile : "");
-    }
+
     setNotification("pending");
 
     const connectDB = ConnectToDB("superadmin/update/user");
@@ -79,12 +68,9 @@ const EditUser: React.FC<{ listUser: typeUsersList }> = (props) => {
     fData.append("id", JSON.stringify(listUser.id));
     fData.append("role_id", valueBox);
 
-    {
-      nameVal && fData.append("name", nameVal);
-    }
-    {
-      selectedFile && fData.append("image", selectedFile ? selectedFile : "");
-    }
+    nameVal && fData.append("name", nameVal);
+
+    selectedFile && fData.append("image", selectedFile ? selectedFile : "");
 
     const headers: AxiosRequestHeaders = {
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -97,7 +83,6 @@ const EditUser: React.FC<{ listUser: typeUsersList }> = (props) => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success updated") {
           setNotification(res.data.status);
 

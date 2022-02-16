@@ -5,8 +5,6 @@ const ReportsChart: React.FC<{ chartValue: typeSums[] }> = (props) => {
   let data: (string | number)[][] = [["Task", "Hours per Day"]];
   const { chartValue } = props;
 
-  console.log("chartValue", chartValue);
-
   const datas = chartValue.map((item) => [`${item.name}`, item.spend_time]);
 
   const dataFinal = data.concat(datas);
@@ -16,7 +14,6 @@ const ReportsChart: React.FC<{ chartValue: typeSums[] }> = (props) => {
     backgroundColor: "transparent",
   };
 
-  console.log("data", dataFinal);
   return (
     <Chart
       chartType="PieChart"

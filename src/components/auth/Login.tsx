@@ -65,7 +65,6 @@ const Login: React.FC = () => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
           localStorage.setItem("token", res.data.token);

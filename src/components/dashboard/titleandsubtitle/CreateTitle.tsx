@@ -1,6 +1,6 @@
 import axios, { AxiosRequestHeaders } from "axios";
 import { ChangeEvent, useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { ConnectToDB } from "../../../lib/connect-to-db";
 import Notification from "../../ui/notification";
 import classes from "./edit.module.css";
@@ -25,8 +25,6 @@ const CreateTitle: React.FC = () => {
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
 
-    console.log("title:", nameVal);
-
     setNotification("pending");
 
     const connectDB = ConnectToDB("create/title");
@@ -45,7 +43,6 @@ const CreateTitle: React.FC = () => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success created") {
           setNotification(res.data.status);
 

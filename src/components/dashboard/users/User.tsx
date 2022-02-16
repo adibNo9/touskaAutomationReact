@@ -48,14 +48,11 @@ const User: React.FC<{ listUser: typeUsersList; number: number }> = (props) => {
 
   if (roles.length > 0) {
     const roleId = roles.filter((role) => +role.id === +listUser.role_id);
-    console.log(roleId);
 
     if (roleId.length > 0) {
       roleName = roleId[0].name;
     }
   }
-
-  console.log("roleId", roleName);
 
   const changePassHandler = () => {
     setEditUser(false);
@@ -81,7 +78,6 @@ const User: React.FC<{ listUser: typeUsersList; number: number }> = (props) => {
 
     const fData = new FormData();
 
-    console.log("id", JSON.stringify(listUser.id));
     fData.append("id", JSON.stringify(listUser.id));
 
     const headers: AxiosRequestHeaders = {
@@ -95,7 +91,6 @@ const User: React.FC<{ listUser: typeUsersList; number: number }> = (props) => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success updated") {
           setNotification(res.data.status);
 
@@ -147,7 +142,7 @@ const User: React.FC<{ listUser: typeUsersList; number: number }> = (props) => {
       <tr>
         <td>{number}</td>
         <td>
-          <img src={listUser.image_profile} />
+          <img src={listUser.image_profile} alt={listUser.email} />
         </td>
         <td>{listUser.name}</td>
         <td>{listUser.email}</td>

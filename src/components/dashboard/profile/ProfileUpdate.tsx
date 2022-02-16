@@ -1,6 +1,6 @@
 import axios, { AxiosRequestHeaders } from "axios";
 import { ChangeEvent, useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { ConnectToDB } from "../../../lib/connect-to-db";
 import Notification from "../../ui/notification";
 import classes from "./profile.module.css";
@@ -19,7 +19,7 @@ const ProfileUpdate: React.FC = () => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.files?.[0];
-    console.log(value);
+
     setSelectedFile(value);
   };
 
@@ -31,25 +31,16 @@ const ProfileUpdate: React.FC = () => {
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("file:", selectedFile);
-    {
-      nameVal && console.log("name:", nameVal);
-    }
-    {
-      selectedFile && console.log("image", selectedFile ? selectedFile : "");
-    }
+
     setNotification("pending");
 
     const connectDB = ConnectToDB("update/user");
 
     const fData = new FormData();
 
-    {
-      nameVal && fData.append("name", nameVal);
-    }
-    {
-      selectedFile && fData.append("image", selectedFile ? selectedFile : "");
-    }
+    nameVal && fData.append("name", nameVal);
+
+    selectedFile && fData.append("image", selectedFile ? selectedFile : "");
 
     const headers: AxiosRequestHeaders = {
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -62,7 +53,6 @@ const ProfileUpdate: React.FC = () => {
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success updated") {
           setNotification(res.data.status);
 

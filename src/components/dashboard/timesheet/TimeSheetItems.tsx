@@ -19,8 +19,6 @@ const TimeSheetItems: React.FC<{
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const deleteHandelr = () => {
-    console.log("id", chartValue.id);
-
     setNotification("pending");
 
     const connectDB = ConnectToDB("delete/sheet");
@@ -40,7 +38,6 @@ const TimeSheetItems: React.FC<{
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success deleted") {
           setNotification(res.data.status);
 

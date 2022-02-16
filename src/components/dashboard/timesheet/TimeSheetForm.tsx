@@ -1,6 +1,6 @@
 import axios, { AxiosRequestHeaders } from "axios";
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { ConnectToDB } from "../../../lib/connect-to-db";
 import Notification from "../../ui/notification";
 import classes from "./timesheet.module.css";
@@ -22,8 +22,6 @@ const TimeSheetForm: React.FC<{
 }> = (props) => {
   const { titles } = props;
 
-  console.log("titles:", titles);
-
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
 
@@ -35,9 +33,7 @@ const TimeSheetForm: React.FC<{
   const [subId, setSubId] = useState<number>(0);
   const [subValue, setSubValue] = useState<string>("");
 
-  const [selectedTitles, setSelectedTitles] = useState<typeListTitles[]>([
-    { id: 0, title: "", subtitles: [{ id: 0, name: "" }] },
-  ]);
+  const [selectedTitles, setSelectedTitles] = useState<typeListTitles[]>([]);
 
   const [chartValue, setChartValue] = useState<typeCharts[]>([]);
 
@@ -48,13 +44,17 @@ const TimeSheetForm: React.FC<{
     setTypeValue(+val[0]);
 
     setValueBox(value);
+
+    const selectedValue = titles.filter((item) => item.id === typeValue);
+    setSelectedTitles(selectedValue);
+
+    console.log(selectedValue);
   };
 
   const selectSubsHandelr = () => {
     const selectedValue = titles.filter((item) => item.id === typeValue);
     setSelectedTitles(selectedValue);
-
-    console.log("select", selectedTitles);
+    console.log(selectedValue);
   };
 
   const subsChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -64,8 +64,6 @@ const TimeSheetForm: React.FC<{
     setSubId(+val[0]);
 
     setSubValue(value);
-
-    console.log("value:", subId, subValue);
   };
 
   const timeChangeHandelr = (event: ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +83,7 @@ const TimeSheetForm: React.FC<{
   }
 
   const getSheetHandler = () => {
-    const connectDB = ConnectToDB("get/sheet/selected");
+    const connectDB = ConnectToDB("get/sheet/selected/userlogin");
 
     const fData = new FormData();
 
@@ -103,7 +101,6 @@ const TimeSheetForm: React.FC<{
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setChartValue(res.data.timesheets);
         }
@@ -115,8 +112,37 @@ const TimeSheetForm: React.FC<{
   };
 
   useEffect(() => {
-    getSheetHandler();
-  }, []);
+    const getSheets = () => {
+      const connectDB = ConnectToDB("get/sheet/selected/userlogin");
+
+      const fData = new FormData();
+
+      fData.append("from_date", props.selectedDate);
+      fData.append("to_date", props.selectedDate);
+
+      const headers: AxiosRequestHeaders = {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      };
+
+      axios({
+        method: "POST",
+        url: connectDB,
+        headers: headers,
+        data: fData,
+      })
+        .then((res) => {
+          if (res.data.status === "success") {
+            setChartValue(res.data.timesheets);
+          }
+        })
+        .catch((err) => {
+          console.log("Error", err.response);
+          setdataError(err.response.data.user);
+        });
+    };
+
+    getSheets();
+  }, [props.selectedDate]);
 
   let formValidate = false;
 
@@ -126,12 +152,6 @@ const TimeSheetForm: React.FC<{
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-
-    console.log("title_id:", typeValue);
-    console.log("category_id", subId);
-    console.log("uniquetime", props.selectedDate);
-    console.log("spend_time", timeVal);
-    console.log("comment", commentVal);
 
     setNotification("pending");
 
@@ -156,7 +176,6 @@ const TimeSheetForm: React.FC<{
       data: fData,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.status === "success") {
           setNotification(res.data.status);
 
@@ -223,7 +242,7 @@ const TimeSheetForm: React.FC<{
           <Form.Select
             value={valueBox}
             onChange={changeHandler}
-            onBlur={selectSubsHandelr}
+            onClick={selectSubsHandelr}
             aria-label="Default select example"
           >
             <option>انتخاب عنوان ...</option>
@@ -237,7 +256,10 @@ const TimeSheetForm: React.FC<{
         <Form.Group className={classes.formGroup} controlId="formBasicEmail">
           <Form.Label>
             {" "}
-            زیر عنوان‌ها <span>({selectedTitles[0].title})</span>
+            زیر عنوان‌ها{" "}
+            <span>
+              ({selectedTitles.length > 0 && selectedTitles[0].title})
+            </span>
           </Form.Label>
           <Form.Select
             value={subValue}
@@ -246,11 +268,12 @@ const TimeSheetForm: React.FC<{
             aria-label="Default select example"
           >
             <option>انتخاب زیر عنوان ...</option>
-            {selectedTitles[0].subtitles.map((title) => (
-              <option key={title.id} value={`${title.id}.${title.name}`}>
-                {title.name}
-              </option>
-            ))}
+            {selectedTitles.length > 0 &&
+              selectedTitles[0].subtitles.map((title) => (
+                <option key={title.id} value={`${title.id}.${title.name}`}>
+                  {title.name}
+                </option>
+              ))}
           </Form.Select>
         </Form.Group>
         <Form.Group className={classes.formGroup} controlId="formBasicEmail">

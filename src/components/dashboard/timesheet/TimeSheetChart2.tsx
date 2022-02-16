@@ -6,8 +6,6 @@ const TimeSheetChart2: React.FC<{ chartValue: typeCharts[] }> = (props) => {
   let data: (string | number)[][] = [["Task", "Hours per Day"]];
   const { chartValue } = props;
 
-  console.log("chartValue", chartValue);
-
   const datas = chartValue.map((item) => [
     `${item.title}(${item.category})`,
     +item.spend_time,
@@ -20,7 +18,6 @@ const TimeSheetChart2: React.FC<{ chartValue: typeCharts[] }> = (props) => {
     backgroundColor: "transparent",
   };
 
-  console.log("data", dataFinal);
   return (
     <Chart
       chartType="PieChart"
