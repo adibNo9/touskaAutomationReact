@@ -40,12 +40,13 @@
 }
 
 .calendar {
-  background-color: var(--darkGreen);
-  z-index: 9999;
+  background-color: var(--darkGreen) !important;
+  z-index: 9999 !important;
 }
 
 .inputCalendar {
   font-size: 2rem;
+  z-index: 999 !important;
 }
 
 .actions {
@@ -257,6 +258,7 @@
   padding: 2rem;
   width: 60%;
   overflow-y: auto;
+  min-height: 100vh;
 }
 
 .modal::-webkit-scrollbar {

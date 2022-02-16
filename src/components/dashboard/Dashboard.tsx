@@ -87,7 +87,7 @@ const Dashboard: React.FC = () => {
       setNotification(data.tasks);
     };
     getNotification();
-  }, [taskId]);
+  }, [taskId, history]);
 
   console.log("profile:", userData);
   console.log("notification:", notification);
@@ -177,11 +177,23 @@ const Dashboard: React.FC = () => {
           if (typeTask === "developer_task_assign") {
             history.push(`/dashboard/task-web/reports/${IdOfTask}`);
           }
+          if (typeTask === "seo_comment_user") {
+            history.push(`/dashboard/task-seo/reports/${IdOfTask}msg`);
+          }
+          if (typeTask === "seo_comment_admin") {
+            history.push(`/dashboard/task-seo/admin-reports/${IdOfTask}msg`);
+          }
           if (typeTask === "web_comment_user") {
             history.push(`/dashboard/task-web/reports/${IdOfTask}msg`);
           }
           if (typeTask === "web_comment_admin") {
             history.push(`/dashboard/task-web/admin-reports/${IdOfTask}msg`);
+          }
+          if (
+            typeTask === "web_comment_admin" &&
+            userData.user.role_id !== "1"
+          ) {
+            history.push(`/dashboard/task-web/tasks-reports/${IdOfTask}msg`);
           }
         }
       })
@@ -303,6 +315,20 @@ const Dashboard: React.FC = () => {
                     className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
                   >
                     یک پیام جدید برای تسک وب مورد نظر دارید!
+                  </Alert>
+                )}
+                {notif.notif_data.task_type === "seo_comment_user" && (
+                  <Alert
+                    className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
+                  >
+                    یک پیام جدید برای تسک سئو مورد نظر دارید!
+                  </Alert>
+                )}
+                {notif.notif_data.task_type === "seo_comment_admin" && (
+                  <Alert
+                    className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
+                  >
+                    یک پیام جدید برای تسک سئو مورد نظر دارید!
                   </Alert>
                 )}
                 <h5>{notif.notif_data.task_title}</h5>

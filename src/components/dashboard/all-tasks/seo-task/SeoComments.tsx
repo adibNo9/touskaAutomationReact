@@ -61,6 +61,7 @@ const SeoComments: React.FC<{
         comments={props.comments[i]}
         id={props.id}
         update={props.update}
+        key={i}
       />
     );
   }

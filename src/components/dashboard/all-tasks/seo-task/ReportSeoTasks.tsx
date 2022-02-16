@@ -49,7 +49,7 @@ const ReportSeoTasks: React.FC = () => {
   const [taskId, setTaskId] = useState<string>("");
 
   const getTasks = async () => {
-    const data = await getData("get/tasks/Assigned/admin");
+    const data = await getData("get/tasks/Assigned");
     setTasks(data.tasks);
     if (id !== 0) {
       const value = data.tasks.filter((task: typeTasks) => task.id === id);
@@ -61,7 +61,7 @@ const ReportSeoTasks: React.FC = () => {
 
   useEffect(() => {
     const tasksHandler = async () => {
-      const data = await getData("get/tasks/Assigned/admin");
+      const data = await getData("get/tasks/Assigned");
       setTasks(data.tasks);
     };
     tasksHandler();
@@ -69,6 +69,8 @@ const ReportSeoTasks: React.FC = () => {
     const pathName = history.location.pathname.split("/");
     setTaskId(pathName[pathName.length - 1]);
   }, [history.location.pathname]);
+
+  console.log("task seo:", tasks);
 
   const changeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -211,10 +213,11 @@ const ReportSeoTasks: React.FC = () => {
                 onClick={() => showMOdalHandler(task.id, task.subject)}
               />
             </div>
-            <div className={classes.commentIcon}>
-              <IoMdChatboxes
-                onClick={() => commentsHandler(task.comments, task.id)}
-              />
+            <div
+              onClick={() => commentsHandler(task.comments, task.id)}
+              className={classes.commentIcon}
+            >
+              <IoMdChatboxes />
               {taskId === `${task.id}msg` && <h6>جدید</h6>}
             </div>
             <div className={classes.statusText}>

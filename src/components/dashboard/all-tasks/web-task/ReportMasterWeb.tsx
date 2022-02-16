@@ -175,10 +175,11 @@ const ReportMasterWeb: React.FC<{ userEmail: string }> = (props) => {
             <div className={classes.status}>
               <RiEditFill onClick={() => showMOdalHandler(task)} />
             </div>
-            <div className={classes.commentIcon}>
-              <IoMdChatboxes
-                onClick={() => commentsHandler(task.comments, task.id)}
-              />
+            <div
+              onClick={() => commentsHandler(task.comments, task.id)}
+              className={classes.commentIcon}
+            >
+              <IoMdChatboxes />
               {taskId === `${task.id}msg` && <h6>جدید</h6>}
             </div>
             <div className={classes.statusText}>
