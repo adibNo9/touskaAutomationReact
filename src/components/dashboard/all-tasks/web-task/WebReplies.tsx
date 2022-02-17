@@ -163,6 +163,7 @@ const WebReplies: React.FC<{
   }
   return (
     <div className={classes.comment}>
+      aaaas
       <div className={classes.chat}>
         <div className={classes.txtComment}>
           <p className={classes.userChat}>
@@ -192,7 +193,7 @@ const WebReplies: React.FC<{
           </div>
         </div>
 
-        {comments.rep.map((comment) => (
+        {/* {comments.rep.map((comment) => (
           <div
             className={
               comment.user.id === comments.user.id
@@ -228,9 +229,8 @@ const WebReplies: React.FC<{
               <MdOutlineDelete />
             </div>
           </div>
-        ))}
+        ))} */}
       </div>
-
       <Form className={classes.replyForm} onSubmit={replySubmitHandler}>
         <Form.Group
           className={classes.formGroupCmnt}

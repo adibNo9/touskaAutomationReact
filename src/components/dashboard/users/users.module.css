@@ -86,29 +86,37 @@
 
 .options {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+  flex-direction: column;
   margin: 5px 15%;
+  width: 70%;
 }
 
 .options form {
-  flex-basis: 40%;
+  width: 40%;
 }
 
 .btnsOptions {
-  flex-basis: 60%;
+  width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  margin-top: 1rem;
 }
 
 .btnsOptions button {
-  border: 5px solid var(--purple);
+  border: 2px solid var(--purple);
   background-color: var(--darkGreen);
   font-family: var(--ordibehesht);
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: white;
-  width: 40%;
+  width: 30%;
+  transition: 0.2s ease-in-out;
+}
+
+.btnsOptions .active {
+  border-width: 5px;
 }
 
 .form {

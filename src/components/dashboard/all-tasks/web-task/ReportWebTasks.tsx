@@ -33,7 +33,7 @@ export interface typeTasks {
   id: number;
 }
 
-const ReportWebTasks: React.FC = () => {
+const ReportWebTasks: React.FC<{ userEmail: string }> = (props) => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
 
@@ -58,6 +58,8 @@ const ReportWebTasks: React.FC = () => {
       setCommentsDetails(value[0].comments);
     }
   };
+
+  console.log("tasks:", tasks);
 
   const history = useHistory();
 
@@ -277,6 +279,7 @@ const ReportWebTasks: React.FC = () => {
           <div className={classes.modal}>
             <WebComments
               comments={commentsDetails}
+              userEmail={props.userEmail}
               id={idCmnt}
               update={updateTasks}
             />

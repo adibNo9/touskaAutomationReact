@@ -89,6 +89,33 @@
   max-width: 1vw;
 }
 
+.content Table th:first-child {
+  max-width: 1vw;
+}
+
+.content Table th:first-child {
+  position: sticky;
+  right: 0;
+  border: 1px solid var(--purple) !important;
+  background-color: var(--green);
+  color: black !important;
+  width: 100px;
+}
+
+.content Table tr {
+  position: relative;
+}
+
+.content Table td:first-child {
+  position: sticky;
+  right: 0;
+  width: 100px;
+  border: 1px solid var(--purple) !important;
+  background-color: var(--green);
+  color: black !important;
+  font-weight: 900;
+}
+
 .charts {
   width: 100%;
   height: 100%;

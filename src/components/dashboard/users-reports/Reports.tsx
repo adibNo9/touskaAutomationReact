@@ -192,8 +192,16 @@ const Reports: React.FC = () => {
     <section className={classes.reports}>
       <h1>گزارشات</h1>
       <div className={classes.links}>
-        <button onClick={showTitleReports}>گزارش بر اساس عنوان‌ها</button>
-        <button onClick={showSubtitleReports}>
+        <button
+          onClick={showTitleReports}
+          className={titleReports ? classes.active : classes.noActive}
+        >
+          گزارش بر اساس عنوان‌ها
+        </button>
+        <button
+          onClick={showSubtitleReports}
+          className={subtitleReports ? classes.active : classes.noActive}
+        >
           گزارش بر اساس زیر عنوان‌ها
         </button>
       </div>

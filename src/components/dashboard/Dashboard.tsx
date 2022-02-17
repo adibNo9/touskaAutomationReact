@@ -15,7 +15,7 @@ import EditTimeSheet from "./titleandsubtitle/EditTimeSheet";
 
 import LoadingSpinner from "../ui/LoadingSpinner";
 
-import { MdMenuOpen } from "react-icons/md";
+import { ImMenu4 } from "react-icons/im";
 import { CgClose } from "react-icons/cg";
 
 import { RiNotification3Line } from "react-icons/ri";
@@ -213,7 +213,7 @@ const Dashboard: React.FC = () => {
     <section className={classes.dashboard}>
       {width < 980 && (
         <div className={classes.burgerMenu}>
-          <MdMenuOpen onClick={mobileMenuHandler} />
+          <ImMenu4 onClick={mobileMenuHandler} />
         </div>
       )}
 

@@ -53,7 +53,7 @@ const SeoTask: React.FC<{ userData: userType }> = (props) => {
             </Route>
           )}
           <Route path="/dashboard/task-seo/reports">
-            <ReportSeoTasks />
+            <ReportSeoTasks userEmail={userData.user.email} />
           </Route>
           {(userData.user.role_id === "1" || userData.user.role_id === "2") && (
             <Route path="/dashboard/task-seo/admin-reports">

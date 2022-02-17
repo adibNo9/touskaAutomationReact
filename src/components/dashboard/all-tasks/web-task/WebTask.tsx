@@ -77,7 +77,7 @@ const WebTask: React.FC<{ userData: userType }> = (props) => {
           )}
 
           <Route path="/dashboard/task-web/reports">
-            <ReportWebTasks />
+            <ReportWebTasks userEmail={userData.user.email} />
           </Route>
           {userData.user.role_id === "1" && (
             <Route path="/dashboard/task-web/admin-reports">
@@ -93,7 +93,7 @@ const WebTask: React.FC<{ userData: userType }> = (props) => {
             userData.user.is_master === "1") ||
             userData.user.role_id === "2") && (
             <Route path="/dashboard/task-web/tasks-reports">
-              <ReportWebForAdmins />
+              <ReportWebForAdmins userEmail={userData.user.email} />
             </Route>
           )}
         </Suspense>

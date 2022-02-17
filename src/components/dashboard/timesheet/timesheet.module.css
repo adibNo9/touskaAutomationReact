@@ -219,3 +219,17 @@
   background-color: rgb(255, 0, 0);
   color: var(--white);
 }
+
+@media (max-width: 600px) {
+  .results .form {
+    flex-direction: column;
+    min-width: 100%;
+    flex-wrap: nowrap;
+  }
+  .formGroup {
+    width: 80%;
+  }
+  .formGroupMessage {
+    width: 80%;
+  }
+}

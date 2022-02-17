@@ -33,7 +33,7 @@ export interface typeTasks {
   id: number;
 }
 
-const ReportSeoTasks: React.FC = () => {
+const ReportSeoTasks: React.FC<{ userEmail: string }> = (props) => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
 
@@ -277,6 +277,7 @@ const ReportSeoTasks: React.FC = () => {
           <div className={classes.modal}>
             <SeoComments
               comments={commentsDetails}
+              userEmail={props.userEmail}
               id={id}
               update={updateTasks}
             />

@@ -17,7 +17,7 @@ import UpdateTaskForAdmins from "./UpdateTaskForAdmins";
 import WebComments, { comments } from "./WebComments";
 import { IoMdChatboxes } from "react-icons/io";
 
-const ReportWebForAdmins: React.FC = () => {
+const ReportWebForAdmins: React.FC<{ userEmail: string }> = (props) => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
   const [tasks, setTasks] = useState<typeWebTasks[]>([]);
@@ -41,6 +41,8 @@ const ReportWebForAdmins: React.FC = () => {
       setCommentsDetails(value[0].comments);
     }
   };
+
+  console.log("tasks:", tasks);
 
   const history = useHistory();
 
@@ -256,6 +258,7 @@ const ReportWebForAdmins: React.FC = () => {
           <div className={classes.modal}>
             <WebComments
               comments={commentsDetails}
+              userEmail={props.userEmail}
               id={id}
               update={updateTasks}
             />

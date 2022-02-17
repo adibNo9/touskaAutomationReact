@@ -234,13 +234,14 @@
   position: absolute;
 
   right: 10px;
-  top: 50vh;
-  background-color: var(--purple);
+  bottom: 0;
+  background-color: var(--darkGreen);
 }
 
 .burgerMenu svg {
   font-size: 3rem;
   color: white;
+  padding: 0 4px;
 }
 
 @media (max-width: 980px) {

@@ -281,6 +281,7 @@ const ReportWebAdmin: React.FC<{ userEmail: string }> = (props) => {
           <div className={classes.modal}>
             <WebComments
               comments={commentsDetails}
+              userEmail={props.userEmail}
               id={id}
               update={updateTasks}
             />

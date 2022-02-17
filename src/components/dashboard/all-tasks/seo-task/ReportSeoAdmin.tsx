@@ -260,6 +260,7 @@ const ReportSeoAdmin: React.FC<{ userEmail: string }> = (props) => {
           <div className={classes.modal}>
             <SeoComments
               comments={commentsDetails}
+              userEmail={props.userEmail}
               id={id}
               update={updateTasks}
             />

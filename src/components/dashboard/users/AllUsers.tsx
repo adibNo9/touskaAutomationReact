@@ -24,6 +24,8 @@ const AllUsers: React.FC = () => {
 
   const [getValue, setGetValue] = useState<typeUsersList[]>([]);
 
+  const [activeBtn, setActiveBtn] = useState<string>("allUsers");
+
   useEffect(() => {
     const getListUsers = async () => {
       const value = await getData("listuser");
@@ -61,14 +63,21 @@ const AllUsers: React.FC = () => {
     }
   };
 
+  const allUsersHandler = () => {
+    setListUsers(getValue);
+    setActiveBtn("allUsers");
+  };
+
   const activeUsersHandler = () => {
     const value = getValue.filter((user) => user.is_active === "1");
     setListUsers(value);
+    setActiveBtn("activeUsers");
   };
 
   const deactiveUsersHandler = () => {
     const value = getValue.filter((user) => user.is_active !== "1");
     setListUsers(value);
+    setActiveBtn("deActiveUsers");
   };
 
   let users = [];
@@ -95,8 +104,30 @@ const AllUsers: React.FC = () => {
           </Form.Group>
         </Form>
         <div className={classes.btnsOptions}>
-          <button onClick={activeUsersHandler}>کاربران فعال</button>
-          <button onClick={deactiveUsersHandler}>کاربران غیر فعال</button>
+          <button
+            onClick={allUsersHandler}
+            className={
+              activeBtn === "allUsers" ? classes.active : classes.noActive
+            }
+          >
+            همه کاربران
+          </button>
+          <button
+            onClick={activeUsersHandler}
+            className={
+              activeBtn === "activeUsers" ? classes.active : classes.noActive
+            }
+          >
+            کاربران فعال
+          </button>
+          <button
+            onClick={deactiveUsersHandler}
+            className={
+              activeBtn === "deActiveUsers" ? classes.active : classes.noActive
+            }
+          >
+            کاربران غیر فعال
+          </button>
         </div>
       </div>
       <Table striped bordered hover>
