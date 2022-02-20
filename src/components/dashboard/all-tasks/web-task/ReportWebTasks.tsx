@@ -17,13 +17,19 @@ import { IoMdChatboxes } from "react-icons/io";
 export interface typeTasks {
   Assignment: string;
   Priority: string;
-  admin_task_email: string;
   delivery_time: string;
   due_on: string;
   subject: string;
   Status: string;
   Verification: string;
-  assigned_to: string;
+  admin_task_email: {
+    email: string;
+    name: string;
+  };
+  assigned_to: null | {
+    email: string;
+    name: string;
+  };
   file: {
     name: string;
     url: string;
@@ -229,7 +235,7 @@ const ReportWebTasks: React.FC<{ userEmail: string }> = (props) => {
               </p>
             </div>
             <div className={classes.adminEmail}>
-              <p>فرستنده: {task.admin_task_email}</p>
+              <p>فرستنده: {task.admin_task_email.name}</p>
             </div>
           </div>
         ))}

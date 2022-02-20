@@ -189,9 +189,14 @@ const ReportMasterWeb: React.FC<{ userEmail: string }> = (props) => {
               </p>
             </div>
             <div className={classes.adminEmail}>
-              <p>گیرنده: {task.assigned_to}</p>
+              <p>
+                گیرنده:{" "}
+                {task.assigned_to?.name
+                  ? task.assigned_to?.name
+                  : task.assigned_to?.email}
+              </p>
             </div>
-            {task.admin_task_email === props.userEmail && (
+            {task.admin_task_email.email === props.userEmail && (
               <MdDelete
                 className={classes.delete}
                 onClick={() => delIdHandler(task.id)}

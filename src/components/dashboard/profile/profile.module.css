@@ -122,3 +122,14 @@
   font-size: 1.8rem;
   color: green;
 }
+
+@media (max-width: 768px) {
+  .links {
+    flex-direction: column;
+  }
+
+  .links button {
+    width: 90%;
+    margin-bottom: 1rem;
+  }
+}

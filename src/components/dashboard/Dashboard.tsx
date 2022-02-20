@@ -15,7 +15,7 @@ import EditTimeSheet from "./titleandsubtitle/EditTimeSheet";
 
 import LoadingSpinner from "../ui/LoadingSpinner";
 
-import { ImMenu4 } from "react-icons/im";
+import { CgMenuGridR } from "react-icons/cg";
 import { CgClose } from "react-icons/cg";
 
 import { RiNotification3Line } from "react-icons/ri";
@@ -61,19 +61,20 @@ const Dashboard: React.FC = () => {
     },
   });
 
+  const history = useHistory();
+
   const [notification, setNotification] = useState<typeNotif[]>([]);
   const [showNotifs, setShowNotifs] = useState<boolean>(false);
   const [taskId, setTaskId] = useState("");
 
   const [showMenu, setshowMenu] = useState<boolean>(window.outerWidth > 980);
+  const [location, setLocation] = useState<string>(history.location.pathname);
 
   const width = window.outerWidth;
 
   const userName = userData?.user.name;
   const imageSrc = userData?.user.image_profile;
   const userEmail = userData!.user.email;
-
-  const history = useHistory();
 
   useEffect(() => {
     const getProfile = async () => {
@@ -211,9 +212,9 @@ const Dashboard: React.FC = () => {
 
   return (
     <section className={classes.dashboard}>
-      {width < 980 && (
+      {width < 980 && location !== "/dashboard" && (
         <div className={classes.burgerMenu}>
-          <ImMenu4 onClick={mobileMenuHandler} />
+          <CgMenuGridR onClick={mobileMenuHandler} />
         </div>
       )}
 
@@ -354,12 +355,24 @@ const Dashboard: React.FC = () => {
             <h6> {userName ? userName : userEmail} </h6>
           </div>
 
-          <NavLink activeClassName={classes.activeLink} to="/dashboard/profile">
+          <NavLink
+            activeClassName={classes.activeLink}
+            to="/dashboard/profile"
+            onClick={
+              width < 980 ? () => setshowMenu(false) : () => setshowMenu(true)
+            }
+          >
             پروفایل
           </NavLink>
 
           {userData.user.role_id === "1" && (
-            <NavLink activeClassName={classes.activeLink} to="/dashboard/users">
+            <NavLink
+              activeClassName={classes.activeLink}
+              to="/dashboard/users"
+              onClick={
+                width < 980 ? () => setshowMenu(false) : () => setshowMenu(true)
+              }
+            >
               کاربران
             </NavLink>
           )}
@@ -368,6 +381,9 @@ const Dashboard: React.FC = () => {
             <NavLink
               activeClassName={classes.activeLink}
               to="/dashboard/edit-timesheet"
+              onClick={
+                width < 980 ? () => setshowMenu(false) : () => setshowMenu(true)
+              }
             >
               آپدیت تایم شیت
             </NavLink>
@@ -376,6 +392,9 @@ const Dashboard: React.FC = () => {
           <NavLink
             activeClassName={classes.activeLink}
             to="/dashboard/timesheet"
+            onClick={
+              width < 980 ? () => setshowMenu(false) : () => setshowMenu(true)
+            }
           >
             تایم شیت
           </NavLink>
@@ -384,6 +403,9 @@ const Dashboard: React.FC = () => {
             <NavLink
               activeClassName={classes.activeLink}
               to="/dashboard/reports"
+              onClick={
+                width < 980 ? () => setshowMenu(false) : () => setshowMenu(true)
+              }
             >
               گزارشات
             </NavLink>
@@ -393,6 +415,9 @@ const Dashboard: React.FC = () => {
             <NavLink
               activeClassName={classes.activeLink}
               to="/dashboard/task-seo"
+              onClick={
+                width < 980 ? () => setshowMenu(false) : () => setshowMenu(true)
+              }
             >
               تسک سئو
             </NavLink>
@@ -404,6 +429,9 @@ const Dashboard: React.FC = () => {
             <NavLink
               activeClassName={classes.activeLink}
               to="/dashboard/task-web"
+              onClick={
+                width < 980 ? () => setshowMenu(false) : () => setshowMenu(true)
+              }
             >
               تسک وب
             </NavLink>
@@ -415,6 +443,81 @@ const Dashboard: React.FC = () => {
         </div>
       )}
       <div className={classes.content}>
+        {location === "/dashboard" && width < 980 && (
+          <div className={classes.linkInContent}>
+            <div className={classes.imageUser}>
+              <img src={imageSrc} alt={userName ? userName : userEmail} />
+            </div>
+
+            <NavLink
+              activeClassName={classes.activeLink}
+              to="/dashboard/profile"
+              onClick={() => setLocation("profile")}
+            >
+              پروفایل
+            </NavLink>
+
+            {userData.user.role_id === "1" && (
+              <NavLink
+                activeClassName={classes.activeLink}
+                to="/dashboard/users"
+                onClick={() => setLocation("users")}
+              >
+                کاربران
+              </NavLink>
+            )}
+
+            {userData.user.role_id === "1" && (
+              <NavLink
+                activeClassName={classes.activeLink}
+                to="/dashboard/edit-timesheet"
+                onClick={() => setLocation("edit-timesheet")}
+              >
+                آپدیت تایم شیت
+              </NavLink>
+            )}
+
+            <NavLink
+              activeClassName={classes.activeLink}
+              to="/dashboard/timesheet"
+              onClick={() => setLocation("timesheet")}
+            >
+              تایم شیت
+            </NavLink>
+
+            {userData.user.role_id === "1" && (
+              <NavLink
+                activeClassName={classes.activeLink}
+                to="/dashboard/reports"
+                onClick={() => setLocation("reports")}
+              >
+                گزارشات
+              </NavLink>
+            )}
+
+            {userData.user.role_id !== "3" && (
+              <NavLink
+                activeClassName={classes.activeLink}
+                to="/dashboard/task-seo"
+                onClick={() => setLocation("task-seo")}
+              >
+                تسک سئو
+              </NavLink>
+            )}
+
+            {(userData.user.role_id === "1" ||
+              userData.user.role_id === "2" ||
+              userData.user.role_id === "3") && (
+              <NavLink
+                activeClassName={classes.activeLink}
+                to="/dashboard/task-web"
+                onClick={() => setLocation("task-web")}
+              >
+                تسک وب
+              </NavLink>
+            )}
+          </div>
+        )}
         <Suspense
           fallback={
             <div className="spinner">

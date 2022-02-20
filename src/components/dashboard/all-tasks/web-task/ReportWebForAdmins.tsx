@@ -205,7 +205,12 @@ const ReportWebForAdmins: React.FC<{ userEmail: string }> = (props) => {
               </p>
             </div>
             <div className={classes.adminEmail}>
-              <p>گیرنده: {task.assigned_to}</p>
+              <p>
+                گیرنده:{" "}
+                {task.assigned_to?.name
+                  ? task.assigned_to?.name
+                  : task.assigned_to?.email}
+              </p>
             </div>
 
             <MdDelete

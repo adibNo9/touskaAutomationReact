@@ -277,3 +277,19 @@
   color: white;
   background-color: red;
 }
+
+@media (max-width: 768px) {
+  .links {
+    flex-direction: column;
+  }
+
+  .links button {
+    width: 90%;
+    margin-bottom: 1rem;
+  }
+
+  .edit h1 {
+    font-size: 2rem !important;
+    width: calc(100% - 100px);
+  }
+}

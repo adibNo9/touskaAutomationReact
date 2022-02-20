@@ -203,6 +203,14 @@
   font-size: 1.2rem;
 }
 
+.download p {
+  font-family: var(--ordibehesht);
+  padding: 0 29%;
+  margin-bottom: 0;
+  font-size: 1.2rem;
+  cursor: not-allowed;
+}
+
 .status {
   position: absolute;
   bottom: 0;
@@ -619,4 +627,20 @@
   right: 2px;
   font-size: 0.8rem;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .links {
+    flex-direction: column;
+  }
+
+  .links a {
+    width: 90%;
+    margin-bottom: 1rem;
+  }
+
+  .modal {
+    width: 100%;
+    padding: 4rem 0 1rem;
+  }
 }

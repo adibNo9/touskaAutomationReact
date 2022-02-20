@@ -26,6 +26,12 @@ const ReportSubtitles: React.FC<{
     (item) => item.name
   );
 
+  let allSums: number = 0;
+
+  for (let i = 0; i < sumSubtitles.length; i++) {
+    allSums = allSums + sumSubtitles[i].spend_time;
+  }
+
   const thExcell = nameUserField.concat(valueField);
 
   let tdName = [];
@@ -53,26 +59,68 @@ const ReportSubtitles: React.FC<{
       )}
       {reportsValue.length > 0 && (
         <div ref={componentRef} className="divPrint">
-          <Table striped bordered hover responsive size="sm">
-            <thead>
-              <tr>
-                <th>نام کاربر</th>
-                {reportsValue[0]?.report_base_subTitle.map((item, index) => (
-                  <th key={index}>{item.name}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {reportsValue.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.name ? item.name : item.email}</td>
-                  {item.report_base_subTitle.map((item, index) => (
-                    <td key={index}>{item.spend_time}</td>
+          <div className={`tableDiv ${classes.tableDiv}`}>
+            <Table striped bordered hover size="sm">
+              <thead>
+                <tr>
+                  <th>نام کاربر</th>
+                  {reportsValue[0]?.report_base_subTitle.map((item, index) => (
+                    <th key={index}>
+                      {item.name.includes("_")
+                        ? item.name.split("_").join(" ")
+                        : item.name}
+                    </th>
                   ))}
                 </tr>
+              </thead>
+              <tbody>
+                {reportsValue.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.name ? item.name : item.email}</td>
+                    {item.report_base_subTitle.map((item, index) => (
+                      <td key={index}>{item.spend_time}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+          <div className={`tableDiv ${classes.allValue}`}>
+            {sumSubtitles
+              .sort((a, b) => b.spend_time - a.spend_time)
+              .map((item, index) => (
+                <div
+                  key={index}
+                  className={item.spend_time === 0 ? "d-none" : classes.boxItem}
+                >
+                  <div className={classes.titleItem}>
+                    <p>
+                      {item.name.includes("_")
+                        ? item.name.split("_").join(" ")
+                        : item.name}
+                    </p>
+                    <p>{item.spend_time} ساعت</p>
+                  </div>
+                  <div
+                    className={classes.timeItem}
+                    style={{
+                      height: `${((item.spend_time / allSums) * 100).toFixed(
+                        1
+                      )}vw`,
+                      backgroundColor: `rgba(${(Math.random() * 100).toFixed(
+                        0
+                      )}, ${(Math.random() * 100).toFixed(0)}, ${(
+                        Math.random() * 100
+                      ).toFixed(0)}, 70%)`,
+                      color: "white",
+                      textAlign: "center",
+                    }}
+                  >
+                    <p>{((item.spend_time / allSums) * 100).toFixed(1)}%</p>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </Table>
+          </div>
           <ReportsChart chartValue={sumSubtitles} />
         </div>
       )}

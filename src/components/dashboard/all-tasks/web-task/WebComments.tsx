@@ -8,7 +8,6 @@ import { MdOutlineDelete } from "react-icons/md";
 import { ConnectToDB } from "../../../../lib/connect-to-db";
 import axios, { AxiosRequestHeaders } from "axios";
 import Notification from "../../../ui/notification";
-import WebReplies from "./WebReplies";
 
 export interface comments {
   comment: string;

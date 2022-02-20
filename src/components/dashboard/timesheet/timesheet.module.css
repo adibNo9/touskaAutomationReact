@@ -232,4 +232,20 @@
   .formGroupMessage {
     width: 80%;
   }
+
+  .timesheet h1 {
+    font-size: 2rem !important;
+    width: calc(100% - 100px);
+  }
+}
+
+@media (max-width: 768px) {
+  .links {
+    flex-direction: column;
+  }
+
+  .links button {
+    width: 90%;
+    margin-bottom: 1rem;
+  }
 }

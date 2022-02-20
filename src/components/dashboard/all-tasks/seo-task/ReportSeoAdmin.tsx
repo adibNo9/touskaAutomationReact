@@ -200,15 +200,20 @@ const ReportSeoAdmin: React.FC<{ userEmail: string }> = (props) => {
               </p>
             </div>
             <div className={classes.adminEmail}>
-              <p className={classes.assignedTo}>گیرنده: {task.assigned_to}</p>
-              {task.admin_task_email !== props.userEmail && (
+              <p className={classes.assignedTo}>
+                گیرنده:{" "}
+                {task.assigned_to?.name
+                  ? task.assigned_to?.name
+                  : task.assigned_to?.email}
+              </p>
+              {task.admin_task_email.email !== props.userEmail && (
                 <p className={classes.assignedFrom}>
-                  فرستنده: {task.admin_task_email}
+                  فرستنده: {task.admin_task_email.name}
                 </p>
               )}
             </div>
 
-            {task.admin_task_email === props.userEmail && (
+            {task.admin_task_email.email === props.userEmail && (
               <MdDelete
                 className={classes.delete}
                 onClick={() => delIdHandler(task.id)}

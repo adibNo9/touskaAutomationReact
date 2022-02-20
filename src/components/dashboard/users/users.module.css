@@ -269,3 +269,43 @@
 .checkPass {
   top: 0;
 }
+
+@media (max-width: 980px) {
+  .users table {
+    margin-right: 50px;
+  }
+  .links,
+  .btnsOptions {
+    flex-direction: column;
+  }
+
+  .links button,
+  .btnsOptions button {
+    width: 90%;
+    margin-bottom: 1rem;
+  }
+
+  .options form {
+    width: 100%;
+  }
+
+  .modal {
+    width: 90%;
+  }
+
+  .closeModal {
+    right: 2px;
+    top: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .links {
+    flex-direction: column;
+  }
+
+  .links button {
+    width: 90%;
+    margin-bottom: 1rem;
+  }
+}

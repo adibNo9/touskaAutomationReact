@@ -73,33 +73,26 @@
   background-color: var(--darkGreen);
   margin-top: 1rem;
   border: 5px solid var(--purple);
-  margin-left: 500px;
+  /* margin-left: 500px; */
 }
 
 .content Table td,
 .content Table th {
   color: var(--white) !important;
   text-align: center;
-  /* font-size: 0.4vw !important;
-  max-width: 0.4vw; */
-  /* padding: 2px !important; */
 }
 
 .content Table th:first-child {
   max-width: 1vw;
+  /* z-index: 999; */
 }
 
-.content Table th:first-child {
-  max-width: 1vw;
-}
-
-.content Table th:first-child {
-  position: sticky;
-  right: 0;
-  border: 1px solid var(--purple) !important;
-  background-color: var(--green);
-  color: black !important;
-  width: 100px;
+.tableDiv {
+  width: calc(100vw - 250px);
+  height: 80vh;
+  overflow: auto;
+  margin-left: 500px;
+  position: relative;
 }
 
 .content Table tr {
@@ -114,6 +107,31 @@
   background-color: var(--green);
   color: black !important;
   font-weight: 900;
+  z-index: 99;
+}
+
+.content Table th {
+  position: sticky;
+  right: 0;
+  top: 0;
+  border: 1px solid var(--purple) !important;
+  background-color: var(--green);
+  color: black !important;
+  width: 100px;
+  top: 0;
+  z-index: 999;
+  vertical-align: top;
+}
+
+.content Table thead tr {
+  border: 1px solid var(--purple) !important;
+  background-color: var(--darkGreen) !important;
+}
+
+.content Table th:first-child {
+  position: sticky;
+  top: 0;
+  right: 0;
 }
 
 .charts {
@@ -200,6 +218,111 @@
   background-color: var(--darkGreen);
 }
 
-/* .tableP {
-  width: calc(100% + 500px);
-} */
+.tableDiv::-webkit-scrollbar,
+.allValue::-webkit-scrollbar {
+  height: 10px !important;
+  direction: rtl;
+}
+
+/* Track */
+.tableDiv::-webkit-scrollbar-track,
+.allValue::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px var(--lightGreen);
+  border-radius: 2px;
+}
+
+/* Handle */
+.tableDiv::-webkit-scrollbar-thumb,
+.allValue::-webkit-scrollbar-thumb {
+  background: var(--purple);
+  border-radius: 2px;
+}
+
+/* Handle on hover */
+.tableDiv::-webkit-scrollbar-thumb:hover,
+.allValue::-webkit-scrollbar-thumb:hover {
+  background: #3b0034;
+}
+
+.allValue {
+  border: 4px solid var(--purple);
+  width: 100%;
+  max-width: calc(100vw - 250px);
+  margin-left: auto;
+  direction: rtl;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  /* flex-direction: column; */
+  margin-top: 1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.boxItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 2px;
+  padding: 0 4px 1.5rem 0;
+  width: 100%;
+  position: relative;
+  background-color: rgba(128, 128, 128, 0.397);
+  border: 2px solid var(--darkGreen);
+}
+
+.boxItem p {
+  margin-bottom: 0;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.titleItem {
+  color: var(--darkGreen);
+  font-weight: 900;
+}
+.titleItem {
+  margin-bottom: 0;
+}
+.timeItem {
+  width: 40px;
+  font-size: 12px;
+  padding-top: 8px;
+}
+
+.timeItem p {
+  font-weight: 900;
+  text-shadow: 2px 2px 1px black;
+}
+
+@media (max-width: 980px) {
+  .links {
+    flex-direction: column;
+  }
+
+  .links button {
+    width: 90%;
+    margin-bottom: 1rem;
+  }
+
+  .inputCalendar {
+    margin-bottom: 1rem;
+  }
+
+  .tableDiv {
+    width: 100vw !important;
+    margin-left: 0;
+  }
+
+  .allValue {
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  .content Table td,
+  .content Table th {
+    font-size: 12px !important;
+  }
+}
