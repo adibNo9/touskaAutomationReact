@@ -13,6 +13,10 @@ export const getData = async (db: string) => {
     headers,
   });
 
+  if (!res.ok) {
+    localStorage.removeItem("Please Login again!");
+  }
+
   const data = await res.json();
 
   return data;

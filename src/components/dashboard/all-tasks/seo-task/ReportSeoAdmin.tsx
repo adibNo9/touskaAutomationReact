@@ -172,7 +172,7 @@ const ReportSeoAdmin: React.FC<{ userEmail: string }> = (props) => {
             {task.file.length > 0 && (
               <div className={classes.download}>
                 <Button variant="info">
-                  <a href={task.file[0].url}>دانلود فایل</a>
+                  <a href={task.file[task.file.length - 1].url}>دانلود فایل</a>
                 </Button>
               </div>
             )}

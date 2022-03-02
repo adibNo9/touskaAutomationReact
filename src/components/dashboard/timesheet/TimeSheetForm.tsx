@@ -47,15 +47,17 @@ const TimeSheetForm: React.FC<{
 
     const selectedValue = titles.filter((item) => item.id === typeValue);
     setSelectedTitles(selectedValue);
-
-    console.log(selectedValue);
   };
 
-  const selectSubsHandelr = () => {
+  // const selectSubsHandelr = () => {
+  //   const selectedValue = titles.filter((item) => item.id === typeValue);
+  //   setSelectedTitles(selectedValue);
+  // };
+
+  useEffect(() => {
     const selectedValue = titles.filter((item) => item.id === typeValue);
     setSelectedTitles(selectedValue);
-    console.log(selectedValue);
-  };
+  }, [typeValue, titles]);
 
   const subsChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -242,7 +244,7 @@ const TimeSheetForm: React.FC<{
           <Form.Select
             value={valueBox}
             onChange={changeHandler}
-            onClick={selectSubsHandelr}
+            // onClick={selectSubsHandelr}
             aria-label="Default select example"
           >
             <option>انتخاب عنوان ...</option>

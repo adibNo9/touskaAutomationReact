@@ -43,8 +43,6 @@ const EditTimeSheet: React.FC = () => {
     getSubtitles();
   }, []);
 
-  console.log("allTitles:", allTitles);
-
   const singleTitle = [];
   for (let i = 0; i < allTitles.length; i++) {
     singleTitle[i] = (

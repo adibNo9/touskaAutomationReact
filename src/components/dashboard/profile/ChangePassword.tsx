@@ -125,7 +125,7 @@ const ChangePassword: React.FC = () => {
 
   return (
     <Form onSubmit={submitHandler} className={classes.form}>
-      <Form.Group className={classes.formGroup} controlId="formBasicEmail">
+      <Form.Group className={classes.formGroup} controlId="formBasicPass">
         <Form.Label>رمز عبور فعلی</Form.Label>
         <Form.Control
           type="password"
@@ -135,7 +135,7 @@ const ChangePassword: React.FC = () => {
         />
       </Form.Group>
 
-      <Form.Group className={classes.formGroup} controlId="formBasicEmail">
+      <Form.Group className={classes.formGroup} controlId="formBasicNewPass">
         <Form.Label>رمز عبور جدید</Form.Label>
         <Form.Control
           type="password"
@@ -145,7 +145,7 @@ const ChangePassword: React.FC = () => {
         />
       </Form.Group>
 
-      <Form.Group className={classes.formGroup} controlId="formBasicEmail">
+      <Form.Group className={classes.formGroup} controlId="formBasicConfPass">
         <Form.Label>تایید رمز عبور جدید</Form.Label>
         <Form.Control
           type="password"

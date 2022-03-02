@@ -172,6 +172,20 @@ const ReportMasterWeb: React.FC<{ userEmail: string }> = (props) => {
               <p>تاریخ ارسال: {task.delivery_time}</p>
               <p>تاریخ تحویل: {task.due_on}</p>
             </div>
+            {task.file.length > 0 && (
+              <div className={classes.download}>
+                <Button variant="info">
+                  <a href={task.file[task.file.length - 1].url}>دانلود فایل</a>
+                </Button>
+              </div>
+            )}
+            {task.file.length === 0 && (
+              <div className={classes.download}>
+                <Button variant="danger">
+                  <p>بدون فایل</p>
+                </Button>
+              </div>
+            )}
             <div className={classes.status}>
               <RiEditFill onClick={() => showMOdalHandler(task)} />
             </div>

@@ -12,16 +12,22 @@ import { IoMdChatboxes } from "react-icons/io";
 import { ConnectToDB } from "../../../../lib/connect-to-db";
 import axios, { AxiosRequestHeaders } from "axios";
 import Notification from "../../../ui/notification";
-import SeoComments, { comments } from "./SeoComments";
+import SeoComments, { comments } from "./DesignComments";
 
 export interface typeTasks {
   Assignment: string;
   Priority: string;
-  delivery_time: string;
-  due_on: string;
-  subject: string;
   Status: string;
   Verification: string;
+  assignment_id: number;
+  comments: comments[];
+  delivery_time: string;
+  due_on: string;
+  file: {
+    name: string;
+    url: string;
+  }[];
+  subject: string;
   admin_task_email: {
     email: string;
     name: string;
@@ -30,16 +36,10 @@ export interface typeTasks {
     email: string;
     name: string;
   };
-  file: {
-    name: string;
-    url: string;
-  }[];
-  comments: comments[];
-  assignment_id: number;
   id: number;
 }
 
-const ReportSeoTasks: React.FC<{ userEmail: string }> = (props) => {
+const ReportDesignTasks: React.FC<{ userEmail: string }> = (props) => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
 
@@ -55,10 +55,10 @@ const ReportSeoTasks: React.FC<{ userEmail: string }> = (props) => {
   const [taskId, setTaskId] = useState<string>("");
 
   const getTasks = async () => {
-    const data = await getData("get/tasks/Assigned");
-    setTasks(data.tasks);
+    const data = await getData("get/task/design/user");
+    setTasks(data.task);
     if (id !== 0) {
-      const value = data.tasks.filter((task: typeTasks) => task.id === id);
+      const value = data.task.filter((task: typeTasks) => task.id === id);
       setCommentsDetails(value[0].comments);
     }
   };
@@ -67,8 +67,8 @@ const ReportSeoTasks: React.FC<{ userEmail: string }> = (props) => {
 
   useEffect(() => {
     const tasksHandler = async () => {
-      const data = await getData("get/tasks/Assigned");
-      setTasks(data.tasks);
+      const data = await getData("get/task/design/user");
+      setTasks(data.task);
     };
     tasksHandler();
 
@@ -109,12 +109,11 @@ const ReportSeoTasks: React.FC<{ userEmail: string }> = (props) => {
 
     setNotification("pending");
 
-    const connectDB = ConnectToDB("edit/tasks/Assigned");
+    const connectDB = ConnectToDB("edit/task/design/user");
 
     const fData = new FormData();
 
-    fData.append("id", JSON.stringify(id));
-    fData.append("type", "1");
+    fData.append("task_id", JSON.stringify(id));
     fData.append("Status", valueBox);
 
     const headers: AxiosRequestHeaders = {
@@ -128,7 +127,7 @@ const ReportSeoTasks: React.FC<{ userEmail: string }> = (props) => {
       data: fData,
     })
       .then((res) => {
-        if (res.data.status === "success") {
+        if (res.data.status === "done") {
           setNotification(res.data.status);
 
           setTimeout(() => {
@@ -164,7 +163,7 @@ const ReportSeoTasks: React.FC<{ userEmail: string }> = (props) => {
     };
   }
 
-  if (notification === "success") {
+  if (notification === "done") {
     notifDetails = {
       status: "success",
       title: "موفق!",
@@ -310,4 +309,4 @@ const ReportSeoTasks: React.FC<{ userEmail: string }> = (props) => {
   );
 };
 
-export default ReportSeoTasks;
+export default ReportDesignTasks;

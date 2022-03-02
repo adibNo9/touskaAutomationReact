@@ -48,13 +48,15 @@ const AllUsers: React.FC = () => {
     event.preventDefault();
     if (searchVal !== "") {
       const val = listUsers.filter((user) =>
-        (user.name || user.email).includes(searchVal)
+        (user.name.toLowerCase() || user.email.toLowerCase()).includes(
+          searchVal.toLowerCase()
+        )
       );
       setListUsers(val);
       if (val.length === 0) {
         setListUsers(getValue);
         const emailval = listUsers.filter((user) =>
-          user.email.includes(searchVal)
+          user.email.toLowerCase().includes(searchVal.toLowerCase())
         );
         setListUsers(emailval);
       }

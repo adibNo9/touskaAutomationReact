@@ -19,6 +19,7 @@ import { CgMenuGridR } from "react-icons/cg";
 import { CgClose } from "react-icons/cg";
 
 import { RiNotification3Line } from "react-icons/ri";
+import DesignTask from "./all-tasks/design-task/DesignTask";
 
 const Profile = React.lazy(() => import("./profile/Profile"));
 const TimeSheet = React.lazy(() => import("./timesheet/TimeSheet"));
@@ -79,6 +80,9 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const getProfile = async () => {
       const data = await getData("profile");
+      if (data.status === 500) {
+        localStorage.removeItem("token");
+      }
       setUserData(data);
     };
     getProfile();
@@ -89,9 +93,6 @@ const Dashboard: React.FC = () => {
     };
     getNotification();
   }, [taskId, history]);
-
-  console.log("profile:", userData);
-  console.log("notification:", notification);
 
   const logoutHandler = (event: React.FormEvent) => {
     event.preventDefault();
@@ -108,7 +109,6 @@ const Dashboard: React.FC = () => {
       headers: headers,
     })
       .then((res) => {
-        console.log(res);
         if (res.data.token === "Token deleted") {
           localStorage.removeItem("token");
 
@@ -125,9 +125,6 @@ const Dashboard: React.FC = () => {
 
   const notifHandler = (id: string, IdOfTask: number, typeTask: string) => {
     setTaskId(id);
-
-    console.log("iddddddd", id);
-    console.log("taskId", IdOfTask);
 
     const connectDB = ConnectToDB("read/notif/user");
 
@@ -146,7 +143,6 @@ const Dashboard: React.FC = () => {
       data: fData,
     })
       .then((res) => {
-        console.log("resToken", res);
         if (res.data.status === "success") {
           setTaskId("");
           localStorage.setItem("taskId", `${IdOfTask}`);
@@ -196,6 +192,24 @@ const Dashboard: React.FC = () => {
           ) {
             history.push(`/dashboard/task-web/tasks-reports/${IdOfTask}msg`);
           }
+
+          if (typeTask === "design_superadmin") {
+            history.push(`/dashboard/task-design/admin-reports/${IdOfTask}`);
+          }
+
+          if (typeTask === "design_accept_task") {
+            history.push(`/dashboard/task-design/reports/${IdOfTask}`);
+          }
+
+          if (typeTask === "designer_task_accepted") {
+            history.push(`/dashboard/task-design/admin-reports/${IdOfTask}`);
+          }
+
+          if (typeTask === "designer_task_done") {
+            history.push(`/dashboard/task-design/admin-reports/${IdOfTask}`);
+          }
+
+          setShowNotifs(false);
         }
       })
       .catch((err) => {
@@ -207,7 +221,6 @@ const Dashboard: React.FC = () => {
 
   const mobileMenuHandler = () => {
     setshowMenu(!showMenu);
-    console.log("showMenu", showMenu);
   };
 
   return (
@@ -280,14 +293,14 @@ const Dashboard: React.FC = () => {
                   <Alert
                     className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
                   >
-                    تسک درخواستی شما مورد موافقت قرار گرفت!
+                    تسک وب درخواستی شما مورد موافقت قرار گرفت!
                   </Alert>
                 )}
                 {notif.notif_data.task_type === "admin_reject_task" && (
                   <Alert
                     className={`${classes.alertNotifDanger} ${classes.alertNotif}`}
                   >
-                    تسک درخواستی شما رد شده است!
+                    تسک وب درخواستی شما رد شده است!
                   </Alert>
                 )}
                 {notif.notif_data.task_type === "developer_task_assign" && (
@@ -330,6 +343,42 @@ const Dashboard: React.FC = () => {
                     className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
                   >
                     یک پیام جدید برای تسک سئو مورد نظر دارید!
+                  </Alert>
+                )}
+
+                {notif.notif_data.task_type === "design_superadmin" && (
+                  <Alert
+                    className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
+                  >
+                    یک تسک دیزاین در انتظار تایید شما
+                  </Alert>
+                )}
+                {notif.notif_data.task_type === "designer_task_accepted" && (
+                  <Alert
+                    className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
+                  >
+                    تسک دیزاین درخواستی شما مورد موافقت قرار گرفت!
+                  </Alert>
+                )}
+                {notif.notif_data.task_type === "admin_reject_task_design" && (
+                  <Alert
+                    className={`${classes.alertNotifDanger} ${classes.alertNotif}`}
+                  >
+                    تسک دیزاین درخواستی شما رد شده است!
+                  </Alert>
+                )}
+                {notif.notif_data.task_type === "design_accept_task" && (
+                  <Alert
+                    className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
+                  >
+                    یک تسک دیزاین برای شما ارسال شده است!
+                  </Alert>
+                )}
+                {notif.notif_data.task_type === "designer_task_done" && (
+                  <Alert
+                    className={`${classes.alertNotifSuccess} ${classes.alertNotif}`}
+                  >
+                    تسک دیزاین مورد نظر با موفقیت انجام شد!
                   </Alert>
                 )}
                 <h5>{notif.notif_data.task_title}</h5>
@@ -437,6 +486,20 @@ const Dashboard: React.FC = () => {
             </NavLink>
           )}
 
+          {(userData.user.role_id === "1" ||
+            userData.user.role_id === "2" ||
+            userData.user.role_id === "3") && (
+            <NavLink
+              activeClassName={classes.activeLink}
+              to="/dashboard/task-design"
+              onClick={
+                width < 980 ? () => setshowMenu(false) : () => setshowMenu(true)
+              }
+            >
+              تسک دیزاین
+            </NavLink>
+          )}
+
           <Button variant="danger" onClick={logoutHandler}>
             خروج
           </Button>
@@ -516,6 +579,18 @@ const Dashboard: React.FC = () => {
                 تسک وب
               </NavLink>
             )}
+
+            {(userData.user.role_id === "1" ||
+              userData.user.role_id === "2" ||
+              userData.user.role_id === "3") && (
+              <NavLink
+                activeClassName={classes.activeLink}
+                to="/dashboard/task-design"
+                onClick={() => setLocation("task-design")}
+              >
+                تسک دیزاین
+              </NavLink>
+            )}
           </div>
         )}
         <Suspense
@@ -556,6 +631,13 @@ const Dashboard: React.FC = () => {
             userData.user.role_id === "3") && (
             <Route path="/dashboard/task-web">
               <WebTask userData={userData} />
+            </Route>
+          )}
+          {(userData.user.role_id === "1" ||
+            userData.user.role_id === "2" ||
+            userData.user.role_id === "3") && (
+            <Route path="/dashboard/task-design">
+              <DesignTask userData={userData} />
             </Route>
           )}
         </Suspense>

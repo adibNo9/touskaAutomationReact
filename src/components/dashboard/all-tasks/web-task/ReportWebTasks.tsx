@@ -65,8 +65,6 @@ const ReportWebTasks: React.FC<{ userEmail: string }> = (props) => {
     }
   };
 
-  console.log("tasks:", tasks);
-
   const history = useHistory();
 
   useEffect(() => {
@@ -205,7 +203,7 @@ const ReportWebTasks: React.FC<{ userEmail: string }> = (props) => {
             {task.file.length > 0 && (
               <div className={classes.download}>
                 <Button variant="info">
-                  <a href={task.file[0].url}>دانلود فایل</a>
+                  <a href={task.file[task.file.length - 1].url}>دانلود فایل</a>
                 </Button>
               </div>
             )}
@@ -216,11 +214,13 @@ const ReportWebTasks: React.FC<{ userEmail: string }> = (props) => {
                 </Button>
               </div>
             )}
-            <div className={classes.status}>
-              <RiEditFill
-                onClick={() => showMOdalHandler(task.id, task.subject)}
-              />
-            </div>
+            {task.Status !== "done" && (
+              <div className={classes.status}>
+                <RiEditFill
+                  onClick={() => showMOdalHandler(task.id, task.subject)}
+                />
+              </div>
+            )}
             <div
               className={classes.commentIcon}
               onClick={() => commentsHandler(task.comments, task.id)}

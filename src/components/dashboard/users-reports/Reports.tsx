@@ -169,7 +169,9 @@ const Reports: React.FC = () => {
   const searchSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const valueSearch = value.filter((item) => item.name.includes(searchValue));
+    const valueSearch = value.filter((item) =>
+      item.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
 
     setReportsValue(valueSearch);
   };
@@ -213,6 +215,7 @@ const Reports: React.FC = () => {
           locale="fa"
           calendarClassName={classes.calendar}
           inputClassName={classes.inputCalendar}
+          calendarRangeBetweenClassName={classes.rangeInput}
           maximumDate={maxDate}
           shouldHighlightWeekends
         />

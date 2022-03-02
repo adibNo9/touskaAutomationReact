@@ -8,7 +8,6 @@ const ProfileContent: React.FC<{ userData: userType }> = (props) => {
     <div className={classes.content}>
       <h4>نام: {userData.user.name}</h4>
       <h4>ایمیل: {userData.user.email}</h4>
-      <h4>ایمیل: {userData.user.email}</h4>
     </div>
   );
 };

@@ -27,6 +27,7 @@ const UpdateTaskAdmin: React.FC<{ value: typeTasks | undefined }> = (props) => {
   const [assignSelected, setAssignSelected] = useState<string>("");
   const [verificationSelected, setVerificationSelected] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | undefined>();
+  const [showDueOn, setShowDueOn] = useState<boolean>(true);
 
   useEffect(() => {
     const getListUsers = async () => {
@@ -281,6 +282,8 @@ const UpdateTaskAdmin: React.FC<{ value: typeTasks | undefined }> = (props) => {
         <Form.Group
           className={classes.formGroupDate}
           controlId="formBasicDeliveryTime"
+          onClick={() => setShowDueOn(false)}
+          onBlur={() => setShowDueOn(true)}
         >
           <Form.Label className="mx-3">زمان ارسال</Form.Label>
           <DatePicker
@@ -294,21 +297,22 @@ const UpdateTaskAdmin: React.FC<{ value: typeTasks | undefined }> = (props) => {
           />
         </Form.Group>
 
-        <Form.Group
-          className={classes.formGroupDate}
-          controlId="formBasicDeliveryTime"
-        >
-          <Form.Label className="mx-3">مهلت زمان تحویل</Form.Label>
-          <DatePicker
-            value={dueonTime}
-            onChange={setDueonTime}
-            inputPlaceholder="انتخاب مهلت تحویل"
-            locale="fa"
-            calendarClassName={classes.calendar}
-            inputClassName={classes.InputCalendar}
-            shouldHighlightWeekends
-          />
-        </Form.Group>
+        {showDueOn && (
+          <Form.Group
+            className={classes.formGroupDate}
+            controlId="formBasicDeliveryTime"
+          >
+            <Form.Label className="mx-3">مهلت زمان تحویل</Form.Label>
+            <DatePicker
+              value={dueonTime}
+              onChange={setDueonTime}
+              locale="fa"
+              calendarClassName={classes.calendar}
+              inputClassName={classes.InputCalendar}
+              shouldHighlightWeekends
+            />
+          </Form.Group>
+        )}
         <div className={classes.actions}>
           <button disabled={!formValidate}>تایید</button>
         </div>

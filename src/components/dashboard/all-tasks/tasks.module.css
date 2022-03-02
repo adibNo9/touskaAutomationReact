@@ -47,6 +47,7 @@
 .inputCalendar {
   font-size: 2rem;
   z-index: 999 !important;
+  font-size: 10px !important;
 }
 
 .actions {

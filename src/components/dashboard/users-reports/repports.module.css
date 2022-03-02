@@ -52,6 +52,7 @@
 
 .calendar {
   background-color: var(--purple) !important;
+  z-index: 999;
 }
 
 .inputCalendar {
@@ -119,8 +120,12 @@
   color: black !important;
   width: 100px;
   top: 0;
-  z-index: 999;
+  z-index: 99;
   vertical-align: top;
+}
+
+.rangeInput {
+  background-color: var(--darkGreen) !important;
 }
 
 .content Table thead tr {

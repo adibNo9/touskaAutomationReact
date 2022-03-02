@@ -67,10 +67,17 @@ h6 {
   font-size: 1.3rem !important;
 }
 
+.Calendar__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .Calendar__day {
   color: var(--white) !important;
   font-size: 1.1rem !important;
   font-family: var(--ordibehesht) !important;
+  height: auto !important;
 }
 
 .Calendar__day:hover {
@@ -95,11 +102,14 @@ h6 {
 .Calendar__monthYear {
   background-color: rgba(255, 255, 255, 0.5);
   padding: 1.6rem !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .Calendar__monthYear button {
   font-family: var(--ordibehesht) !important;
-  font-size: 2rem !important;
+  font-size: 1rem !important;
   color: var(--purple);
 }
 
@@ -107,10 +117,31 @@ h6 {
   opacity: 0 !important;
 }
 
+.Calendar__monthArrowWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .Calendar__monthArrow {
   background-image: url("/public/images/next.png") !important;
-  width: 3.7em !important;
-  height: 3.7em !important;
+  position: relative !important;
+  transform: translate(0) !important;
+}
+
+.DatePicker__calendarContainer {
+  top: 0 !important;
+  z-index: 999 !important;
+}
+
+.DatePicker__calendarContainer.-top .Calendar {
+  z-index: 999 !important;
+  display: block !important;
+}
+
+.DatePicker__input {
+  z-index: 0 !important;
 }
 
 @media (max-width: 600px) {
@@ -201,3 +232,5 @@ h6 {
   align-items: center;
   height: 100vh;
 }
+
+/*aaaa*/

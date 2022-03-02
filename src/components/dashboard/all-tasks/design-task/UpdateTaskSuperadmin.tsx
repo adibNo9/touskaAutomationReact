@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import classes from "../tasks.module.css";
 
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import DatePicker, { DayValue } from "react-modern-calendar-datepicker";
+import { getData } from "../../../../lib/get-data";
+import { typeUsersList } from "../../users/AllUsers";
 import axios, { AxiosRequestHeaders } from "axios";
 import { ConnectToDB } from "../../../../lib/connect-to-db";
 import Notification from "../../../ui/notification";
-import { typeWebTasks } from "./ReportWebAdmin";
+import { typeTasks } from "./ReportDesignTasks";
 
-const UpdateTaskAdmin: React.FC<{ value: typeWebTasks | undefined }> = (
+const UpdateTaskSuperadmin: React.FC<{ value: typeTasks | undefined }> = (
   props
 ) => {
   const { value } = props;
@@ -17,17 +19,23 @@ const UpdateTaskAdmin: React.FC<{ value: typeWebTasks | undefined }> = (
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
 
-  const [deliveryTime, setDeliveryTime] = useState<DayValue>(null);
   const [dueonTime, setDueonTime] = useState<DayValue>(null);
-
-  const [valueBox, setValueBox] = useState<string>("");
+  const [assignList, setAssignList] = useState<typeUsersList[]>([]);
+  const [assignSelected, setAssignSelected] = useState<string>("");
   const [verificationSelected, setVerificationSelected] = useState<string>("");
-  const [showDueOn, setShowDueOn] = useState<boolean>(true);
 
-  const changeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  useEffect(() => {
+    const getListUsers = async () => {
+      const value = await getData("listuser");
+      setAssignList(value.users);
+    };
+    getListUsers();
+  }, []);
+
+  const AssignChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
 
-    setValueBox(value);
+    setAssignSelected(value);
   };
 
   const verificationChangeHandelr = (
@@ -40,12 +48,7 @@ const UpdateTaskAdmin: React.FC<{ value: typeWebTasks | undefined }> = (
 
   let formValidate = false;
 
-  if (
-    verificationSelected !== "" ||
-    valueBox !== "" ||
-    deliveryTime ||
-    dueonTime
-  ) {
+  if (dueonTime || verificationSelected !== "" || assignSelected !== "") {
     formValidate = true;
   }
 
@@ -53,25 +56,18 @@ const UpdateTaskAdmin: React.FC<{ value: typeWebTasks | undefined }> = (
     event.preventDefault();
     setNotification("pending");
 
-    const connectDB = ConnectToDB("edit/task/web/superadmin");
+    const connectDB = ConnectToDB("edit/task/design/superadmin");
 
     const fData = new FormData();
 
     fData.append("task_id", JSON.stringify(value?.id));
-
-    deliveryTime &&
-      fData.append(
-        "delivery_time",
-        `${deliveryTime?.year}/${deliveryTime?.month}/${deliveryTime?.day}`
-      );
-
     dueonTime &&
       fData.append(
         "due_on",
         `${dueonTime?.year}/${dueonTime?.month}/${dueonTime?.day}`
       );
 
-    valueBox !== "" && fData.append("Priority", valueBox);
+    assignSelected !== "" && fData.append("assignment_id", assignSelected);
 
     verificationSelected !== "" &&
       fData.append("Verification", verificationSelected);
@@ -148,24 +144,6 @@ const UpdateTaskAdmin: React.FC<{ value: typeWebTasks | undefined }> = (
 
         <Form.Group
           className={classes.formGroupUpdate}
-          controlId="formBasicDeliveryPriority"
-        >
-          <Form.Label className="mx-3">اولویت</Form.Label>
-          <Form.Select
-            value={valueBox}
-            onChange={changeHandler}
-            aria-label="Default select example"
-          >
-            <option>انتخاب اولویت ...</option>
-            <option value="0">اورژانسی</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </Form.Select>
-        </Form.Group>
-
-        <Form.Group
-          className={classes.formGroupUpdate}
           controlId="formBasicDeliveryAssignId"
         >
           <Form.Label className="mx-3">Verification</Form.Label>
@@ -181,40 +159,38 @@ const UpdateTaskAdmin: React.FC<{ value: typeWebTasks | undefined }> = (
         </Form.Group>
 
         <Form.Group
+          className={classes.formGroupUpdate}
+          controlId="formBasicDeliveryAssignId"
+        >
+          <Form.Label className="mx-3">اختصاص به</Form.Label>
+          <Form.Select
+            value={assignSelected}
+            onChange={AssignChangeHandler}
+            aria-label="Default select example"
+          >
+            <option>انتخاب کاربر ...</option>
+            {assignList.map((item) => (
+              <option value={`${item.id}`} key={item.id}>
+                {item.email}({item.name})
+              </option>
+            ))}
+          </Form.Select>
+        </Form.Group>
+
+        <Form.Group
           className={classes.formGroupDate}
           controlId="formBasicDeliveryTime"
-          onClick={() => setShowDueOn(false)}
-          onBlur={() => setShowDueOn(true)}
         >
-          <Form.Label className="mx-3">زمان ارسال</Form.Label>
+          <Form.Label className="mx-3">مهلت زمان تحویل</Form.Label>
           <DatePicker
-            value={deliveryTime}
-            onChange={setDeliveryTime}
-            inputPlaceholder="انتخاب زمان تحویل"
+            value={dueonTime}
+            onChange={setDueonTime}
             locale="fa"
             calendarClassName={classes.calendar}
             inputClassName={classes.InputCalendar}
             shouldHighlightWeekends
           />
         </Form.Group>
-
-        {showDueOn && (
-          <Form.Group
-            className={classes.formGroupDate}
-            controlId="formBasicDeliveryTime"
-          >
-            <Form.Label className="mx-3">مهلت زمان تحویل</Form.Label>
-            <DatePicker
-              value={dueonTime}
-              onChange={setDueonTime}
-              inputPlaceholder="انتخاب مهلت تحویل"
-              locale="fa"
-              calendarClassName={classes.calendar}
-              inputClassName={classes.InputCalendar}
-              shouldHighlightWeekends
-            />
-          </Form.Group>
-        )}
         <div className={classes.actions}>
           <button disabled={!formValidate}>تایید</button>
         </div>
@@ -230,4 +206,4 @@ const UpdateTaskAdmin: React.FC<{ value: typeWebTasks | undefined }> = (
   );
 };
 
-export default UpdateTaskAdmin;
+export default UpdateTaskSuperadmin;

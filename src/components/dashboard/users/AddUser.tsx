@@ -179,7 +179,7 @@ const AddUser: React.FC = () => {
   return (
     <Fragment>
       <Form className={classes.form} onSubmit={submitHandler}>
-        <Form.Group className={classes.formGroup} controlId="formBasicEmail">
+        <Form.Group className={classes.formGroup} controlId="formBasic1">
           <Form.Label>نام</Form.Label>
           <Form.Control
             type="text"
@@ -189,7 +189,7 @@ const AddUser: React.FC = () => {
           />
         </Form.Group>
 
-        <Form.Group className={classes.formGroup} controlId="formBasicEmail">
+        <Form.Group className={classes.formGroup} controlId="formBasic2">
           <Form.Label>ایمیل</Form.Label>
           <Form.Control
             type="email"
@@ -199,7 +199,7 @@ const AddUser: React.FC = () => {
           />
         </Form.Group>
 
-        <Form.Group className={classes.formGroup} controlId="formBasicPassword">
+        <Form.Group className={classes.formGroup} controlId="formBasic3">
           <Form.Label>رمز عبور</Form.Label>
           <Form.Control
             type={showPass ? `text` : `password`}
@@ -221,7 +221,7 @@ const AddUser: React.FC = () => {
           )}
         </Form.Group>
 
-        <Form.Group className={classes.formGroup} controlId="formBasicPassword">
+        <Form.Group className={classes.formGroup} controlId="formBasic4">
           <Form.Label>تایید رمز عبور</Form.Label>
           <Form.Control
             type={showConfPass ? `text` : `password`}
@@ -256,14 +256,16 @@ const AddUser: React.FC = () => {
           >
             <option>انتخاب نقش ...</option>
             {roles.map((item) => (
-              <option value={item.id}>{item.name}</option>
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
             ))}
           </Form.Select>
         </Form.Group>
 
         <Form.Group
           className={classes.formGroup}
-          controlId="formBasicDeliveryPriority"
+          controlId="formBasicDeliveryPriority2"
         >
           <Form.Label>فعال یا غیرفعال</Form.Label>
           <Form.Select

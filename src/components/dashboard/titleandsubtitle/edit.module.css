@@ -292,4 +292,8 @@
     font-size: 2rem !important;
     width: calc(100% - 100px);
   }
+  .selectedTitles {
+    position: relative;
+    right: 0;
+  }
 }

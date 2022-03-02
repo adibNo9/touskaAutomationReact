@@ -1,16 +1,14 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Form } from "react-bootstrap";
 import classes from "../tasks.module.css";
 
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import DatePicker, { DayValue } from "react-modern-calendar-datepicker";
-import { getData } from "../../../../lib/get-data";
-import { typeUsersList } from "../../users/AllUsers";
 import axios, { AxiosRequestHeaders } from "axios";
 import { ConnectToDB } from "../../../../lib/connect-to-db";
 import Notification from "../../../ui/notification";
 
-const CreateSeoTask: React.FC = () => {
+const CreateDesignTask: React.FC = () => {
   const [dataError, setdataError] = useState<string>("خطایی رخ داده است!");
   const [notification, setNotification] = useState<string>();
 
@@ -18,46 +16,15 @@ const CreateSeoTask: React.FC = () => {
   const [assignmentVal, setAssignmentVal] = useState<string>("");
   const [commentVal, setCommentVal] = useState<string>("");
   const [deliveryTime, setDeliveryTime] = useState<DayValue>(null);
-  const [dueonTime, setDueonTime] = useState<DayValue>(null);
 
   const [valueBox, setValueBox] = useState<string>("");
-  const [assignList, setAssignList] = useState<typeUsersList[]>([]);
 
-  const [assignSelected, setAssignSelected] = useState<string>("");
-  const [verificationSelected, setVerificationSelected] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | undefined>();
-
-  useEffect(() => {
-    const getListUsers = async () => {
-      const value = await getData("listuser");
-      setAssignList(value.users);
-      const users = value.users.filter(
-        (user: typeUsersList) =>
-          user.role_id === 2 || user.role_id === 4 || user.role_id === 5
-      );
-      setAssignList(users);
-    };
-    getListUsers();
-  }, []);
 
   const changeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
 
     setValueBox(value);
-  };
-
-  const AssignChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-
-    setAssignSelected(value);
-  };
-
-  const verificationChangeHandelr = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const value = e.target.value;
-
-    setVerificationSelected(value);
   };
 
   const subjectChangeHandelr = (event: ChangeEvent<HTMLInputElement>) => {
@@ -86,10 +53,7 @@ const CreateSeoTask: React.FC = () => {
     subjectVal.trim().length > 0 &&
     assignmentVal.trim().length > 0 &&
     deliveryTime &&
-    dueonTime &&
-    valueBox !== "" &&
-    assignSelected !== "" &&
-    verificationSelected !== ""
+    valueBox !== ""
   ) {
     formValidate = true;
   }
@@ -99,7 +63,7 @@ const CreateSeoTask: React.FC = () => {
 
     setNotification("pending");
 
-    const connectDB = ConnectToDB("create/task/seo");
+    const connectDB = ConnectToDB("create/task/design");
 
     const fData = new FormData();
 
@@ -109,13 +73,7 @@ const CreateSeoTask: React.FC = () => {
       "delivery_time",
       `${deliveryTime?.year}/${deliveryTime?.month}/${deliveryTime?.day}`
     );
-    fData.append(
-      "due_on",
-      `${dueonTime?.year}/${dueonTime?.month}/${dueonTime?.day}`
-    );
     fData.append("Priority", valueBox);
-    fData.append("assignment_id", assignSelected);
-    fData.append("Verification", verificationSelected);
     selectedFile && fData.append("file", selectedFile ? selectedFile : "");
 
     commentVal !== "" && fData.append("comment", commentVal);
@@ -241,51 +199,6 @@ const CreateSeoTask: React.FC = () => {
             <option value="3">3</option>
           </Form.Select>
         </Form.Group>
-        <Form.Group className="mt-3" controlId="formBasicDeliveryAssignId">
-          <Form.Label className="mx-3">اختصاص به</Form.Label>
-          <Form.Select
-            value={assignSelected}
-            onChange={AssignChangeHandler}
-            aria-label="Default select example"
-          >
-            <option>انتخاب کاربر ...</option>
-            {assignList.map((item) => (
-              <option value={`${item.id}`} key={item.id}>
-                {item.email}({item.name})
-              </option>
-            ))}
-          </Form.Select>
-        </Form.Group>
-
-        <Form.Group
-          className={classes.formGroupUpdate}
-          controlId="formBasicDeliveryAssignId"
-        >
-          <Form.Label className="mx-3">Verification</Form.Label>
-          <Form.Select
-            value={verificationSelected}
-            onChange={verificationChangeHandelr}
-            aria-label="Default select example"
-          >
-            <option>انتخاب Verification ...</option>
-            <option value="pending">pending</option>
-            <option value="accept">accept</option>
-            <option value="reject">reject</option>
-          </Form.Select>
-        </Form.Group>
-
-        <Form.Group className="mt-3" controlId="formBasicDeliveryTime">
-          <Form.Label className="mx-3">مهلت زمان تحویل</Form.Label>
-          <DatePicker
-            value={dueonTime}
-            onChange={setDueonTime}
-            inputPlaceholder="انتخاب مهلت تحویل"
-            locale="fa"
-            calendarClassName={classes.calendar}
-            inputClassName={classes.InputCalendar}
-            shouldHighlightWeekends
-          />
-        </Form.Group>
 
         <Form.Group
           className={classes.formGroup}
@@ -317,4 +230,4 @@ const CreateSeoTask: React.FC = () => {
   );
 };
 
-export default CreateSeoTask;
+export default CreateDesignTask;

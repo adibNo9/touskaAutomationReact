@@ -21,8 +21,6 @@ const ReportTitles: React.FC<{
     allSums = allSums + sumTitles[i].spend_time;
   }
 
-  console.log("sumTitles", sumTitles);
-
   const componentRef = useRef(null);
 
   const handlePrint = useReactToPrint({

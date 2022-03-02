@@ -40,11 +40,7 @@ const CreateWebTask: React.FC = () => {
 
   let formValidate = false;
 
-  if (
-    subjectVal.trim().length > 0 &&
-    assignmentVal.trim().length > 0 &&
-    selectedFile
-  ) {
+  if (subjectVal.trim().length > 0 && assignmentVal.trim().length > 0) {
     formValidate = true;
   }
 
@@ -60,7 +56,7 @@ const CreateWebTask: React.FC = () => {
     fData.append("subject", subjectVal);
     fData.append("Assignment", assignmentVal);
     fData.append("comment", commentVal);
-    fData.append("file", selectedFile ? selectedFile : "");
+    selectedFile && fData.append("file", selectedFile ? selectedFile : "");
 
     const headers: AxiosRequestHeaders = {
       Authorization: "Bearer " + localStorage.getItem("token"),
