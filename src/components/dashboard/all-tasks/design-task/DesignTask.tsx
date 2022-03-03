@@ -16,7 +16,9 @@ const DesignTask: React.FC<{ userData: userType }> = (props) => {
     <section className={classes.tasks}>
       <h1>تسک دیزاین</h1>
       <div className={classes.links}>
-        {(userData.user.role_id === "1" || userData.user.role_id === "2") && (
+        {(userData.user.role_id === "1" ||
+          userData.user.role_id === "2" ||
+          userData.user.role_id === "3") && (
           <NavLink
             activeClassName={classes.active}
             to="/dashboard/task-design/create"
@@ -30,7 +32,9 @@ const DesignTask: React.FC<{ userData: userType }> = (props) => {
         >
           تسک‌های شما
         </NavLink>
-        {(userData.user.role_id === "1" || userData.user.role_id === "2") && (
+        {(userData.user.role_id === "1" ||
+          userData.user.role_id === "2" ||
+          userData.user.role_id === "3") && (
           <NavLink
             activeClassName={classes.active}
             to="/dashboard/task-design/admin-reports"
@@ -47,7 +51,9 @@ const DesignTask: React.FC<{ userData: userType }> = (props) => {
             </div>
           }
         >
-          {(userData.user.role_id === "1" || userData.user.role_id === "2") && (
+          {(userData.user.role_id === "1" ||
+            userData.user.role_id === "2" ||
+            userData.user.role_id === "3") && (
             <Route path="/dashboard/task-design/create">
               <CreateDesignTask />
             </Route>
@@ -55,7 +61,9 @@ const DesignTask: React.FC<{ userData: userType }> = (props) => {
           <Route path="/dashboard/task-design/reports">
             <ReportDesignTasks userEmail={userData.user.email} />
           </Route>
-          {(userData.user.role_id === "1" || userData.user.role_id === "2") && (
+          {(userData.user.role_id === "1" ||
+            userData.user.role_id === "2" ||
+            userData.user.role_id === "3") && (
             <Route path="/dashboard/task-design/admin-reports">
               <ReportDesignAdmin
                 userEmail={userData.user.email}

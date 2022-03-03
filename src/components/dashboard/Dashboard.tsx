@@ -80,9 +80,6 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const getProfile = async () => {
       const data = await getData("profile");
-      if (data.status === 500) {
-        localStorage.removeItem("token");
-      }
       setUserData(data);
     };
     getProfile();
@@ -93,6 +90,8 @@ const Dashboard: React.FC = () => {
     };
     getNotification();
   }, [taskId, history]);
+
+  console.log("userData", userData);
 
   const logoutHandler = (event: React.FormEvent) => {
     event.preventDefault();

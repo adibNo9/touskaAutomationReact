@@ -13,11 +13,25 @@ export const getData = async (db: string) => {
     headers,
   });
 
-  if (!res.ok) {
-    localStorage.removeItem("Please Login again!");
+  // if (!res.ok) {
+  //   localStorage.removeItem("token");
+  //   setTimeout(() => {
+  //     window.location.reload();
+  //   }, 2000);
+  //   console.log("PLeasr Login Again!");
+
+  //   return res;
+  // }
+
+  // const data = await res.json();
+
+  // return data;
+
+  if (res.ok) {
+    return res.json();
+  } else {
+    localStorage.removeItem("token");
+    window.location.reload();
+    return Promise.reject(res);
   }
-
-  const data = await res.json();
-
-  return data;
 };
