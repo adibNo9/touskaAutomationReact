@@ -50,6 +50,12 @@ const EditUser: React.FC<{ listUser: typeUsersList }> = (props) => {
     getRoles();
   }, []);
 
+  let formValidate = false;
+
+  if (valueBox || nameVal || selectedFile) {
+    formValidate = true;
+  }
+
   interface notificationDetails {
     status: string;
     title: string;
@@ -66,7 +72,7 @@ const EditUser: React.FC<{ listUser: typeUsersList }> = (props) => {
     const fData = new FormData();
 
     fData.append("id", JSON.stringify(listUser.id));
-    fData.append("role_id", valueBox);
+    valueBox && fData.append("role_id", valueBox);
 
     nameVal && fData.append("name", nameVal);
 
@@ -168,7 +174,7 @@ const EditUser: React.FC<{ listUser: typeUsersList }> = (props) => {
         />
       </Form.Group>
       <div className={classes.actions}>
-        <button>تایید</button>
+        <button disabled={!formValidate}>تایید</button>
       </div>
       {notification && (
         <Notification

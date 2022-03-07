@@ -38,6 +38,7 @@ const ReportDesignAdmin: React.FC<{ userEmail: string; userRole: string }> = (
   const getTasks = async () => {
     if (props.userRole === "1") {
       const data = await getData("assigned/all/task/design");
+
       setTasks(data.tasks);
 
       if (id !== 0) {
@@ -46,10 +47,10 @@ const ReportDesignAdmin: React.FC<{ userEmail: string; userRole: string }> = (
       }
     } else {
       const data = await getData("get/task/design/admin");
-      setTasks(data);
+      setTasks(data.task);
 
       if (id !== 0) {
-        const value = data.tasks.filter((task: typeTasks) => task.id === id);
+        const value = data.task.filter((task: typeTasks) => task.id === id);
         setCommentsDetails(value[0].comments);
       }
     }

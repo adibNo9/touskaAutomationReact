@@ -255,7 +255,7 @@ const ReportDesignTasks: React.FC<{ userEmail: string }> = (props) => {
                 onChange={changeHandler}
                 aria-label="Default select example"
               >
-                <option>انتخاب اولویت ...</option>
+                <option>انتخاب وضعیت ...</option>
                 <option value="skipped">Skipped</option>
                 <option value="Not Started">Not Started</option>
                 <option value="done">Done</option>

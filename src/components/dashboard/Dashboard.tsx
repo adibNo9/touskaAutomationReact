@@ -485,19 +485,15 @@ const Dashboard: React.FC = () => {
             </NavLink>
           )}
 
-          {(userData.user.role_id === "1" ||
-            userData.user.role_id === "2" ||
-            userData.user.role_id === "3") && (
-            <NavLink
-              activeClassName={classes.activeLink}
-              to="/dashboard/task-design"
-              onClick={
-                width < 980 ? () => setshowMenu(false) : () => setshowMenu(true)
-              }
-            >
-              تسک دیزاین
-            </NavLink>
-          )}
+          <NavLink
+            activeClassName={classes.activeLink}
+            to="/dashboard/task-design"
+            onClick={
+              width < 980 ? () => setshowMenu(false) : () => setshowMenu(true)
+            }
+          >
+            تسک دیزاین
+          </NavLink>
 
           <Button variant="danger" onClick={logoutHandler}>
             خروج
@@ -579,17 +575,13 @@ const Dashboard: React.FC = () => {
               </NavLink>
             )}
 
-            {(userData.user.role_id === "1" ||
-              userData.user.role_id === "2" ||
-              userData.user.role_id === "3") && (
-              <NavLink
-                activeClassName={classes.activeLink}
-                to="/dashboard/task-design"
-                onClick={() => setLocation("task-design")}
-              >
-                تسک دیزاین
-              </NavLink>
-            )}
+            <NavLink
+              activeClassName={classes.activeLink}
+              to="/dashboard/task-design"
+              onClick={() => setLocation("task-design")}
+            >
+              تسک دیزاین
+            </NavLink>
           </div>
         )}
         <Suspense
@@ -632,13 +624,10 @@ const Dashboard: React.FC = () => {
               <WebTask userData={userData} />
             </Route>
           )}
-          {(userData.user.role_id === "1" ||
-            userData.user.role_id === "2" ||
-            userData.user.role_id === "3") && (
-            <Route path="/dashboard/task-design">
-              <DesignTask userData={userData} />
-            </Route>
-          )}
+
+          <Route path="/dashboard/task-design">
+            <DesignTask userData={userData} />
+          </Route>
         </Suspense>
       </div>
     </section>

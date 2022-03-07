@@ -30,8 +30,11 @@ export const getData = async (db: string) => {
   if (res.ok) {
     return res.json();
   } else {
-    localStorage.removeItem("token");
-    window.location.reload();
+    if (db === "profile") {
+      localStorage.removeItem("token");
+      window.location.reload();
+    }
+
     return Promise.reject(res);
   }
 };

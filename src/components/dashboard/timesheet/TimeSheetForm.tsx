@@ -105,6 +105,8 @@ const TimeSheetForm: React.FC<{
       .then((res) => {
         if (res.data.status === "success") {
           setChartValue(res.data.timesheets);
+        } else if (res.data.status === "not found") {
+          setChartValue([]);
         }
       })
       .catch((err) => {
